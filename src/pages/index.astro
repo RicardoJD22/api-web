@@ -1,46 +1,41 @@
 ---
-import BentoArea from '../components/BentoArea.astro';
-import BentoCard from '../components/BentoCard.astro';
+import BentoArea from "../components/BentoArea.astro";
+import BentoCard from "../components/BentoCard.astro";
 
-import Layout from '../layouts/Layout.astro';
-
+import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Malecon La Paz BCS.">
-	<main class="m-auto p-14" style="background-color: #FFFDD2" >
+	<main class="m-auto p-14 h-screen" style="background-color: #FFFDD2">
 		<header class="">
 			<div class="mx-auto text-center mb-4 lg:-mb-16">
-				<img class="m-auto mb-8  " src="/header.jpg" alt="">
-				<h1 class="m-11 font-bold w-65 mx-auto" style="font-size: 64px;">KIOSCO CENTRAL DE LA PAZ</h1>
-				<h1 class="m-11 font-bold w-65 mx-auto" style="font-size: 54px;">BUENAS TARDES</h1>
-				<h1 class="m-11 font-bold w-65 mx-auto" style="font-size: 54px;">18:40 PM</h1>
-				<h1 class="m-11 font-bold w-65 mx-auto" style="font-size: 24px;">¿PODEMOS AYUDARTE EN ALGO?</h1>
-				<a href="start">
-				<BentoCard 
-				
-    class="m-auto mb-28 col-span-1 md:col-span-1 w-96  "
-	
-    title="ENTRAR"
-	
-  
-  >
-  
-  <figure
-  slot="image"
-  class="
-  absolute left-0 top-0 bottom-0 w-full
-  h-full  bg-center bg-cover bg-no-repeat
-  bg-blend-luminosity -z-10 
-"
-  style="background-color: #10312B "
->
-</figure>
-  </BentoCard>
-</a>	
+				<img class="m-auto mb-8" src="/header.jpg" alt="" />
+				<h1
+					class="m-11 font-bold w-65 mx-auto"
+					style="font-size: 64px;"
+				>
+					KIOSCO CENTRAL DE LA PAZ
+				</h1>
+				<h1
+					class="m-11 font-bold w-65 mx-auto"
+					style="font-size: 54px;"
+				>
+					BUENAS TARDES
+				</h1>
+				<h1
+					class="m-11 font-bold w-65 mx-auto"
+					style="font-size: 54px;"
+				>
+					18:40 PM
+				</h1>
+				<h1
+					class="m-11 font-bold w-65 mx-auto"
+					style="font-size: 24px;"
+				>
+					¿PODEMOS AYUDARTE EN ALGO?
+				</h1>
+				<a class="bg-[#10312B] px-[5rem] py-6 text-xl text-white rounded-lg " href="start"> ENTRAR </a>
 			</div>
-		
 		</header>
-		
-	
 	</main>
 </Layout>

@@ -5,7 +5,9 @@ import BentoCard from "./BentoCard.astro";
 <main
   class="max-w-[1400px] text-white grid grid-cols-10 pt-20 ml-72 auto-rows-[19rem] gap-4 mx-auto my-auto"
 >
+
   <BentoCard
+    href="questions"
     class="col-span-10 md:col-span-3"
     title="ENCUESTA"
     description="Accede a una breve encuesta, queremos conocer tu opinión"
@@ -23,10 +25,12 @@ import BentoCard from "./BentoCard.astro";
   </BentoCard>
 
   <BentoCard 
+    href="questions"
     class="col-span-10 md:col-span-3" 
     title="SOBRE NOSOTROS"
     description="¿Por que la creación del kiosco? accede para conocer acerca de ello"
   >
+ 
   <figure
   slot="image"
   class="
@@ -41,7 +45,8 @@ import BentoCard from "./BentoCard.astro";
 
   
 
-  <BentoCard 
+  <BentoCard
+    href="map" 
     class="col-span-10 md:col-span-3" 
     title="Mapa guia de la ciudad."
     description="Localiza los distintos lugares de la ciudad"  
@@ -61,6 +66,7 @@ import BentoCard from "./BentoCard.astro";
   </BentoCard>
 
   <BentoCard 
+    href=""
     class="col-span-10 md:col-span-9" 
     title="MONUMENTOS HISTORICOS DEL MALECON"
     description="Descubre los lugares interesantes del Malecón de La Paz."

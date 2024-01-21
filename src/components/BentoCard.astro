@@ -3,12 +3,14 @@ interface Props {
   title?: string;
   description?: string;
   class?: string;
+  href: string;
 }
 
-const { title, description} = Astro.props;
+const { title, description, href} = Astro.props;
 ---
 
-<section
+<a
+  href={href}
   class={`${Astro.props.class} col-span-5 relative rounded-xl backdrop-blur-md border-2 shadow-inner shadow-black/30 overflow-hidden group`}
 >
 
@@ -26,4 +28,4 @@ const { title, description} = Astro.props;
   <slot name="content" />
 </div>
 
-</section>
+</a>
