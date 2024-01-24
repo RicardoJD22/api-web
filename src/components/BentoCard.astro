@@ -2,30 +2,34 @@
 interface Props {
   title?: string;
   description?: string;
-  class?: string;
+  'class'?: string;
   href: string;
+  gradient: string;
 }
 
-const { title, description, href} = Astro.props;
+const { title, description, href, gradient, 'class': customClass } = Astro.props;
+
+console.log("Gradient value:", gradient);
+
 ---
+
 
 <a
   href={href}
-  class={`${Astro.props.class} col-span-5 relative rounded-xl backdrop-blur-md border-2 shadow-inner shadow-black/30 overflow-hidden group`}
+  class={`${customClass} col-span-5 relative rounded-xl backdrop-blur-md border-2 shadow-inner shadow-black/30 overflow-hidden group`}
 >
+  <div class=`
+    absolute z-10 bottom-0 top-0 h-full w-full
+    bg-gradient-to-t from-${gradient} via-black/40 to-transparent
+    mix-blend-multiply bg-opacity-75
+  `></div>
 
-<div class="
-  absolute z-10 bottom-0 top-0 h-full w-full
-  bg-gradient-to-b from-transparent via-black/5 to-black/30
-"></div>
+  <slot name="image" />
 
-<slot name="image" />
-
-<div class="relative select-none flex flex-col justify-end gap-1 p-[0.78rem] text-lg z-20 h-full">
-  <h2 class="text-5xl font-black text-white font-sans uppercase text-balance">{title}</h2>
-  {description && <h3 class="text-xl font-medium max-w-[33rem] text-white mt-1 mb-4">{description}</h3>}
-  
-  <slot name="content" />
-</div>
-
+  <div class="relative select-none flex flex-col justify-end gap-1 p-[0.78rem] text-lg z-20 h-full">
+    <h2 class="text-5xl font-black text-white font-sans uppercase text-balance">{title}</h2>
+    {description && <h3 class="text-xl font-medium max-w-[33rem] text-white mt-1 mb-4">{description}</h3>}
+    
+    <slot name="content" />
+  </div>
 </a>
