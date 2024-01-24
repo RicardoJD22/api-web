@@ -22,8 +22,8 @@ const { title, description, href} = Astro.props;
 <slot name="image" />
 
 <div class="relative select-none flex flex-col justify-end gap-1 p-[0.78rem] text-lg z-20 h-full">
-  <h2 class="text-5xl font-black text-white font-sans uppercase text-balance mb-2">{title}</h2>
-  {description && <h3 class="text-xl font-semibold max-w-[33rem] text-white -mt-3 mb-4">{description}</h3>}
+  <h2 class="text-5xl font-black text-white font-sans uppercase text-balance">{title}</h2>
+  {description && <h3 class="text-xl font-medium max-w-[33rem] text-white mt-1 mb-4">{description}</h3>}
   
   <slot name="content" />
 </div>

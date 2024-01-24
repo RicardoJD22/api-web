@@ -3,85 +3,85 @@ import BentoCard from "./BentoCard.astro";
 ---
 
 <main
-  class="max-w-[1400px] text-white grid grid-cols-10 pt-20 ml-72 auto-rows-[19rem] gap-4 mx-auto my-auto"
+  class="max-w-[1600px] text-white grid grid-cols-10 auto-rows-[20rem] gap-2 mx-auto my-auto"
 >
-
   <BentoCard
     href="questions"
-    class="col-span-10 md:col-span-3"
+    class="col-span-3"
     title="ENCUESTA"
     description="Accede a una breve encuesta, queremos conocer tu opinión"
   >
-  <figure
-  slot="image"
-  class="
-  absolute left-0 top-0 bottom-0 w-full
-  h-full  bg-center bg-cover bg-no-repeat
-  bg-blend-luminosity -z-10
-"
-  style="background-color:#10312B"
->
-</figure>
-  </BentoCard>
-
-  <BentoCard 
-    href="questions"
-    class="col-span-10 md:col-span-3" 
-    title="SOBRE NOSOTROS"
-    description="¿Por que la creación del kiosco? accede para conocer acerca de ello"
-  >
- 
-  <figure
-  slot="image"
-  class="
-  absolute left-0 top-0 bottom-0 w-full
-  h-full  bg-center bg-cover bg-no-repeat
-  bg-blend-luminosity -z-10
-"
-  style="background-color: #BC955C"
->
-</figure>
-  </BentoCard>
-
-  
-
-  <BentoCard
-    href="map" 
-    class="col-span-10 md:col-span-3" 
-    title="Mapa guia de la ciudad."
-    description="Localiza los distintos lugares de la ciudad"  
-    
-  >
     <figure
       slot="image"
-      class="
-    absolute left-0 top-0 bottom-0 w-full
-    h-full  bg-center bg-cover bg-no-repeat
-    bg-blend-luminosity -z-10
-  "
-   style="background-color: #9F2241"
-   
+      class="absolute left-0 top-0 bottom-0 w-full
+    h-full bg-center bg-cover bg-no-repeat
+    bg-blend-luminosity -z-10"
+      style="background-color:#10312B"
     >
     </figure>
   </BentoCard>
 
-  <BentoCard 
+  <BentoCard
+    href="questions"
+    class="col-span-3"
+    title="REPORTA UN FALLO"
+    description="¿Por que la creación del kiosco? accede para conocer acerca de ello"
+  >
+    <figure
+      slot="image"
+      class="absolute left-0 top-0 bottom-0 w-full
+  h-full bg-center bg-cover bg-no-repeat
+  bg-blend-luminosity -z-10"
+      style="background-color: #BC955C"
+    >
+    </figure>
+  </BentoCard>
+
+  <BentoCard
+    href="map"
+    class="col-span-4"
+    title="Mapa guia de la ciudad."
+    description="Localiza los distintos lugares de la ciudad"
+  >
+    <figure
+      slot="image"
+      class="absolute left-0 top-0 bottom-0 w-full
+    h-full bg-center bg-cover bg-no-repeat
+    bg-blend-luminosity -z-10"
+      style="background-color: #9F2241"
+    >
+    </figure>
+  </BentoCard>
+
+  <BentoCard
     href=""
-    class="col-span-10 md:col-span-9" 
+    class="col-span-6"
     title="MONUMENTOS HISTORICOS DEL MALECON"
     description="Descubre los lugares interesantes del Malecón de La Paz."
   >
-  <figure
-  slot="image"
-  class="
-  absolute left-0 top-0 bottom-0 w-full
-  h-full  bg-center bg-cover bg-no-repeat
-  bg-blend-luminosity -z-10
-"
-  style="background-color: #691C32"
->
-</figure>
+    <figure
+      slot="image"
+      class="absolute left-0 top-0 bottom-0 w-full
+  h-full bg-center bg-cover bg-no-repeat
+  bg-blend-luminosity -z-10"
+      style="background-color: #691C32"
+    >
+    </figure>
   </BentoCard>
 
-
+  <BentoCard
+    href=""
+    class="col-span-4"
+    title="GALERIA DE FOTOS"
+    description="Descubre los lugares interesantes del Malecón de La Paz."
+  >
+    <figure
+      slot="image"
+      class="absolute left-0 top-0 bottom-0 w-full
+        h-full bg-center bg-cover bg-no-repeat
+        bg-blend-luminosity -z-10"
+      style="background-color: #691C32"
+    >
+    </figure>
+  </BentoCard>
 </main>
