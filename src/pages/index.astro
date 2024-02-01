@@ -1,25 +1,16 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import BentoArea from '../components/BentoArea.astro';
+
+import Layout from '../layouts/Layout.astro';
+
 ---
 
 <Layout title="Malecon La Paz BCS.">
-	<section class="mx-auto">
-		<article class="mx-auto text-center mb-4 lg:-mb-16">
-			<h1 class="m-11 font-bold w-65 mx-auto" style="font-size: 64px;">
-				KIOSCO CENTRAL DE LA PAZ
-			</h1>
-			<h1 class="m-11 font-bold w-65 mx-auto" style="font-size: 54px;">
-				BUENAS TARDES
-			</h1>
-			<h1 class="m-11 font-bold w-65 mx-auto" style="font-size: 24px;">
-				¿PODEMOS AYUDARTE EN ALGO?
-			</h1>
-			<a
-				class="bg-[#10312B] px-[5rem] py-6 text-xl text-white rounded-lg mb-40"
-				href="start"
-			>
-				ENTRAR
-			</a>
-		</article>
-	</section>
+	<main class="mx-auto">
+		<header>
+			<img class="mx-auto" src="/logos_header.png" alt="">
+		</header>
+		<BentoArea/>
+	
+	</main>
 </Layout>
