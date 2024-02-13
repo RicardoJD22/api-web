@@ -1,0 +1,50 @@
+---
+import ReportCard from "../components/ReportCard.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Reportes">
+    <h1 class="text-4xl font-black text-center my-6">GENERA TU REPORTE</h1>
+    <section
+        class="grid max-w-[1780px] grid-cols-3 auto-rows-[40rem] mx-auto my-auto gap-10"
+    >
+        <a href="/" class="relative rounded-3xl z-20 flex items-end">
+            <div
+                class="absolute rounded-3xl z-10 bottom-0 top-0 h-full w-full
+  mix-blend-multiply bg-gradient-to-t from-[#10312B]"
+            >
+            </div>
+            <img
+                src="public/lamps.jpg"
+                class="absolute inset-0 bg-cover h-full w-full -z-10 rounded-3xl bg-blend-luminosity"
+            />
+            <h1 class="text-6xl font-black text-white z-20 p-5">PROBLEMAS DE ALUMBRADO</h1>
+        </a>
+        <a  href="/" class="relative rounded-3xl flex items-end">
+            <div
+                class="absolute z-10 rounded-3xl bottom-0 top-0 h-full w-full
+  mix-blend-multiply bg-gradient-to-t from-black"
+            >
+            </div>
+            <img
+                src="public/delincuence.jpg"
+                class="absolute inset-0 h-full w-full -z-10 rounded-3xl bg-blend-luminosity"
+            />
+            <h1 class="text-6xl font-black text-white z-20 p-5">
+                PROBLEMAS DE VANDALISMO
+            </h1>
+        </a>
+        <a href="/" class="relative rounded-3xl flex items-end">
+            <div
+                class="absolute z-10 rounded-3xl bottom-0 top-0 h-full w-full
+  mix-blend-multiply bg-gradient-to-t from-black"
+            >
+            </div>
+            <img
+                src="public/statue.jpg"
+                class="absolute inset-0 bg-cover h-full w-full -z-10 rounded-3xl bg-blend-luminosity"
+            />
+            <h1 class="text-6xl font-black text-white z-20 p-5">PROBLEMAS DE IMAGEN</h1>
+        </a>
+    </section>
+</Layout>

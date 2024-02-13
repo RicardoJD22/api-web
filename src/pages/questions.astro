@@ -1,15 +1,19 @@
 ---
-import Layout from '../layouts/Layout.astro'
+import QuestionsLayout from "../layouts/QuestionsLayout.astro"
+
+const question = "¿Cuál es tu lenguaje de programación favorito?"
+const option = "JavaScript"
 
 ---
 
-<Layout title="Encuesta">
+<QuestionsLayout title="Encuesta">
 
-    <section transition:name="questions" class="h-screen text-center">
-        <header class="text-center">
-            <h1 class="text-5xl font-black text-black font-sans uppercase text-balance">ENCUESTA</h1>
-            <p class="text-xl font-medium text-black mt-1 mb-4">Tu opinion es muy importante para nosotros</p>
-        </header>
+    <section class="h-full text-center flex flex-col justify-center">
+       
+        <h1 class="text-[5rem] font-black">{question}</h1>
+        <div class="">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{option}</button>
+        </div>
     </section>
 
-</Layout>
+</QuestionsLayout>

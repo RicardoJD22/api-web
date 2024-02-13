@@ -17,16 +17,6 @@ const { title } = Astro.props;
 		<title>{title}</title>
 	</head>
 	<body class="bg-[#FFFDD2] h-screen">
-
-		<header class="flex justify-around items-center mb-12 pt-5">
-			<img class="m-auto w-[350px]" src="/api_logo.png" alt="" />
-			<div class="text-center mt-5">
-				<p class="text-7xl font-black">03:08 P.M.</p>
-				<p class="text-3xl">Miercoles 24 de Enero 2024</p>
-			</div>
-			<img class="m-auto mt-10 w-[350px]" src="/bcs_logo.png" alt="" />
-		</header>
-
 		<slot />
 	</body>
 </html>
