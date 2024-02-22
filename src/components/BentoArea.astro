@@ -3,7 +3,7 @@ import BentoCard from "./BentoCard.astro";
 ---
 
 <main
-  class="max-w-[1680px] text-white grid grid-cols-12 auto-rows-[21rem] gap-3 mx-auto my-auto"
+  class="max-h-[1600px] text-white grid grid-cols-6 auto-rows-[21rem] gap-3 p-6 mx-auto my-auto"
 >
   <BentoCard
     href="questions"
@@ -24,7 +24,7 @@ import BentoCard from "./BentoCard.astro";
 
   <BentoCard
     href="reports"
-    class="col-span-3"
+    class="col-span-2"
     title="REPORTES"
     description="Si ves algo que no está bien, reportalo"
     gradient="to-t from-[#BC955C] to-transparent"
@@ -35,23 +35,6 @@ import BentoCard from "./BentoCard.astro";
   h-full bg-center bg-cover bg-no-repeat
   bg-blend-luminosity -z-10"
       style="background-image: url('report_img.jpeg')"
-    >
-    </figure>
-  </BentoCard>
-
-  <BentoCard
-    href=""
-    class="col-span-5 row-span-2"
-    title="GALERIA MULTIMEDIA"
-    description="Descubre los lugares interesantes del Malecón de La Paz."
-    gradient="to-t from-[#404040] to-transparent"
-  >
-    <figure
-      slot="image"
-      class="absolute left-0 top-0 bottom-0 w-full
-        h-full bg-center bg-cover bg-no-repeat
-        bg-blend-luminosity -z-10"
-      style="background-image: url('gallery_img.jpg')"
     >
     </figure>
   </BentoCard>
@@ -75,7 +58,7 @@ import BentoCard from "./BentoCard.astro";
 
   <BentoCard
     href="https://maps.app.goo.gl/SwQchvvfyHP6pQXD7"
-    class="col-span-4"
+    class="col-span-3"
     title="MAPA DE LA CIUDAD"
     description="Conoce nuestra ciudad"
     gradient="to-t from-[#10312B] to-transparent"
@@ -89,4 +72,21 @@ import BentoCard from "./BentoCard.astro";
     >
     </figure>
   </BentoCard>
+
+  <BentoCard
+  href=""
+  class="col-span-6"
+  title="GALERIA MULTIMEDIA"
+  description="Descubre los lugares interesantes del Malecón de La Paz."
+  gradient="to-t from-[#404040] to-transparent"
+>
+  <figure
+    slot="image"
+    class="absolute left-0 top-0 bottom-0 w-full
+      h-full bg-center bg-cover bg-no-repeat
+      bg-blend-luminosity -z-10"
+    style="background-image: url('gallery_img.jpg')"
+  >
+  </figure>
+</BentoCard>
 </main>
