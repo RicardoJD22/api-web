@@ -1,19 +1,38 @@
 ---
 import QuestionsLayout from "../layouts/QuestionsLayout.astro"
-
-const question = "¿Cuál es tu lenguaje de programación favorito?"
-const option = "JavaScript"
-
 ---
 
 <QuestionsLayout title="Encuesta">
-
-    <section class="h-full text-center flex flex-col justify-center">
-       
-        <h1 class="text-[5rem] font-black">{question}</h1>
-        <div class="">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{option}</button>
-        </div>
+<div class="h-screen flex flex-col gap-96">
+    <section class="flex flex-col items-center gap-28 p-6">
+       <p class="text-4xl  text-black font-black text-center mt-10 uppercase">Tu opinion nos importa</p>
+        <article>
+            <h1 class="text-6xl font-black text-black text-center">Como consideras la limpieza del Malecon?</h1>
+            <form action="" class="flex justify-around mt-28"> //TODO: Enviar al Backend
+                    <input type="radio" name="limpieza" id="mala" value="mala">
+                    <label for="mala">Mala</label>
+                </div>
+                <div>
+                    <input type="radio" name="limpieza" id="regular" value="regular">
+                    <label for="regular">Regular</label>
+                </div>
+                <div>
+                    <input type="radio" name="limpieza" id="buena" value="buena">
+                    <label for="buena">Buena</label>
+                </div>
+            </form>
+        </article>
     </section>
+
+    <footer class="flex flex-col items-center gap-24">
+        <span>
+            <p class="text-5xl font-black">1/5</p> //TODO: Cambiar por el numero de la pregunta
+        </span>
+        <div class="flex w-full justify-around gap-36">
+            <a href="/" class="bg-red-950 text-3xl font-bold text-white py-6 px-20 rounded-2xl">Salir</a>
+            <a href="/" class="bg-black text-3xl font-bold text-white py-6 px-20 rounded-2xl">Omitir</a> //TODO: Omitir pregunta y avanzar
+        </div>
+    </footer>
+</div>
 
 </QuestionsLayout>
