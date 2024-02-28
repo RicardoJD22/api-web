@@ -8,7 +8,8 @@ import QuestionsLayout from "../layouts/QuestionsLayout.astro"
        <p class="text-4xl  text-black font-black text-center mt-10 uppercase">Tu opinion nos importa</p>
         <article>
             <h1 class="text-6xl font-black text-black text-center">Como consideras la limpieza del Malecon?</h1>
-            <form action="" class="flex justify-around mt-28"> //TODO: Enviar al Backend
+            <form action="" class="flex justify-around mt-28">  <!-- TODO: Enviar al Backend -->
+                <div>
                     <input type="radio" name="limpieza" id="mala" value="mala">
                     <label for="mala">Mala</label>
                 </div>
@@ -26,11 +27,11 @@ import QuestionsLayout from "../layouts/QuestionsLayout.astro"
 
     <footer class="flex flex-col items-center gap-24">
         <span>
-            <p class="text-5xl font-black">1/5</p> //TODO: Cambiar por el numero de la pregunta
+            <p class="text-5xl font-black">1/5</p> <!--TODO: Cambiar por el numero de la pregunta -->
         </span>
         <div class="flex w-full justify-around gap-36">
             <a href="/" class="bg-red-950 text-3xl font-bold text-white py-6 px-20 rounded-2xl">Salir</a>
-            <a href="/" class="bg-black text-3xl font-bold text-white py-6 px-20 rounded-2xl">Omitir</a> //TODO: Omitir pregunta y avanzar
+            <a href="/" class="bg-black text-3xl font-bold text-white py-6 px-20 rounded-2xl">Omitir</a> <!-- TODO: Omitir pregunta y avanzar -->
         </div>
     </footer>
 </div>
