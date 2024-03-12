@@ -1,8 +1,8 @@
 ---
-import QuestionsLayout from "../layouts/QuestionsLayout.astro"
+import SectionLayout from "../layouts/SectionLayout.astro"
 ---
 
-<QuestionsLayout title="Encuesta">
+<SectionLayout title="Encuesta">
 <div class="h-screen flex flex-col gap-60">
     <section class="flex flex-col items-center gap-28 p-6">
        <p class="text-4xl  text-black font-black text-center mt-10 uppercase">Tu opinion nos importa</p>
@@ -20,7 +20,7 @@ import QuestionsLayout from "../layouts/QuestionsLayout.astro"
                     <label class="cursor-pointer text-center" for="regular">
                         <img src="public/neutral.gif" alt="" class="w-36 h-36 mix-blend-multiply">
                         <input class="invisible" type="radio" name="limpieza" id="regular" value="regular">
-                        <p class="text-2xl font-bold">MEDAIGUAL</p>
+                        <p class="text-2xl font-bold">REGULAR</p>
                     </label>
                 </div>
                 <div>
@@ -44,7 +44,7 @@ import QuestionsLayout from "../layouts/QuestionsLayout.astro"
         </div>
     </footer>
 </div>
-</QuestionsLayout>
+</SectionLayout>
 
 
 <!-- Descomentar para probar jeje -->
