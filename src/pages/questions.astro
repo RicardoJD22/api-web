@@ -47,13 +47,15 @@ import SectionLayout from "../layouts/SectionLayout.astro"
 </SectionLayout>
 
 
-<!-- Descomentar para probar jeje -->
-<!-- <script>
+<script>
     const regular = document.getElementById('regular');
+    const buena = document.getElementById('buena');
+    const mala = document.getElementById('mala');
 
     regular.addEventListener('click', () => {
         regular.parentElement.querySelector('img').classList.add('w-screen');
-
+        buena.parentElement.querySelector('img').classList.add('w-screen');
+        mala.parentElement.querySelector('img').classList.remove('w-screen');
     });
     
-</script> -->
+</script>
