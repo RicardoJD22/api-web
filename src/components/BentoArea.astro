@@ -81,12 +81,28 @@ import BentoCard from "./BentoCard.astro";
   gradient="to-t from-[#404040] to-transparent"
 >
   <figure
+    id="carouselImage"
     slot="image"
     class="absolute left-0 top-0 bottom-0 w-full
       h-full bg-center bg-cover bg-no-repeat
       bg-blend-luminosity -z-10"
-    style="background-image: url('turista.jpg')"
+    style="transition: background-image 0.5s ease-in-out; background-image: url('turista.jpg')"
   >
   </figure>
 </BentoCard>
+
+<script>
+  const images =['whale.jpg','sea.jpg','sea2.jpg', 'turista.jpg'];
+  let currentIndex = 0;
+  const carouselImage = document.getElementById('carouselImage');
+  
+  function changeImage() {
+    carouselImage.style.backgroundImage = `url('${images[currentIndex]}')`;
+    currentIndex = (currentIndex + 1) % images.length; 
+  }
+
+ 
+  setInterval(changeImage, 4000);
+
+</script>
 </main>
