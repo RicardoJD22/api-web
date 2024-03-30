@@ -3,17 +3,59 @@ interface Props {
     title: String;
     street1: String;
     street2: String;
-    link: String;
     color: String;
 }
 
-const { title, street1, street2, link, color } = Astro.props;
+const { title, street1, street2, color } = Astro.props;
 ---
 
-<article class=`flex justify-between ${color} items-center border-2 p-8 rounded-2xl`>
+<article
+    class=`flex justify-between ${color} items-center border-2 p-8 rounded-2xl`
+>
     <div class="flex flex-col">
         <h2 class="text-5xl font-black text-black">{title}</h2>
         <p class="text-3xl text-slate-600">{street1} - {street2}</p>
     </div>
-    <a href=`${link}` class="border-2 px-8 py-4 rounded-lg text-xl border-red-600 font-bold text-black">Generar Reporte</a>
+    <a
+        href="/"
+        class="report-btn border-2 px-8 py-4 rounded-lg text-xl shadow-md font-bold text-white bg-red-800"
+        >Generar Reporte</a
+    >
 </article>
+
+<script>
+    import Swal from "sweetalert2";
+
+    const generateReportButtons = document.querySelectorAll(".report-btn");
+
+    generateReportButtons.forEach((button) => {
+        button.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            let timerInterval: number | undefined;
+            Swal.fire({
+                title: "Reporte Generado",
+                html: "Gracias por su colaboración.",
+                icon: "success",
+                timer: 3000,
+                didOpen: () => {
+                    Swal.showLoading();
+                    const popup = Swal.getPopup();
+                    const timer = popup ? popup.querySelector("b") : null;
+                    if (timer) {
+                        timerInterval = setInterval(() => {
+                            if (timer) {
+                                timer.textContent = `${Swal.getTimerLeft()}`;
+                            }
+                        }, 100);
+                    }
+                },
+                willClose: () => {
+                    clearInterval(timerInterval);
+                },
+            }).then(() => {
+                window.location.href = "/";
+            });
+        });
+    });
+</script>
