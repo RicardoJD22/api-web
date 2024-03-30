@@ -85,7 +85,7 @@ const Questions = () => {
                 icon: "success",
                 iconColor: "#25574e",
                 background: "#dedcbb",
-                timer: 8000,
+                timer: 7000,
                 didOpen: () => {
                     Swal.showLoading();
                     const popup = Swal.getPopup();
@@ -137,7 +137,7 @@ const Questions = () => {
                                         className="w-36 h-36 mix-blend-multiply"
                                     />
                                     <input
-                                        
+                                        className='hidden'
                                         type="radio"
                                         name={`question-${question.id}`} // Nombre único para cada grupo de opciones
                                         id={`answer-${question.id}-${index}`}
