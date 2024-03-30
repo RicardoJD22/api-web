@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Swal from 'sweetalert2';
 
 const Questions = () => {
@@ -69,6 +70,7 @@ const Questions = () => {
 
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState({});
+    let answerMapped = Object.keys(answers).map((key) => answers[key]);
 
     const question = data.questions[currentQuestionIndex];
 
@@ -77,30 +79,15 @@ const Questions = () => {
         if (nextIndex < data.questions.length) {
             setCurrentQuestionIndex(nextIndex);
         } else {
-            console.log(answers); // TODO: Test, NO OLVIDAR BORRARLO!!!
-            let timerInterval;
+            console.log(answers);
             Swal.fire({
                 title: "Gracias por tu tiempo",
-                html: "Tu opinión será tomada en cuenta para mejorar.",
+                html: `Tus respuestas: ${answerMapped}, han sido enviadas con exito. <br> <strong>¡Volviendo al inicio!</strong>`, //PUSE ESTO SOLO PARA VER QUE SE ENVIAN LAS RESPUESTAS, PERO QUITALO SI ES NECESARIO PAL VIDEO O ALGO, Y PONLE OTRO MENSAJE SI QUIERES
                 icon: "success",
+                showConfirmButton: false,
                 iconColor: "#25574e",
                 background: "#dedcbb",
                 timer: 7000,
-                didOpen: () => {
-                    Swal.showLoading();
-                    const popup = Swal.getPopup();
-                    const timer = popup ? popup.querySelector("b") : null;
-                    if (timer) {
-                        timerInterval = setInterval(() => {
-                            if (timer) {
-                                timer.textContent = `${Swal.getTimerLeft()}`;
-                            }
-                        }, 100);
-                    }
-                },
-                willClose: () => {
-                    clearInterval(timerInterval);
-                },
             }).then(() => {
                 window.location.href = "/";
             });
@@ -108,52 +95,62 @@ const Questions = () => {
     };
 
     const handleAnswerSelection = (answer) => {
-        setAnswers({...answers, [question.id]: answer});
+        setAnswers({ ...answers, [question.id]: answer });
         const nextIndex = currentQuestionIndex + 1;
         if (nextIndex < data.questions.length) {
-            setCurrentQuestionIndex(nextIndex); 
+            setCurrentQuestionIndex(nextIndex);
         } else {
-            nextQuestion()
+            nextQuestion();
         }
     };
 
     return (
-        <div className="h-screen flex flex-col gap-60">
-            <section className="flex flex-col items-center gap-28 p-6">
-                <p className="text-4xl text-black font-black text-center mt-10 uppercase">
-                    Tu opinión nos importa
-                </p>
-                <article>
-                    <h1 className="text-6xl font-black text-black text-center">
-                        {question.question}
-                    </h1>
-                    <form action="" className="flex justify-around mt-28">
-                        {question.answers.map((answer, index) => (
-                            <div key={index}>
-                                <label className="cursor-pointer text-center" htmlFor={`answer-${question.id}-${index}`}>
-                                    <img
-                                        src={data.answerImages[answer]}
-                                        alt={answer}
-                                        className="w-36 h-36 mix-blend-multiply"
-                                    />
-                                    <input
-                                        className='hidden'
-                                        type="radio"
-                                        name={`question-${question.id}`} // Nombre único para cada grupo de opciones
-                                        id={`answer-${question.id}-${index}`}
-                                        value={answer}
-                                        checked={answers[question.id] === answer} // Marca la opción seleccionada
-                                        onChange={() => handleAnswerSelection(answer)} // Invoca la función al seleccionar una respuesta
-                                    />
-                                    <p className="text-2xl font-bold">{answer}</p>
-                                </label>
-                            </div>
-                        ))}
-                    </form>
-                </article>
-            </section>
+        <div className="h-screen flex flex-col gap-40">
+            <p className="text-4xl text-black font-black text-center mt-8 uppercase">
+                Tu opinión nos importa
+            </p>
+            <AnimatePresence mode='wait'>
+                <motion.section
+                    key={currentQuestionIndex}
+                    className="flex flex-col items-center gap-10 p-6"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                >
 
-            <footer className="flex flex-col items-center gap-24">
+                    <article>
+                        <h1 className="text-6xl font-black text-black text-center">
+                            {question.question}
+                        </h1>
+                        <form action="" className="flex justify-around mt-28">
+                            {question.answers.map((answer, index) => (
+                                <div key={index}>
+                                    <label className="cursor-pointer text-center" htmlFor={`answer-${question.id}-${index}`}>
+                                        <img
+                                            src={data.answerImages[answer]}
+                                            alt={answer}
+                                            className="w-36 h-36 mix-blend-multiply"
+                                        />
+                                        <input
+                                            className='hidden'
+                                            type="radio"
+                                            name={`question-${question.id}`}
+                                            id={`answer-${question.id}-${index}`}
+                                            value={answer}
+                                            checked={answers[question.id] === answer} 
+                                            onChange={() => handleAnswerSelection(answer)} 
+                                        />
+                                        <p className="text-2xl font-bold">{answer}</p>
+                                    </label>
+                                </div>
+                            ))}
+                        </form>
+                    </article>
+                </motion.section>
+            </AnimatePresence>
+
+            <footer className="flex flex-col items-center gap-72">
                 <span>
                     <p className="text-5xl font-black">
                         {currentQuestionIndex + 1} de {data.questions.length}
