@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 
 const Questions = () => {
-
-    //EStas preguntas y respuestas son porque alguien aun no sube la API con las preguntas...(Le puse el data por costumbre xD)
     const data = {
         questions: [
             {
@@ -52,8 +50,6 @@ const Questions = () => {
                 ]
             }
         ],
-
-        //Puse aqui todas las imagenes para no amontonarlas todas abajo y mejor se recorran aqui
         answerImages: {
             Mala: 'public/enojado.gif',
             Regular: 'public/neutral.gif',
@@ -72,6 +68,8 @@ const Questions = () => {
     };
 
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [answers, setAnswers] = useState({});
+
     const question = data.questions[currentQuestionIndex];
 
     const nextQuestion = () => {
@@ -79,14 +77,15 @@ const Questions = () => {
         if (nextIndex < data.questions.length) {
             setCurrentQuestionIndex(nextIndex);
         } else {
-            let timerInterval
+            console.log(answers); // TODO: Test, NO OLVIDAR BORRARLO!!!
+            let timerInterval;
             Swal.fire({
                 title: "Gracias por tu tiempo",
                 html: "Tu opinión será tomada en cuenta para mejorar.",
                 icon: "success",
                 iconColor: "#25574e",
                 background: "#dedcbb",
-                timer: 3000,
+                timer: 8000,
                 didOpen: () => {
                     Swal.showLoading();
                     const popup = Swal.getPopup();
@@ -108,6 +107,16 @@ const Questions = () => {
         }
     };
 
+    const handleAnswerSelection = (answer) => {
+        setAnswers({...answers, [question.id]: answer});
+        const nextIndex = currentQuestionIndex + 1;
+        if (nextIndex < data.questions.length) {
+            setCurrentQuestionIndex(nextIndex); 
+        } else {
+            nextQuestion()
+        }
+    };
+
     return (
         <div className="h-screen flex flex-col gap-60">
             <section className="flex flex-col items-center gap-28 p-6">
@@ -121,18 +130,20 @@ const Questions = () => {
                     <form action="" className="flex justify-around mt-28">
                         {question.answers.map((answer, index) => (
                             <div key={index}>
-                                <label className="cursor-pointer text-center" htmlFor={`answer-${index}`}>
+                                <label className="cursor-pointer text-center" htmlFor={`answer-${question.id}-${index}`}>
                                     <img
                                         src={data.answerImages[answer]}
                                         alt={answer}
                                         className="w-36 h-36 mix-blend-multiply"
                                     />
                                     <input
-                                        className="invisible"
+                                        
                                         type="radio"
-                                        name="limpieza"
-                                        id={`answer-${index}`}
+                                        name={`question-${question.id}`} // Nombre único para cada grupo de opciones
+                                        id={`answer-${question.id}-${index}`}
                                         value={answer}
+                                        checked={answers[question.id] === answer} // Marca la opción seleccionada
+                                        onChange={() => handleAnswerSelection(answer)} // Invoca la función al seleccionar una respuesta
                                     />
                                     <p className="text-2xl font-bold">{answer}</p>
                                 </label>
