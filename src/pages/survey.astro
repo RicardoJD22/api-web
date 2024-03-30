@@ -1,0 +1,10 @@
+---
+import SectionLayout from "../layouts/SectionLayout.astro";
+import Questions from "../components/Questions";
+
+---
+<SectionLayout title="Encuesta">
+    <div class="h-screen flex flex-col gap-20 items-center">
+        <Questions client:only/>
+    </div>
+</SectionLayout>
