@@ -4,45 +4,130 @@ import SectionLayout from "../layouts/SectionLayout.astro";
 
 <SectionLayout title="Reportes">
     <h1 class="text-4xl font-black text-center my-6">GENERA TU REPORTE</h1>
-    <section
-        class="grid max-w-[1980px] grid-cols-1 auto-rows-[23rem] mx-auto my-auto gap-5 p-6"
-    >
-        <a href="/areas" class="relative rounded-3xl z-20 flex items-end">
-            <div
-                class="absolute rounded-3xl z-10 bottom-0 top-0 h-full w-full
-  mix-blend-multiply bg-gradient-to-t from-[#10312B]"
-            >
-            </div>
-            <img src="public/lamps.jpg"
-                class="absolute inset-0 bg-cover h-full w-full -z-10 rounded-3xl bg-blend-luminosity"
-            />
-            <h1 class="text-6xl font-black text-white z-20 p-5">PROBLEMAS DE ALUMBRADO</h1>
-        </a>
-        <a  href="/areas" class="relative rounded-3xl flex items-end">
-            <div
-                class="absolute z-10 rounded-3xl bottom-0 top-0 h-full w-full
-  mix-blend-multiply bg-gradient-to-t from-black"
-            >
-            </div>
-            <img
-                src="public/delincuence.jpg"
-                class="absolute inset-0 h-full w-full -z-10 rounded-3xl bg-blend-luminosity"
-            />
-            <h1 class="text-6xl font-black text-white z-20 p-5">
-                PROBLEMAS DE VANDALISMO
-            </h1>
-        </a>
-        <a href="/areas" class="relative rounded-3xl flex items-end">
-            <div
-                class="absolute z-10 rounded-3xl bottom-0 top-0 h-full w-full
-  mix-blend-multiply bg-gradient-to-t from-black"
-            >
-            </div>
-            <img
-                src="public/statue.jpg"
-                class="absolute inset-0 bg-cover h-full w-full -z-10 rounded-3xl bg-blend-luminosity"
-            />
-            <h1 class="text-6xl font-black text-white z-20 p-5">PROBLEMAS DE IMAGEN E IDENTIDAD</h1>
-        </a>
-    </section>
+    <h1 class="text-2xl font-black text-center">Selecciona el tipo de reporte que deseas hacer</h1>
+    <h1 class="text-2xl font-black text-center">Haz click en generar reporte para seleccionar la sección</h1>
+   <div class="container-slider">
+
+    <div class="container">
+        <input type="radio" name="slider" id="item-1" checked>
+        <input type="radio" name="slider" id="item-2">
+        <input type="radio" name="slider" id="item-3">
+
+        <div class="cards">
+            <label class="card" for="item-1" id="selector-1">
+              
+                <img src="alumbrado.jpg">
+                <p class="text-2xl text-center mb-10">Problemas de alumbrado</p>
+                <a href="/areas">
+                <p class="text-3xl text-center text-cyan-700">Generar reporte</p>
+            </a>
+            </label>
+
+            <label class="card" for="item-2" id="selector-2">
+                <img src="perla.jpg">
+                <p class="text-2xl text-center mb-10">Entidad e imagen </p>
+                <a href="/areas">
+                    <p class="text-3xl text-center text-cyan-700">Generar reporte</p>
+                </a>
+            </label>
+            
+            <label class="card" for="item-3" id="selector-3">
+                <img src="bandalismo.jpg">
+                <p class="text-2xl text-center mb-10">Bandalismo</p>
+                <a href="/areas">
+                    <p class="text-3xl text-center text-cyan-700">Generar reporte</p>
+                </a>
+            </label>
+
+        </div>
+
+    </div>
+
+   </div>
+
+   <style>
+    *{
+    margin: 0;
+    margin-top: 50px;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background: #f60642;
+}
+
+.container-slider{
+    max-width: 1000px;
+    height: 500px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 10px;
+}
+
+input[type=radio]{
+    display: none;
+}
+
+.container{
+    width: 100%;
+    max-width: 800px;
+    height: 100%;
+    max-height: 600px;
+    transform-style: preserve-3d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cards{
+    position: relative;
+    width: 120%;
+    height: 110%;
+}
+
+.card{
+    position: absolute;
+    width: 50%;
+    height: 80%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+img{
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    -o-object-fit: cover;
+    object-fit: cover;
+}
+
+#item-2:checked ~ .cards #selector-1,
+#item-1:checked ~ .cards #selector-3,
+#item-3:checked ~ .cards #selector-2{
+    transform: translateX(-85%) scale(0.8);
+    opacity: 0.6;
+    z-index: 0;
+}
+
+#item-3:checked ~ .cards #selector-1,
+#item-1:checked ~ .cards #selector-2,
+#item-2:checked ~ .cards #selector-3{
+    transform: translateX(85%) scale(0.8);
+    opacity: 0.6;
+    z-index: 0;
+}
+
+#item-1:checked ~ .cards #selector-1,
+#item-2:checked ~ .cards #selector-2,
+#item-3:checked ~ .cards #selector-3{
+    transform: translateX(0) scale(1);
+    z-index: 1;
+}
+   </style>
 </SectionLayout>
