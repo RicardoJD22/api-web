@@ -4,7 +4,68 @@ import SectionLayout from "../layouts/SectionLayout.astro";
 
 <SectionLayout title="Reportes">
     <h1 class="text-4xl font-black text-center my-6">GENERA TU REPORTE</h1>
-    <h1 class="text-2xl font-black text-center">Selecciona el tipo de reporte que deseas hacer</h1>
-    <h2 class="text-center mt-24">En mantenimiento🔨🛠
-    </h2>
+    <section
+        transition:name="reports"
+        class="grid max-w-[1980px] grid-cols-1 auto-rows-[23rem] mx-auto my-auto gap-5 p-6"
+    >
+        
+    <a href="/areas" class="relative rounded-3xl z-20 flex items-end overflow-hidden" id="card1">
+        <div class="absolute rounded-3xl z-10 bottom-0 top-0 h-full w-full mix-blend-multiply bg-gradient-to-t from-[#10312B]"></div>
+        <div id="carouselImage1" class="absolute inset-0 bg-cover h-full w-full -z-10 rounded-3xl bg-blend-luminosity object-cover object-center transition-background-image duration-500" style="background-image: url(alumbrado.jpg);" ></div>
+        <h1 class="text-6xl font-black text-white z-20 p-5">PROBLEMAS DE ALUMBRADO</h1>
+    </a>
+        
+    <a href="/areas" class="relative rounded-3xl flex items-end" id="card3">
+        <div class="absolute z-10 rounded-3xl bottom-0 top-0 h-full w-full mix-blend-multiply bg-gradient-to-t from-black"></div>
+        <div id="carouselImage2" class="absolute left-0 top-0 bottom-0 bg-cover bg-no-repeat object-cover h-full w-full -z-10 rounded-3xl bg-blend-luminosity transition-background-image duration-500" style="background-image: url(bandalismo2.jpg);"></div>
+        <h1 class="text-6xl font-black text-white z-20 p-5">PROBLEMAS DE IMAGEN E IDENTIDAD</h1>
+    </a>
+      
+        <a href="/areas" class="relative rounded-3xl flex items-end" id="card3">
+            <div class="absolute z-10 rounded-3xl bottom-0 top-0 h-full w-full mix-blend-multiply bg-gradient-to-t from-black"></div>
+            <div id="carouselImage3" class="absolute left-0 top-0 bottom-0 bg-cover bg-no-repeat object-cover h-full w-full -z-10 rounded-3xl bg-blend-luminosity transition-background-image duration-500" style="background-image: url(entidad5.2.jpg);"></div>
+            <h1 class="text-6xl font-black text-white z-20 p-5">PROBLEMAS DE IMAGEN E IDENTIDAD</h1>
+        </a>
+    </section>
+
+
+
+<!--Primera Card -->
+<script>
+    const images1 = ["public/alumbrado.jpg", "public/alumbrado2.jpg", "public/alumbrado3.jpg"];
+    let currentIndex1 = 0;
+    const carouselImage1 = document.getElementById('carouselImage1');
+
+    function changeImage1() {
+        carouselImage1.style.backgroundImage = `url('${images1[currentIndex1]}')`;
+        currentIndex1 = (currentIndex1 + 1) % images1.length;
+    }
+
+    setInterval(changeImage1, 4000);
+
+    const images2 = ["public/delincuence.jpg", "public/bandalismo2.jpg", "public/delincuence.jpg"];
+    let currentIndex2 = 0;
+    const carouselImage2 = document.getElementById('carouselImage2');
+
+    function changeImage2() {
+        carouselImage2.style.backgroundImage = `url('${images2[currentIndex2]}')`;
+        currentIndex2 = (currentIndex2 + 1) % images2.length;
+    }
+
+    setInterval(changeImage2, 4000);
+
+    const images3 = ["public/entidad3.jpg", "public/entidad2.jpg", "public/entidad4.jpg", "public/entidad3.jpg"];
+    let currentIndex3 = 0;
+    const carouselImage3 = document.getElementById('carouselImage3');
+
+    function changeImage3() {
+        carouselImage3.style.backgroundImage = `url('${images3[currentIndex3]}')`;
+        currentIndex3 = (currentIndex3 + 1) % images3.length;
+    }
+
+    setInterval(changeImage3, 4000);
+</script>
+
+
+
 </SectionLayout>
