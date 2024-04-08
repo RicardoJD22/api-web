@@ -1,7 +1,4 @@
 ñ---
-
-import barba from '@barba/core';
-
 interface Props {
   title?: string;
   description?: string;
@@ -16,7 +13,7 @@ const { title, description, href, gradient} = Astro.props;
 
 <a
   href={href}
-  class={`${Astro.props.class} relative rounded-3xl backdrop-blur-md border-2 shadow-inner shadow-black/70 overflow-hidden group`}
+  class={`${Astro.props.class} relative rounded-[2rem] backdrop-blur-md border-2 shadow-inner shadow-black/70 overflow-hidden group`}
 >
 
 <div class=`
@@ -26,11 +23,37 @@ const { title, description, href, gradient} = Astro.props;
 
 <slot name="image" />
 
-<div class="relative select-none flex flex-col justify-end gap-1 p-[0.95rem] text-lg z-20 h-full">
-  <h2  class="text-5xl font-black text-white font-sans uppercase text-balance">{title}</h2>
-  {description && <h3 class="text-xl font-medium max-w-[33rem] text-slate-100 mt-1 mb-4">{description}</h3>}
+<div class="relative select-none text-center flex flex-col items-center justify-center p-[0.95rem] z-20 h-full">
+  <h2 class="text-[6.6rem] font-black text-white uppercase">{title}</h2>
+  {description && <h3 class="text-5xl font-light text-slate-100 mb-4">{description}</h3>}
   
   <slot name="content" />
 </div>
 
 </a>
+
+<style>
+  h2 {
+    font-family: "Komtits";
+  }
+
+  h3 {
+    font-family: "backed";
+  }
+</style>
+
+<style is:global>
+  @font-face {
+    font-family: "Komtits";
+    src: url("/fonts/KOMTITBR.ttf") format("truetype");
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "backed";
+    src: url("/fonts/KOMTITK_.ttf") format("truetype");
+    font-style: italic;
+    font-display: swap;
+  }
+</style>
