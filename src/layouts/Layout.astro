@@ -15,16 +15,60 @@ const { title } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<script>
+			function actualizarHora() {
+                const ahora = new Date();
+				const horas = ahora.getHours() % 12 || 12;  // Convertir a formato de 12 horas y manejar la medianoche
+				const minutos = ahora.getMinutes().toString().padStart(2, '0');
+				const periodo = ahora.getHours() < 12 ? 'A.M.' : 'P.M.';
+
+               const elementoTiempo = document.querySelector('.text-8xl');  // Seleccionar el elemento que muestra la hora
+                elementoTiempo.textContent = `${horas}:${minutos} ${periodo}`;
+
+  // Actualizar la fecha si es necesario (opcional)
+  // const elementoFecha = document.querySelector('.text-4xl');
+  // elementoFecha.textContent = ahora.toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+  // Llamar a actualizarHora cada segundo 
+  setTimeout(actualizarHora, 1000);
+}
+
+  actualizarHora();
+
+		</script>
+		<script>
+
+function actualizarFecha() {
+  const hoy = new Date();
+  const opcionesFecha = { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  };
+
+    const elementoFecha = document.querySelector('.text-4xl'); // Seleccionar el elemento que muestra la fecha
+    elementoFecha.textContent = hoy.toLocaleDateString('es-MX', opcionesFecha);
+
+           // Llamar a actualizarFecha cada segundo para una actualización continua (opcional)
+           // setTimeout(actualizarFecha, 1000);
+}
+
+    actualizarFecha();
+
+		</script>
+
+
 	</head>
-	<body class="bg-[#FFFDD2] h-screen">
+	  <body class="bg-[#FFFDD2] h-screen">
 
 		<header class="flex justify-around items-center ml-20 mb-4 pt-14">
-			<img class="m-auto w-[400px]" src="/api_logo.png" alt="" />
+			<img class="m-auto w-[430px]" src="/bcs_logo.png" alt="" />
 			<div class="text-center mt-5">
-				<p class="text-8xl font-black">03:08 P.M.</p>
-				<p class="text-4xl">Miercoles 24 de Enero 2024</p>
+				<p class="text-8xl font-black">11:50 A.M.</p>
+				<p class="text-4xl">Jueves 18 de Julio 2024</p>
 			</div>
-			<img class="m-auto mt-8 w-[490px]" src="/bcs_logo.png" alt="" />
+			<img class="m-auto mt-08 w-[380px]" src="/api_logo.png" alt="" />
 		</header>
 
 		<slot />
