@@ -1,4 +1,4 @@
-ñ---
+---
 interface Props {
   title?: string;
   description?: string;
@@ -7,29 +7,35 @@ interface Props {
   gradient: string;
 }
 
-const { title, description, href, gradient} = Astro.props;
+const { title, description, href, gradient } = Astro.props;
 ---
-
 
 <a
   href={href}
   class={`${Astro.props.class} relative rounded-[2rem] backdrop-blur-md border-2 shadow-inner shadow-black/70 overflow-hidden group`}
 >
-
-<div class=`
+  <div
+    class=`
   absolute z-10 bottom-0 top-0 h-full w-full
   mix-blend-multiply bg-gradient-to-t from-[${gradient}] via-[${gradient}]
-`></div>
+`
+  >
+  </div>
 
-<slot name="image" />
+  <slot name="image" />
 
-<div class="relative select-none text-center flex flex-col items-center justify-center p-[0.95rem] z-20 h-full">
-  <h2 class="text-[6.6rem] font-black text-white uppercase">{title}</h2>
-  {description && <h3 class="text-5xl font-light text-slate-100 mb-4">{description}</h3>}
-  
-  <slot name="content" />
-</div>
+  <div
+    class="relative select-none text-center flex flex-col items-center justify-center p-[0.95rem] z-20 h-full"
+  >
+    <h2 class="text-[6.6rem] font-black text-white uppercase">{title}</h2>
+    {
+      description && (
+        <h3 class="text-5xl font-light text-slate-100 mb-4">{description}</h3>
+      )
+    }
 
+    <slot name="content" />
+  </div>
 </a>
 
 <style>
