@@ -1,14 +1,10 @@
 ---
 import SectionLayout from "../layouts/SectionLayout.astro";
+import MapComponent from '../components/MapComponent.jsx';
 ---
 
 <SectionLayout title="Mapa de la ciudad">
     <h1 class="text-center m-6 text-4xl font-black">MAPA DE LA CIUDAD</h1>
-    <iframe
-        class="mx-auto border-6 border-gray-300"
-        src="public/mapa_city.png"
-        width="900px"
-        height="1280px"
-        allowfullscreen=True;
-    ></iframe>
+    <MapComponent/>
+    
 </SectionLayout>
