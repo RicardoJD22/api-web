@@ -87,7 +87,7 @@ const Questions = () => {
                 showConfirmButton: false,
                 iconColor: "#25574e",
                 background: "#dedcbb",
-                timer: 7000,
+                timer: 5000,
             }).then(() => {
                 window.location.href = "/";
             });
