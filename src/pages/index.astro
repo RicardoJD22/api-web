@@ -1,8 +1,7 @@
 ---
 import BentoArea from '../components/BentoArea.astro';
-
+import FechaHora from '../components/FechaHora.astro';
 import Layout from '../layouts/Layout.astro';
-
 ---
 
 <Layout title="Malecon La Paz BCS.">
@@ -11,6 +10,7 @@ import Layout from '../layouts/Layout.astro';
 			<img class="mx-auto" src="/logos_header.png" alt="">
 		</header>
 		<BentoArea/>
-	
+		<FechaHora />
+	<slot>
 	</main>
 </Layout>

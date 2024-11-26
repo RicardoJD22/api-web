@@ -1,0 +1,37 @@
+<script>
+  function actualizarHora() {
+    const ahora = new Date();
+    const horas = ahora.getHours() % 12 || 12; // Formato de 12 horas
+    const minutos = ahora.getMinutes().toString().padStart(2, "0");
+    const periodo = ahora.getHours() < 12 ? "A.M." : "P.M.";
+
+    const elementoTiempo = document.querySelector(".text-8xl");
+    if (elementoTiempo) elementoTiempo.textContent = `${horas}:${minutos} ${periodo}`;
+
+    setTimeout(actualizarHora, 1000);
+  }
+
+  function actualizarFecha() {
+    const hoy = new Date();
+    const opcionesFecha = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+
+    const elementoFecha = document.querySelector(".text-4xl");
+    if (elementoFecha)
+      elementoFecha.textContent = hoy.toLocaleDateString("es-MX", opcionesFecha);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    actualizarHora();
+    actualizarFecha();
+  });
+</script>
+
+<div class="text-center mt-5">
+  <p class="text-8xl font-black">--:-- --</p>
+  <p class="text-4xl">-- -- --</p>
+</div>
