@@ -9,7 +9,6 @@ import BentoCard from "./BentoCard.astro";
     href="survey"
     class="col-span-3"
     title="te escuchamos"
-
     description="Tu opinión es muy importante para nosotros."
     gradient="to-t from-[#10312B] to-transparent"
   >
@@ -61,49 +60,68 @@ import BentoCard from "./BentoCard.astro";
     href="map"
     class="col-span-3"
     title="GUIA del malecon"
-    description="Explora el Malecon de La paz con nuestro mapa interacitvo."
+    description="Explora el Malecon de La paz con nuestro mapa interactivo."
     gradient="to-t from-[#10312B] to-transparent"
   >
     <figure
+      id="carouselMapImage"
       slot="image"
       class="absolute left-0 top-0 bottom-0 w-full
     h-full bg-center bg-cover bg-no-repeat
     bg-blend-luminosity -z-10"
-      style="background-image: url('malecon2.jpg')";
+      style="transition: background-image 0.5s ease-in-out; background-image: url('malecon2.jpeg')"
     >
     </figure>
   </BentoCard>
 
-  <BentoCard
-  href="galery"
-  class="bg-gray-200 rounded-2xl col-span-6 overflow-hidden text-2xl-bold min-h-[55rem]"
-  title="HAS TU GALERIA "
-  description="Disfruta y comparte las maravillas fotográficas de tu Malecón."
-  gradient="to-t from-[#404040] to-transparent"
->
+  <script>
+    const mapImages = [
+      "map-mal1.jpeg",
+      "map-mal2.jpeg",
+      "map-mal3.jpeg",
+      "map-mal4.jpeg",
+    ];
+    let mapIndex = 0;
+    const carouselMapImage = document.getElementById("carouselMapImage");
 
-  <figure
-    id="carouselImage"
-    slot="image"
-    class="absolute left-0 top-0 bottom-0 w-full
+    function changeMapImage() {
+      if (carouselMapImage) {
+        carouselMapImage.style.backgroundImage = `url('${mapImages[mapIndex]}')`;
+        mapIndex = (mapIndex + 1) % mapImages.length;
+      }
+    }
+
+    setInterval(changeMapImage, 2000);
+  </script>
+
+  <BentoCard
+    href="galery"
+    class="bg-gray-200 rounded-2xl col-span-6 overflow-hidden text-2xl-bold min-h-[55rem]"
+    title="HAS TU GALERIA "
+    description="Disfruta y comparte las maravillas fotográficas de tu Malecón."
+    gradient="to-t from-[#404040] to-transparent"
+  >
+    <figure
+      id="carouselImage"
+      slot="image"
+      class="absolute left-0 top-0 bottom-0 w-full
       h-full bg-center bg-cover bg-no-repeat
       bg-blend-luminosity -z-10"
-    style="transition: background-image 0.5s ease-in-out; background-image: url('turista.jpg')"
-  >
-  </figure>
-</BentoCard>
+      style="transition: background-image 0.5s ease-in-out; background-image: url('turista.jpg')"
+    >
+    </figure>
+  </BentoCard>
 
-<script>
-  const images =['whale.jpg','sea.jpg','sea2.jpg', 'turista.jpg'];
-  let currentIndex = 0;
-  const carouselImage = document.getElementById('carouselImage');
-  
-  function changeImage() {
-    carouselImage.style.backgroundImage = `url('${images[currentIndex]}')`;
-    currentIndex = (currentIndex + 1) % images.length; 
-  }
+  <script>
+    const images = ["whale.jpg", "sea.jpg", "sea2.jpg", "turista.jpg"];
+    let currentIndex = 0;
+    const carouselImage = document.getElementById("carouselImage");
 
-  setInterval(changeImage, 4000);
+    function changeImage() {
+      carouselImage.style.backgroundImage = `url('${images[currentIndex]}')`;
+      currentIndex = (currentIndex + 1) % images.length;
+    }
 
-</script>
+    setInterval(changeImage, 4000);
+  </script>
 </main>
