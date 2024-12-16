@@ -136,11 +136,16 @@ const Questions = () => {
                         <form action="" className="flex justify-around mt-28">
                             {question.answers.map((answer, index) => (
                                 <div key={index}>
-                                    <label className="cursor-pointer text-center" htmlFor={`answer-${question.id}-${index}`} aria-label={`Selecciona ${answer} para la pregunta: ${question.question}`}>
+                                    <label
+                                     htmlFor={`answer-${question.id}-${index}`}
+                                     className="cursor-pointer text-center"
+                                     onClick={() => handleAnswerSelection(answer)} // Asegura que se actualice al hacer clic
+                                     aria-label={`Selecciona ${answer} para la pregunta: ${question.question}`}
+                                 >
                                         <img
                                             src={data.answerImages[answer]}
                                             alt={answer}
-                                            className="w-36 h-36 mix-blend-multiply"
+                                            className="w-40 h-40 mix-blend-multiply"
                                         />
                                         <input
                                             className='hidden'
