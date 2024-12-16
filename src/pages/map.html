@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapa interactivo - OpenStreetMap con Leaflet</title>
+    <!-- Agregar el CSS de Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+      /* Estilo básico para el mapa */
+      #map {
+        height: 100vh; /* El mapa ocupará toda la pantalla */
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Contenedor del mapa -->
+    <div id="map"></div>
+
+    <!-- Agregar el script de Leaflet -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+      // Crear el mapa y centrarlo en las coordenadas de La Paz
+      var map = L.map('map').setView([24.1425, -110.3105], 14); // Coordenadas de La Paz, B.C.S., México
+
+      // Agregar capa de OpenStreetMap
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+
+      // Agregar un marcador en el malecón de La Paz
+      L.marker([24.1425, -110.3105]).addTo(map)
+        .bindPopup("<b>Malecón de La Paz</b>")
+        .openPopup();
+    </script>
+  </body>
+</html>

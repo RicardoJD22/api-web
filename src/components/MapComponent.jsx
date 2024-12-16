@@ -1,23 +1,22 @@
-// src/components/MapComponent.jsx
-import React, { useEffect } from 'react';
-
+import { useEffect } from 'react';
 
 const MapComponent = () => {
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap`;
-        script.async = true;
-        script.defer = true;
-        window.initMap = function () {
-            new window.google.maps.Map(document.getElementById('map'), {
-                center: { lat: -34.397, lng: 150.644 },
-                zoom: 8,
-            });
-        };
-        document.head.appendChild(script);
-    }, []);
+  useEffect(() => {
+    // Asegúrate de que Leaflet está cargado
+    const L = window.L;
 
-    return <div id="map" style={{ width: '100%', height: '100vh' }}></div>;
+    var map = L.map('map').setView([24.1425, -110.3105], 14);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    L.marker([24.1425, -110.3105]).addTo(map)
+      .bindPopup("<b>Malecón de La Paz</b>")
+      .openPopup();
+  }, []);
+
+  return <div id="map" style={{ height: '100vh', width: '100%' }} />;
 };
 
 export default MapComponent;
