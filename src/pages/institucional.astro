@@ -1,0 +1,31 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ImageCarousel from "../components/ImageCarousel.jsx";
+---
+
+<Layout title="Institucional">
+  <section class="flex flex-col items-center justify-center min-h-[60vh] w-full gap-8 p-8">
+    <div class="w-full max-w-md aspect-[3/2] flex items-center justify-center bg-gray-900/90 rounded-2xl shadow-lg overflow-hidden p-4 border-2 border-yellow-400">
+      <div class="w-full h-full flex items-center justify-center">
+        <div class="w-[90%] h-[90%] flex items-center justify-center">
+          <ImageCarousel
+            client:load
+            images={["/bcs_logo.png", "/logo-lapaz.png", "/api_logo.png"]}
+            interval={3000}
+            alt="Logos institucionales"
+            direction="left"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+.ImageCarousel img, .ImageCarousel div[role="img"] {
+  object-fit: contain !important;
+  background-size: contain !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+</style>

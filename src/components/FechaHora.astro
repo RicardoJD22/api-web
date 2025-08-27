@@ -1,37 +1,32 @@
 <script>
   function actualizarHora() {
     const ahora = new Date();
-    const horas = ahora.getHours() % 12 || 12; // Formato de 12 horas
+    const horas = ahora.getHours().toString().padStart(2, "0");
     const minutos = ahora.getMinutes().toString().padStart(2, "0");
-    const periodo = ahora.getHours() < 12 ? "A.M." : "P.M.";
-
-    const elementoTiempo = document.querySelector(".text-8xl");
-    if (elementoTiempo) elementoTiempo.textContent = `${horas}:${minutos} ${periodo}`;
-
+    const segundos = ahora.getSeconds().toString().padStart(2, "0");
+    const elementoTiempo = document.querySelector(".hora-minimal");
+    if (elementoTiempo) elementoTiempo.textContent = `${horas}:${minutos}:${segundos}`;
     setTimeout(actualizarHora, 1000);
   }
-
   function actualizarFecha() {
     const hoy = new Date();
     const opcionesFecha = {
-      weekday: "long",
+      weekday: "short",
       year: "numeric",
-      month: "long",
+      month: "short",
       day: "numeric",
     };
-
-    const elementoFecha = document.querySelector(".text-4xl");
+    const elementoFecha = document.querySelector(".fecha-minimal");
     if (elementoFecha)
       elementoFecha.textContent = hoy.toLocaleDateString("es-MX", opcionesFecha);
   }
-
   document.addEventListener("DOMContentLoaded", () => {
     actualizarHora();
     actualizarFecha();
   });
 </script>
 
-<div class="text-center mt-5">
-  <p class="text-8xl font-black">--:-- --</p>
-  <p class="text-4xl">-- -- --</p>
+<div class="flex flex-col items-center justify-center select-none">
+  <span class="hora-minimal font-mono text-3xl md:text-4xl font-bold text-gray-900 tracking-widest mb-0.5 transition-all duration-300 shadow-sm"></span>
+  <span class="fecha-minimal text-base md:text-lg font-light text-gray-600 tracking-wide"></span>
 </div>

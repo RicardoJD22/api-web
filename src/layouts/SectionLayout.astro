@@ -16,15 +16,19 @@ const { title } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body class="bg-[rgb(226,237,72)]">
+		<body class="bg-gray-400">
 
 		
 		
 
-		<header class="flex justify-around items-center ml-20 mb-4 pt-14">
-			<img class="m-auto w-[480px]" src="/bcs_logo.png" alt="" />
-			<FechaHora />
-			<img class="m-auto mt-08 w-[325px]" src="/api_logo.png" alt="" />
+		<header class="relative flex items-center mb-4 pt-14 w-full">
+			<img class="absolute left-4 md:left-8 w-[140px] md:w-[180px] lg:w-[220px]" src="/bcs_logo.png" alt="Logo BCS" />
+			<div class="flex-1 flex justify-center">
+				<div class="scale-110 md:scale-125">
+					<FechaHora />
+				</div>
+			</div>
+			<img class="w-[120px] md:w-[160px] lg:w-[200px] mr-4 md:mr-8" src="/api_logo.png" alt="Logo API" />
 		</header>
 
 
