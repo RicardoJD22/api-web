@@ -66,17 +66,63 @@ import CoverflowGallery from "./CoverflowGallery.jsx";
 
   <BentoCard
     href="historical"
-    class="bento-glow col-span-1 row-span-1 flex flex-col justify-end relative shadow-2xl rounded-3xl overflow-hidden hover:scale-105 transition-transform duration-300 min-h-[20rem]"
+    class="bento-glow col-span-1 row-span-1 flex flex-col justify-end relative shadow-2xl rounded-3xl overflow-hidden hover:scale-[1.07] transition-transform duration-300 min-h-[20rem] cursor-pointer group"
     title=""
     description=""
-    gradient="to-t from-[#691C32] to-transparent"
+  gradient="to-t from-[#1fa39b] to-transparent"
   >
     <figure slot="image" aria-label="Historia del malecón" class="absolute left-0 top-0 bottom-0 w-full h-full bg-center bg-cover bg-no-repeat -z-10">
-      <img src="/Malecon nocturno.jpg" alt="Historia del malecón" class="w-full h-full object-cover" />
-      <div class="absolute inset-0 bg-black/50"></div>
+      <img src="/Malecon nocturno.jpg" alt="Historia del malecón" class="w-full h-full object-cover scale-105 group-hover:scale-110 transition-transform duration-700" />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-[#691C32]/80 to-transparent"></div>
     </figure>
-    <div slot="content" class="relative z-10 flex flex-col items-center justify-center h-full">
-      <h2 class="text-4xl font-extrabold text-white drop-shadow-lg text-center">ECOS DEL MAR</h2>
+    <div slot="content" class="relative z-10 flex flex-col items-center justify-center h-full py-4">
+  <img src="/statues/historia.png" alt="Icono historia" class="w-16 h-16 mb-7 drop-shadow-lg animate-fade-in" style="object-fit:contain; margin-top:-1.2rem;" />
+  <h2 class="text-3xl md:text-4xl font-extrabold text-white drop-shadow-lg text-center mb-4 tracking-wide animate-fade-in">Ecos del mar</h2>
+      <div class="w-full flex justify-center animate-fade-in mb-5">
+        <span class="slogan-bar wave-effect px-8 py-1 rounded-xl bg-gradient-to-r from-blue-700/80 via-blue-400/70 to-blue-700/80 text-white text-base font-semibold shadow-lg tracking-wide" style="backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px); position:relative; overflow:hidden; min-width:320px;">
+          Descubre los monumentos y relatos que dan vida al malecón de La Paz
+          <svg class="absolute left-0 bottom-0 w-full h-4 pointer-events-none" viewBox="0 0 100 10" preserveAspectRatio="none" style="z-index:2">
+            <path d="M0 7 Q 25 0 50 7 T 100 7 V 10 H 0 Z" fill="#38bdf8" fill-opacity="0.35">
+              <animate attributeName="d" dur="2.5s" repeatCount="indefinite"
+                values="M0 7 Q 25 0 50 7 T 100 7 V 10 H 0 Z;
+                        M0 7 Q 25 7 50 0 T 100 7 V 10 H 0 Z;
+                        M0 7 Q 25 0 50 7 T 100 7 V 10 H 0 Z" />
+            </path>
+          </svg>
+        </span>
+        <style>
+          .wave-effect {
+            box-shadow: 0 4px 24px 0 #38bdf855;
+          }
+        </style>
+      </div>
+      <style>
+        .slogan-bar {
+          animation: slogan-slide-in 1.1s cubic-bezier(.4,0,.2,1) both;
+        }
+        @keyframes slogan-slide-in {
+          from { opacity: 0; transform: translateY(-18px) scale(0.95); }
+          to { opacity: 1; transform: none; }
+        }
+      </style>
+  <span class="text-blue-200 text-sm font-semibold animate-pulse-glow mt-14">Toca para ver más</span>
+      <style>
+        @keyframes pulse-glow {
+          0% { opacity: 0.7; text-shadow: 0 2px 8px #2563eb88; }
+          50% { opacity: 1; text-shadow: 0 2px 16px #38bdf8cc; }
+          100% { opacity: 0.7; text-shadow: 0 2px 8px #2563eb88; }
+        }
+        .animate-pulse-glow {
+          animation: pulse-glow 1.8s infinite;
+        }
+        @keyframes fade-in {
+          from { opacity: 0; transform: translateY(16px); }
+          to { opacity: 1; transform: none; }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.8s cubic-bezier(.4,0,.2,1) both;
+        }
+      </style>
     </div>
   </BentoCard>
 
@@ -103,9 +149,27 @@ import CoverflowGallery from "./CoverflowGallery.jsx";
         interval={1800}
         alt="Galería slider"
       />
-      <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-white text-base font-semibold drop-shadow text-center z-30 bg-black/60 px-3 py-1 rounded-xl whitespace-nowrap">
-        Cada foto, una emoción.
-      </span>
+      <div
+        class="absolute bottom-1 left-1/2 -translate-x-1/2 z-30 w-[90%] max-w-[95vw] overflow-hidden rounded-xl"
+  style="background:rgba(30,41,59,0.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 2px 16px 0 rgba(0,0,0,0.18);"
+      >
+  <div class="marquee whitespace-nowrap py-2 px-4 text-white text-base font-semibold drop-shadow text-center">
+          <span>
+            Cada foto, una emoción &nbsp;•&nbsp; Cada foto, una emoción &nbsp;•&nbsp; Cada foto, una emoción &nbsp;•&nbsp;
+          </span>
+        </div>
+        <style>
+          .marquee {
+            display: block;
+            width: 100%;
+            animation: marquee-move 12s linear infinite;
+          }
+          @keyframes marquee-move {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+          }
+        </style>
+      </div>
     </div>
   </BentoCard>
 
@@ -154,6 +218,10 @@ import CoverflowGallery from "./CoverflowGallery.jsx";
         </a>
       </div>
       <span class="text-white text-center">Síguenos en nuestras redes sociales.</span>
+      <div class="flex flex-col items-center mt-2">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=http://192.168.1.71:4322/sube-tu-foto" alt="QR para subir foto" class="rounded-xl border-2 border-blue-400 shadow bg-white" width="80" height="80" loading="lazy" />
+        <span class="text-xs text-center text-white bg-blue-700 px-2 py-1 rounded-lg shadow mt-1">Escanea para subir tu foto</span>
+      </div>
     </div>
   </div>
 </main>

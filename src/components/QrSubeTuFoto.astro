@@ -1,0 +1,8 @@
+---
+// Componente QR para subir foto
+const url = "http://192.168.1.71:4322/sube-tu-foto";
+---
+<div class="flex flex-col items-center justify-center gap-2 my-2">
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data={url}" alt="QR para subir foto" class="rounded-xl border-2 border-blue-400 shadow-md bg-white" loading="lazy" width="160" height="160" />
+  <span class="text-xs text-center text-white bg-blue-700 px-2 py-1 rounded-lg shadow">Escanea para subir tu foto desde tu móvil</span>
+</div>

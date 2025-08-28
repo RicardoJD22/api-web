@@ -1,0 +1,148 @@
+---
+// src/pages/sube-tu-foto.astro
+---
+
+
+<head>
+  <meta charset="utf-8" />
+  <title>¡Comparte tu foto del malecón!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    .night {
+      background: linear-gradient(to bottom, #0a2342 0%, #19376d 100%);
+    }
+    .night main {
+      background: #162447;
+      border-color: #23395d;
+      color: #eaf6fb;
+    }
+    .night input, .night textarea {
+      background: #23395d;
+      border-color: #3a5ba0;
+      color: #eaf6fb;
+    }
+    .night input:focus, .night textarea:focus {
+      outline: 2px solid #4f8cff;
+      background: #1b2a49;
+    }
+    .night label, .night span, .night p, .night h1 {
+      color: #eaf6fb !important;
+    }
+    .night button {
+      background: #4f8cff;
+      color: #fff;
+      border: none;
+    }
+    .night button:hover {
+      background: #3761a8;
+    }
+    .toggle-btn {
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      z-index: 10;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 2rem;
+      color: #19376d;
+      transition: color 0.2s;
+    }
+    .night .toggle-btn {
+      color: #eaf6fb;
+    }
+  </style>
+</head>
+<body class="night bg-gradient-to-b from-blue-200 to-white min-h-screen flex flex-col items-center justify-center p-4 relative">
+  <button class="toggle-btn" id="toggleMode" aria-label="Cambiar modo noche/día">
+    <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" /></svg>
+    <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 hidden"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m0 13.5V21m8.25-8.25H21M3 12h2.25m12.02-6.02l1.59 1.59m-13.44 13.44l1.59-1.59m0-13.44l-1.59 1.59m13.44 13.44l-1.59-1.59" /></svg>
+  </button>
+  <main class="w-full max-w-md bg-yellow-50 rounded-3xl shadow-2xl p-8 mt-10 border-4 border-yellow-300 transition-colors duration-300">
+    <h1 class="text-3xl font-extrabold text-blue-700 mb-2 text-center drop-shadow">¡Comparte tu foto del malecón!</h1>
+    <p class="text-gray-700 mb-6 text-center text-lg">Sube tu mejor foto y forma parte de la galería ciudadana.</p>
+    <form id="uploadForm" class="flex flex-col gap-5" autocomplete="off">
+      <label class="flex flex-col items-center cursor-pointer">
+        <span class="mb-2 text-blue-600 font-semibold text-base">Selecciona una foto</span>
+        <input type="file" accept="image/*" class="hidden" id="fileInput" required />
+        <div id="preview" class="w-44 h-44 bg-gray-100 rounded-xl flex items-center justify-center border-2 border-dashed border-blue-400 mb-2 shadow-inner">
+          <span class="text-gray-400">Vista previa</span>
+        </div>
+      </label>
+  <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" class="border-2 border-yellow-400 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-white transition-colors duration-300" required />
+  <textarea id="comentario" name="comentario" placeholder="Comentario (opcional)" class="border-2 border-yellow-400 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none bg-white transition-colors duration-300"></textarea>
+      <label class="flex items-center gap-2">
+        <input type="checkbox" id="privacidad" required />
+        <span class="text-sm">Acepto el aviso de privacidad</span>
+      </label>
+      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-5 rounded-full shadow-xl text-lg flex items-center gap-2 justify-center transition-all duration-200 active:scale-95">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+        ¡Envía tu foto!
+      </button>
+    </form>
+    <div id="mensaje" class="mt-4 text-center text-green-600 font-semibold hidden"></div>
+  </main>
+  <script>
+    // Modo azul noche por defecto
+    const body = document.body;
+    const toggleBtn = document.getElementById('toggleMode');
+    const moonIcon = document.getElementById('moonIcon');
+    const sunIcon = document.getElementById('sunIcon');
+    let isNight = true;
+    function setMode(night) {
+      isNight = night;
+      if (night) {
+        body.classList.add('night');
+        moonIcon.classList.remove('hidden');
+        sunIcon.classList.add('hidden');
+      } else {
+        body.classList.remove('night');
+        moonIcon.classList.add('hidden');
+        sunIcon.classList.remove('hidden');
+      }
+    }
+    toggleBtn.addEventListener('click', () => setMode(!isNight));
+    setMode(true);
+
+    // Formulario
+    const fileInput = document.getElementById('fileInput');
+    const preview = document.getElementById('preview');
+    const form = document.getElementById('uploadForm');
+    const mensaje = document.getElementById('mensaje');
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          preview.innerHTML = `<img src="${ev.target.result}" class='object-contain w-full h-full rounded-xl' alt='Vista previa' />`;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        preview.innerHTML = '<span class="text-gray-400">Vista previa</span>';
+      }
+    });
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const file = fileInput.files[0];
+      if (!file || !file.type.startsWith('image/')) {
+        alert('Selecciona una imagen válida.');
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        alert('La imagen no debe superar los 5MB.');
+        return;
+      }
+      if (!form.privacidad.checked) {
+        alert('Debes aceptar el aviso de privacidad.');
+        return;
+      }
+      // Aquí iría la lógica para enviar la imagen al backend
+      mensaje.textContent = '¡Foto enviada con éxito! (demo)';
+      mensaje.classList.remove('hidden');
+      form.reset();
+      preview.innerHTML = '<span class="text-gray-400">Vista previa</span>';
+    });
+  </script>
+</body>

@@ -4,36 +4,34 @@ import SectionLayout from "../layouts/SectionLayout.astro";
 const statues = [
   {
     title: "Ballena Jorobada",
-    description: "La Ballena Jorobada es una escultura de bronce que se encuentra en el Malecón de Puerto Vallarta, Jalisco, México. La escultura fue realizada por el artista Octavio González Gutiérrez y fue inaugurada el 12 de diciembre de 2001.",
+    description: "Escultura icónica que celebra la riqueza marina de La Paz y la migración de ballenas en la región.",
     image: "ballena-jorobada.webp",
   },
   {
     title: "La Perla",
-    description: "La Perla es una escultura de bronce que se encuentra en el Malecón de Puerto Vallarta, Jalisco, México. La escultura fue realizada por el artista Octavio González Gutiérrez y fue inaugurada el 12 de diciembre de 2001.",
+    description: "Representa la belleza y el aprecio por las perlas en la historia local.",
     image: "la-perla.webp",
   },
   {
     title: "El Ancla",
-    description: "El Ancla es una escultura de bronce que se encuentra en el Malecón de Puerto Vallarta, Jalisco, México. La escultura fue realizada por el artista Octavio González Gutiérrez y fue inaugurada el 12 de diciembre de 2001.",
+    description: "Símbolo de la tradición marítima y la historia portuaria de La Paz.",
     image: "el-ancla.webp",
   },
   {
     title: "Paraiso del Mar",
-    description: "Paraiso del Mar es una escultura de bronce que se encuentra en el Malecón de Puerto Vallarta, Jalisco, México. La escultura fue realizada por el artista Octavio González Gutiérrez y fue inaugurada el 12 de diciembre de 2001.",
+    description: "Escultura que evoca la conexión entre la ciudad y el mar.",
     image: "paraiso-del-mar.webp",
   },
   {
     title: "El Viejo y el Mar",
-    description: "El Viejo y el Mar es una escultura de bronce que se encuentra en el Malecón de Puerto Vallarta, Jalisco, México. La escultura fue realizada por el artista Octavio González Gutiérrez y fue inaugurada el 12 de diciembre de 2001.",
+    description: "Inspirada en la obra de Hemingway, homenajea la relación del hombre con el mar.",
     image: "el-viejo-y-el-mar.webp",
   },
   {
     title: "La Paloma",
-    description: "La Paloma es una escultura de bronce que se encuentra en el Malecón de Puerto Vallarta, Jalisco, México. La escultura fue realizada por el artista Octavio González Gutiérrez y fue inaugurada el 12 de diciembre de 2001.",
+    description: "Escultura que simboliza la paz y la libertad en el malecón.",
     image: "la-paloma.webp",
   }
-
-  // Si van a agregar mas estatuas aqui vayan anotandolas asi como las que ya estan anotadas !!
 ];
 ---
 
@@ -43,35 +41,104 @@ const statues = [
       <h1 class="text-6xl font-black text-center my-6 uppercase">cronicas del malecon</h1>
     </aside>
 
-    <article class="grid grid-cols-2 auto-rows-[53rem] mx-auto my-auto gap-5 p-6">
-    {
-      statues.map((statue) => (
-          <a
-            href="/areas"
-            class="flex-col relative rounded-3xl z-20 flex items-start justify-end overflow-hidden"
-            id="card1"
+    <article class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 auto-rows-[38rem] mx-auto my-auto gap-7 p-4">
+      {
+        statues.map((statue, idx) => (
+          <div
+            class="statue-card flex-col relative rounded-3xl z-20 flex items-start justify-end overflow-hidden cursor-pointer group shadow-2xl hover:scale-[1.03] transition-transform duration-300"
+            tabindex="0"
+            aria-label={`Ver detalles de ${statue.title}`}
+            on:click={() => openModal(idx)}
+            on:keydown={(e) => { if (e.key === 'Enter') openModal(idx); }}
           >
-            <div class="absolute rounded-3xl z-10 bottom-0 top-0 h-full w-full mix-blend-multiply bg-gradient-to-t from-[#5c5d6ec9]"></div>
-
+            <div class="absolute rounded-3xl z-10 bottom-0 top-0 h-full w-full mix-blend-multiply bg-gradient-to-t from-[#1fa39bcc] to-transparent"></div>
             <div
-              id="carouselImage1"
               class="absolute inset-0 bg-cover h-full w-full -z-10 rounded-3xl bg-blend-luminosity bg-center transition-background-image duration-500"
-              style=`background-image: url('/public/statues/${statue.image}')`
+              style={`background-image: url('/statues/${statue.image}')`}
             ></div>
-
-            <h2 class="text-[5rem] font-black text-1000 z-20 p-10">
+            <h2 class="text-[2.7rem] md:text-[3.5rem] font-black text-white z-20 p-8 drop-shadow-lg bg-black/30 rounded-2xl mb-4 ml-4 animate-fade-in">
               {statue.title}
             </h2>
-          </a>
+          </div>
         ))
       }
-      </article>
+    </article>
+
+    {/* Modal grande para mostrar información de la estatua seleccionada */}
+    <script type="text/javascript">
+      const statues = [
+        { title: "Ballena Jorobada", description: "Escultura icónica que celebra la riqueza marina de La Paz y la migración de ballenas en la región.", image: "ballena-jorobada.webp" },
+        { title: "La Perla", description: "Representa la belleza y el aprecio por las perlas en la historia local.", image: "la-perla.webp" },
+        { title: "El Ancla", description: "Símbolo de la tradición marítima y la historia portuaria de La Paz.", image: "el-ancla.webp" },
+        { title: "Paraiso del Mar", description: "Escultura que evoca la conexión entre la ciudad y el mar.", image: "paraiso-del-mar.webp" },
+        { title: "El Viejo y el Mar", description: "Inspirada en la obra de Hemingway, homenajea la relación del hombre con el mar.", image: "el-viejo-y-el-mar.webp" },
+        { title: "La Paloma", description: "Escultura que simboliza la paz y la libertad en el malecón.", image: "la-paloma.webp" }
+      ];
+      let modalOpen = false;
+      let selectedIdx = null;
+      function openModal(idx) {
+        modalOpen = true;
+        selectedIdx = idx;
+        document.body.style.overflow = 'hidden';
+        updateModal();
+      }
+      function closeModal() {
+        modalOpen = false;
+        selectedIdx = null;
+        document.body.style.overflow = '';
+        updateModal();
+      }
+      function updateModal() {
+        const modal = document.getElementById('statue-modal');
+        if (!modal) return;
+        if (modalOpen && selectedIdx !== null) {
+          modal.style.display = 'flex';
+          modal.querySelector('.modal-title').textContent = statues[selectedIdx].title;
+          modal.querySelector('.modal-img').src = `/statues/${statues[selectedIdx].image}`;
+          modal.querySelector('.modal-img').alt = statues[selectedIdx].title;
+          modal.querySelector('.modal-desc').textContent = statues[selectedIdx].description;
+        } else {
+          modal.style.display = 'none';
+        }
+      }
+      window.closeModal = closeModal;
+      window.addEventListener('DOMContentLoaded', () => {
+        // Asignar eventos a las tarjetas
+        document.querySelectorAll('.statue-card').forEach((el, idx) => {
+          el.addEventListener('click', () => openModal(idx));
+          el.addEventListener('keydown', (e) => { if (e.key === 'Enter') openModal(idx); });
+        });
+        updateModal();
+      });
+    </script>
+    <div id="statue-modal" style="display:none;" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-lg">
+      <div class="relative w-full max-w-2xl mx-auto flex flex-col items-center justify-center bg-gray-900 rounded-2xl shadow-2xl p-0 md:p-8 animate-fade-in" style="min-height:60vh;max-height:90vh;">
+        <button class="absolute top-4 right-4 text-gray-400 hover:text-blue-400 text-3xl font-bold z-10" onclick="closeModal()" aria-label="Cerrar">×</button>
+        <img class="modal-img w-40 h-40 object-cover rounded-xl mb-4 shadow-lg" src="" alt="" />
+        <h2 class="modal-title text-3xl md:text-4xl font-extrabold text-white text-center mb-2 drop-shadow-lg"></h2>
+        <p class="modal-desc text-white text-base text-center mb-6"></p>
+      </div>
+    </div>
   </section>
 </SectionLayout>
 
 <style>
   h2 {
     font-family: "Komtits";
+  }
+  .statue-card:focus {
+    outline: 3px solid #1fa39b;
+    outline-offset: 2px;
+  }
+  .statue-card {
+    transition: box-shadow 0.3s, transform 0.3s;
+  }
+  .statue-card:hover {
+    box-shadow: 0 8px 32px 0 #1fa39b55, 0 2px 8px 0 #0005;
+  }
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: none; }
   }
 </style>
 

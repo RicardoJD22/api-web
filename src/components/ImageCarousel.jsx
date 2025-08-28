@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 
 export default function ImageCarousel({ images, interval = 4000, alt = "", slogans = [] }) {
@@ -16,17 +17,56 @@ export default function ImageCarousel({ images, interval = 4000, alt = "", sloga
         <img
           src={images[current]}
           alt={alt}
-          className={`object-contain transition-transform duration-700 ease-[cubic-bezier(.68,-0.55,.27,1.55)] animate-bounce-slider ${images[current].includes('m-lapaz') ? 'w-[60%] h-[60%]' : 'w-[80%] h-[80%]'}`}
+          className={
+            slogans.length > 0
+              ? 'object-contain transition-transform duration-700 animate-bounce-slider w-[60%] h-[60%]'
+              : 'w-full h-full object-cover transition-transform duration-700 animate-bounce-slider'
+          }
           draggable={false}
-          style={{
-            animation: 'bounce-slider 0.7s',
-          }}
+          style={
+            slogans.length > 0
+              ? {
+                  animation: 'bounce-slider 0.7s',
+                  width: '60%',
+                  height: '60%',
+                  objectFit: 'contain',
+                }
+              : {
+                  animation: 'bounce-slider 0.7s',
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }
+          }
         />
       </div>
       {slogans.length > 0 && (
-        <span className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white text-lg font-bold drop-shadow text-center z-30 bg-black/60 px-4 py-2 rounded-xl w-[90%] max-w-[95vw]">
-          COMPROMETIDOS CON LA COMUNIDAD
-        </span>
+        <div
+          className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 w-[90%] max-w-[95vw] overflow-hidden rounded-xl"
+          style={{
+            background: 'rgba(30,41,59,0.85)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+            boxShadow: '0 2px 16px 0 rgba(0,0,0,0.18)'
+          }}
+        >
+          <div className="marquee whitespace-nowrap py-2 px-4 text-white text-lg font-bold drop-shadow text-center">
+            <span>
+              COMPROMETIDOS CON LA COMUNIDAD &nbsp;•&nbsp; COMPROMETIDOS CON LA COMUNIDAD &nbsp;•&nbsp; COMPROMETIDOS CON LA COMUNIDAD &nbsp;•&nbsp;
+            </span>
+          </div>
+          <style>{`
+            .marquee {
+              display: block;
+              width: 100%;
+              animation: marquee-move 12s linear infinite;
+            }
+            @keyframes marquee-move {
+              0% { transform: translateX(0%); }
+              100% { transform: translateX(-50%); }
+            }
+          `}</style>
+        </div>
       )}
       <style>{`
         @keyframes bounce-slider {
