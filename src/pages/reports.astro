@@ -1,126 +1,194 @@
 ---
 import SectionLayout from "../layouts/SectionLayout.astro";
 ---
-
 <SectionLayout title="Reportes">
-    <h1 class="text-6xl font-black text-center my-6">GENERA TU REPORTE</h1>
-    <section
-        transition:name="reports"
-        class="grid max-w-[1980px] grid-cols-1 auto-rows-[53rem] mx-auto my-auto gap-5 p-6"
-    >
-        <a
-            href="/areas"
-            class="relative rounded-3xl z-20 flex items-end overflow-hidden"
-            id="card1"
-        >
-            <div
-                class="absolute rounded-3xl z-10 bottom-0 top-0 h-full w-full mix-blend-multiply bg-gradient-to-t from-[#10312B]"
-            >
-            </div>
-            <div
-                id="carouselImage1"
-                class="absolute inset-0 bg-cover h-full w-full -z-10 rounded-3xl bg-blend-luminosity object-cover object-center transition-background-image duration-500"
-                style="background-image: url(alumbrado.jpg);"
-            >
-            </div>
-            <h2 class="text-[5rem] font-black text-white z-20 p-10">
-                PROBLEMAS DE ALUMBRADO
-            </h2>
-        </a>
+  <main class="min-h-screen max-w-[1400px] mx-auto p-6">
+    <h1 class="text-4xl md:text-6xl font-black text-center mb-10">Genera tu reporte</h1>
 
-        <a href="/areas" class="relative rounded-3xl flex items-end" id="card3">
-            <div
-                class="absolute z-10 rounded-3xl bottom-0 top-0 h-full w-full mix-blend-multiply bg-gradient-to-t from-black"
-            >
-            </div>
-            <div
-                id="carouselImage2"
-                class="absolute left-0 top-0 bottom-0 bg-cover bg-no-repeat object-cover h-full w-full -z-10 rounded-3xl bg-blend-luminosity transition-background-image duration-500"
-                style="background-image: url(bandalismo2.jpg);"
-            >
-            </div>
-            <h2 class="text-[5rem] font-black text-white z-20 p-10">
-                DETERIORO EN LA INFRAESTRUCTURA
-            </h2>
-        </a>
+    <section class="flex flex-col gap-8">
+      <!-- Card: Alumbrado (carousel vertical: arriba → abajo) -->
+      <a href="/areas?category=alumbrado" class="group h-64 md:h-[36rem] flex flex-col md:flex-row items-stretch rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-blue-400" aria-label="Reportar problemas de alumbrado">
+        <div id="carouselImage1" class="w-full md:w-1/2 h-48 md:h-full relative overflow-hidden rounded-l-2xl carousel-container" data-active="a">
+          <div class="bg-layer layer-a" style="background-image:url('/alumbrado.jpg');"></div>
+          <div class="bg-layer layer-b" style="background-image:url('/alumbrado2.jpg');"></div>
+          <div class="absolute inset-0 overlay-gradient pointer-events-none" style="background:linear-gradient(90deg, rgba(0,0,0,0.6), transparent); z-index:10;"></div>
+        </div>
 
-        <a href="/areas" class="relative rounded-3xl flex items-end" id="card3">
-            <div
-                class="absolute z-10 rounded-3xl bottom-0 top-0 h-full w-full mix-blend-multiply bg-gradient-to-t from-black"
-            >
-            </div>
-            <div
-                id="carouselImage3"
-                class="absolute left-0 top-0 bottom-0 bg-cover bg-no-repeat object-cover h-full w-full -z-10 rounded-3xl bg-blend-luminosity transition-background-image duration-500"
-                style="background-image: url(entidad5.2.jpg);"
-            >
-            </div>
-            <h2 class="text-[5rem] font-black text-white z-20 p-10">
-                CONTAMINACION VISUAL Y AMBIENTAL
-            </h2>
-        </a>
+        <div class="w-full md:w-1/2 bg-gray-800 p-8 flex flex-col justify-center gap-6">
+          <h2 class="text-2xl md:text-4xl font-extrabold text-white">Problemas de alumbrado</h2>
+          <p class="text-gray-300 max-w-xl">Luminarias apagadas, cables expuestos o postes dañados. Describe el punto y adjunta foto para ayudar al equipo a ubicar y atender el reporte.</p>
+          <div class="mt-2">
+            <span class="inline-block px-6 py-3 bg-yellow-500 text-gray-900 font-semibold rounded-lg">Reportar</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card: Infraestructura (carousel horizontal: izquierda → derecha) -->
+      <a href="/areas?category=infraestructura" class="group h-64 md:h-[36rem] flex flex-col md:flex-row items-stretch rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-blue-400" aria-label="Reportar deterioro en infraestructura">
+        <div id="carouselImage2" class="w-full md:w-1/2 h-48 md:h-full relative overflow-hidden rounded-l-2xl carousel-container" data-active="a">
+          <div class="bg-layer layer-a" style="background-image:url('/avisanos/malecon.jpg');"></div>
+          <div class="bg-layer layer-b" style="background-image:url('/avisanos/muelle.jpg');"></div>
+          <div class="absolute inset-0 overlay-gradient pointer-events-none" style="background:linear-gradient(90deg, rgba(0,0,0,0.6), transparent); z-index:10;"></div>
+        </div>
+
+        <div class="w-full md:w-1/2 bg-gray-800 p-8 flex flex-col justify-center gap-6">
+          <h2 class="text-2xl md:text-4xl font-extrabold text-white">Deterioro en la infraestructura</h2>
+          <p class="text-gray-300 max-w-xl">Baches, aceras rotas, mobiliario urbano dañado. Indica la ubicación y adjunta evidencia para agilizar la gestión.</p>
+          <div class="mt-2">
+            <span class="inline-block px-6 py-3 bg-yellow-500 text-gray-900 font-semibold rounded-lg">Reportar</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card: Contaminación (carousel "desde el centro hacia afuera") -->
+      <a href="/areas?category=contaminacion" class="group h-64 md:h-[36rem] flex flex-col md:flex-row items-stretch rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-blue-400" aria-label="Reportar contaminación">
+        <div id="carouselImage3" class="w-full md:w-1/2 h-48 md:h-full relative overflow-hidden rounded-l-2xl carousel-container" data-active="a">
+          <div class="bg-layer layer-a" style="background-image:url('/entidad5.2.jpg');"></div>
+          <div class="bg-layer layer-b" style="background-image:url('/entidad3.jpg');"></div>
+          <div class="absolute inset-0 overlay-gradient pointer-events-none" style="background:linear-gradient(90deg, rgba(0,0,0,0.6), transparent); z-index:10;"></div>
+        </div>
+
+        <div class="w-full md:w-1/2 bg-gray-800 p-8 flex flex-col justify-center gap-6">
+          <h2 class="text-2xl md:text-4xl font-extrabold text-white">Contaminación visual y ambiental</h2>
+          <p class="text-gray-300 max-w-xl">Vertidos, basura acumulada o humo. Adjunta foto y ubicación para que el personal local pueda actuar rápidamente.</p>
+          <div class="mt-2">
+            <span class="inline-block px-6 py-3 bg-yellow-500 text-gray-900 font-semibold rounded-lg">Reportar</span>
+          </div>
+        </div>
+      </a>
     </section>
+  </main>
 </SectionLayout>
 
 <style>
-    h2 {
-        font-family: "Komtits";
-    }
-</style>
+  /* Tipografía grande */
+  h2 { font-family: "Komtits", system-ui, sans-serif; }
 
-<style is:global>
-    @font-face {
-        font-family: "Komtits";
-        src: url("/fonts/KOMTITBR.ttf") format("truetype");
-        font-style: normal;
-        font-display: swap;
-    }
+  /* Capas de fondo para animar */
+  .carousel-container { position: relative; }
+  .bg-layer {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    border-radius: inherit;
+    will-change: transform, opacity, filter;
+    transform: translate(0,0) scale(1);
+    opacity: 1;
+  }
+  .bg-layer.layer-a { z-index: 1; }
+  .bg-layer.layer-b { z-index: 2; opacity: 0; }
+
+  /* gradient siempre encima de capas para legibilidad */
+  .overlay-gradient { z-index: 10; pointer-events: none; }
+
+  @media (max-width: 767px) { .group img { opacity: 0.98; } }
 </style>
 
 <script>
-    const images1 = [
-        "public/alumbrado.jpg",
-        "public/alumbrado2.jpg",
-        "public/alumbrado3.jpg",
-    ];
-    let currentIndex1 = 0;
-    const carouselImage1 = document.getElementById("carouselImage1");
+  window.addEventListener('DOMContentLoaded', () => {
+    const intervals = [];
 
-    function changeImage1() {
-        carouselImage1.style.backgroundImage = `url('${images1[currentIndex1]}')`;
-        currentIndex1 = (currentIndex1 + 1) % images1.length;
-    }
+    const imgs1 = ['/alumbrado.jpg','/alumbrado2.jpg','/alumbrado3.jpg'];
+    const imgs2 = ['/avisanos/malecon.jpg','/avisanos/muelle.jpg','/avisanos/malecon2.jpg'];
+    const imgs3 = ['/entidad5.2.jpg','/entidad3.jpg','/entidad4.jpg'];
 
-    setInterval(changeImage1, 4000);
+    // anima usando dos capas (.layer-a y .layer-b) dentro del container
+    const animate = (container, newSrc, dir = 'down') => {
+      if (!container) return;
+      const layerA = container.querySelector('.layer-a');
+      const layerB = container.querySelector('.layer-b');
+      if (!layerA || !layerB) return;
 
-    const images2 = [
-        "public/delincuence.jpg",
-        "public/bandalismo2.jpg",
-        "public/delincuence.jpg",
-    ];
-    let currentIndex2 = 0;
-    const carouselImage2 = document.getElementById("carouselImage2");
+      const active = container.dataset.active === 'b' ? 'b' : 'a';
+      const incoming = active === 'a' ? layerB : layerA;
+      const outgoing = active === 'a' ? layerA : layerB;
 
-    function changeImage2() {
-        carouselImage2.style.backgroundImage = `url('${images2[currentIndex2]}')`;
-        currentIndex2 = (currentIndex2 + 1) % images2.length;
-    }
+      // preparar incoming
+      incoming.style.transition = 'none';
+      incoming.style.backgroundImage = `url('${newSrc}')`;
+      incoming.style.opacity = dir === 'outward' ? '0' : '1';
+      // pos inicial
+      if (dir === 'down') {
+        incoming.style.transform = 'translateY(-120%) scale(1.06)';
+      } else if (dir === 'right') {
+        incoming.style.transform = 'translateX(-120%) scale(1.06)';
+      } else { // outward
+        incoming.style.transform = 'scale(.5)';
+      }
 
-    setInterval(changeImage2, 4000);
+      // aseguramos repaint
+      incoming.getBoundingClientRect();
 
-    const images3 = [
-        "public/entidad3.jpg",
-        "public/entidad2.jpg",
-        "public/entidad4.jpg",
-        "public/entidad3.jpg",
-    ];
-    let currentIndex3 = 0;
-    const carouselImage3 = document.getElementById("carouselImage3");
+      // aplicar transiciones
+      incoming.style.transition = 'transform 1.1s cubic-bezier(.2,.8,.2,1), opacity 1.1s ease';
+      outgoing.style.transition = 'transform 1.1s cubic-bezier(.2,.8,.2,1), opacity 1.1s ease, filter 1.1s ease';
 
-    function changeImage3() {
-        carouselImage3.style.backgroundImage = `url('${images3[currentIndex3]}')`;
-        currentIndex3 = (currentIndex3 + 1) % images3.length;
-    }
+      // animar
+      requestAnimationFrame(() => {
+        if (dir === 'down') {
+          incoming.style.transform = 'translateY(0) scale(1)';
+          incoming.style.opacity = '1';
+          outgoing.style.transform = 'translateY(120%) scale(1.05)';
+          outgoing.style.opacity = '0';
+          outgoing.style.filter = 'blur(6px)';
+        } else if (dir === 'right') {
+          incoming.style.transform = 'translateX(0) scale(1)';
+          incoming.style.opacity = '1';
+          outgoing.style.transform = 'translateX(120%) scale(1.05)';
+          outgoing.style.opacity = '0';
+          outgoing.style.filter = 'blur(6px)';
+        } else { // outward
+          incoming.style.transform = 'scale(1)';
+          incoming.style.opacity = '1';
+          outgoing.style.transform = 'scale(1.6)';
+          outgoing.style.opacity = '0';
+          outgoing.style.filter = 'blur(10px)';
+        }
+      });
 
-    setInterval(changeImage3, 4000);
+      // commit: después de animación fijar capa base y reset
+      setTimeout(() => {
+        // fijar background en layer-a para simplificar (si incoming es layer-b y active was a: swap backgrounds)
+        if (active === 'a') {
+          layerA.style.backgroundImage = `url('${newSrc}')`;
+          layerA.style.transform = 'translate(0,0) scale(1)';
+          layerA.style.opacity = '1';
+          layerA.style.filter = 'none';
+          layerB.style.opacity = '0';
+          layerB.style.transform = 'translate(0,0) scale(1)';
+          layerB.style.filter = 'none';
+          container.dataset.active = 'a';
+        } else {
+          layerB.style.backgroundImage = `url('${newSrc}')`;
+          layerB.style.transform = 'translate(0,0) scale(1)';
+          layerB.style.opacity = '1';
+          layerB.style.filter = 'none';
+          layerA.style.opacity = '0';
+          layerA.style.transform = 'translate(0,0) scale(1)';
+          layerA.style.filter = 'none';
+          container.dataset.active = 'b';
+        }
+      }, 1150);
+    };
+
+    const setup = (containerId, images, dir = 'down', delay = 4200) => {
+      const container = document.getElementById(containerId);
+      if (!container || !images?.length) return;
+      // preload
+      images.forEach(src => { const i = new Image(); i.src = src; });
+      let idx = 0;
+      const iv = setInterval(() => {
+        idx = (idx + 1) % images.length;
+        animate(container, images[idx], dir);
+      }, delay);
+      intervals.push(iv);
+    };
+
+    setup('carouselImage1', imgs1, 'down', 4200);
+    setup('carouselImage2', imgs2, 'right', 4200);
+    setup('carouselImage3', imgs3, 'outward', 4200);
+
+    window.addEventListener('beforeunload', () => intervals.forEach(iv => clearInterval(iv)));
+  });
 </script>

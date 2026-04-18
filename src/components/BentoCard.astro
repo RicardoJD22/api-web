@@ -12,13 +12,10 @@ const { title, description, href, gradient } = Astro.props;
 
 <a
   href={href}
-  class={`${Astro.props.class} relative rounded-[2rem] backdrop-blur-md border-2 shadow-inner shadow-black/70 overflow-hidden group`}
+  class={`${Astro.props.class} relative rounded-[2rem] backdrop-blur-md border border-white/10 shadow-lg shadow-black/50 overflow-hidden group active:scale-[0.98] transition-transform duration-200 cursor-pointer touch-manipulation`}
 >
   <div
-    class=`
-  absolute z-10 bottom-0 top-0 h-full w-full
-  mix-blend-multiply bg-gradient-to-t from-[${gradient}] via-[${gradient}]
-`
+    class={`absolute z-10 inset-0 bg-gradient-${gradient}`}
   >
   </div>
 

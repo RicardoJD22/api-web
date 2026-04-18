@@ -9,13 +9,13 @@ import Layout from '../layouts/Layout.astro';
 
 
 <Layout title="Malecon La Paz BCS.">
-	<main class="mx-auto bg-gray-50">
-		<header>
-			<img class="mx-auto" src="/logos_header.png" alt="">
+	<div class="mx-auto flex flex-col min-h-screen">
+		<header class="py-6 px-4">
+			<img class="mx-auto h-24 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.08)]" src="/logos_header.png" alt="">
 		</header>
 		<BentoArea/>
 		<FechaHora />
 	
-	<slot>
-	</main>
+		<slot />
+	</div>
 </Layout>

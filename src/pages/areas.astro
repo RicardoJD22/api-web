@@ -1,41 +1,255 @@
 ---
 import SectionLayout from "../layouts/SectionLayout.astro";
 import SectionCard from "../components/SectionCard.astro";
-
 ---
 
 <SectionLayout title="Reportes">
-    <h1 class="text-4xl font-black text-center my-6">SELECCIONA LA SECCION</h1>
-    <section class="grid max-w-[1980px] grid-cols-1 mx-auto my-auto gap-5 p-6">
-        <SectionCard 
-            title={"Seccion A"}
-            street1={"Manuel Marquez de Leon - Manuel Pineda- Antonio Rosales- Benito Juarez"}🚀
-            street2={"Ignacio Allende - Antonio Rosales - Nicolas Bravo"}
-            color={"border-blue-700"}
-        />
-        <SectionCard 
-            title={"Seccion B"}
-            street1={"Calle 2"}
-            street2={"Calle 3"}
-            color={"border-blue-700"}
-        />
-        <SectionCard 
-            title={"Seccion C"}
-            street1={"Calle 3"}
-            street2={"Calle 4"}
-            color={"border-blue-700"}
-        />
-        <SectionCard 
-            title={"Seccion D"}
-            street1={"Calle 4"}
-            street2={"Calle 5"}
-            color={"border-blue-700"}
-        />
-        <SectionCard 
-            title={"Seccion E"}
-            street1={"Calle 5"}
-            street2={"Calle 6"}
-            color={"border-blue-700"}
-        />
-    </section>
+  <h1 class="text-4xl font-black text-center my-6">SELECCIONA LA SECCION</h1>
+
+  <section class="grid max-w-[1980px] grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mx-auto my-auto gap-5 p-6">
+    <div class="section-trigger" data-section="Seccion A" role="button" tabindex="0" aria-pressed="false">
+      <SectionCard
+        title={"Seccion A"}
+        street1={"Manuel Marquez de Leon - Manuel Pineda- Antonio Rosales- Benito Juarez"}
+        street2={"Ignacio Allende - Antonio Rosales - Nicolas Bravo"}
+        color={"border-blue-700"}
+      />
+    </div>
+
+    <div class="section-trigger" data-section="Seccion B" role="button" tabindex="0" aria-pressed="false">
+      <SectionCard
+        title={"Seccion B"}
+        street1={"Calle 2"}
+        street2={"Calle 3"}
+        color={"border-blue-700"}
+      />
+    </div>
+
+    <div class="section-trigger" data-section="Seccion C" role="button" tabindex="0" aria-pressed="false">
+      <SectionCard
+        title={"Seccion C"}
+        street1={"Calle 3"}
+        street2={"Calle 4"}
+        color={"border-blue-700"}
+      />
+    </div>
+
+    <div class="section-trigger" data-section="Seccion D" role="button" tabindex="0" aria-pressed="false">
+      <SectionCard
+        title={"Seccion D"}
+        street1={"Calle 4"}
+        street2={"Calle 5"}
+        color={"border-blue-700"}
+      />
+    </div>
+
+    <div class="section-trigger" data-section="Seccion E" role="button" tabindex="0" aria-pressed="false">
+      <SectionCard
+        title={"Seccion E"}
+        street1={"Calle 5"}
+        street2={"Calle 6"}
+        color={"border-blue-700"}
+      />
+    </div>
+  </section>
+
+  <!-- Modal formulario -->
+  <div id="reportModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="bg-gray-900 rounded-xl shadow-xl w-[95%] md:w-3/4 lg:w-1/2 p-6 mx-auto" role="document">
+      <header class="flex items-start justify-between">
+        <div>
+          <h2 id="modalTitle" class="text-2xl font-black text-white">Nuevo reporte</h2>
+          <p id="modalSubtitle" class="text-sm text-gray-300">Categoría: <span id="selectedSection" class="font-semibold"></span></p>
+        </div>
+        <button id="closeModal" aria-label="Cerrar" class="text-gray-300 hover:text-white">✕</button>
+      </header>
+
+      <form id="modalForm" class="mt-4 space-y-4" enctype="multipart/form-data">
+        <input type="hidden" name="category" id="categoryInput" value="" />
+
+        <label class="block">
+          <span class="text-sm text-gray-200">Descripción</span>
+          <textarea name="description" id="description" rows="4" class="mt-1 block w-full rounded-md bg-gray-800 text-white p-3" placeholder="Describe brevemente el desperfecto..."></textarea>
+        </label>
+
+        <label class="block">
+          <span class="text-sm text-gray-200">Foto (opcional)</span>
+          <input id="photoInput" name="photo" type="file" accept="image/*" class="mt-1 block w-full text-sm text-gray-200" />
+        </label>
+
+        <div class="flex gap-3 items-center">
+          <button id="geoBtn" type="button" class="px-3 py-2 bg-blue-600 text-white rounded">Usar mi ubicación</button>
+          <div id="coords" class="text-sm text-gray-300">—</div>
+        </div>
+
+        <div id="previewWrap" class="hidden">
+          <span class="text-sm text-gray-200">Previsualización</span>
+          <img id="previewImg" src="" alt="Preview" class="mt-2 rounded w-full object-cover h-48" />
+        </div>
+
+        <div class="flex justify-between items-center">
+          <div class="text-sm text-gray-300" id="status" aria-live="polite"></div>
+
+          <div class="flex gap-2">
+            <button id="sendBtn" type="button" class="px-4 py-2 bg-yellow-500 text-gray-900 rounded font-semibold">Enviar</button>
+            <button id="clearBtn" type="button" class="px-4 py-2 bg-gray-700 text-white rounded">Limpiar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Success notification: aparece solo después de enviar exitosamente -->
+  <div id="successNotice" aria-hidden="true" class="fixed inset-0 z-60 pointer-events-none flex items-center justify-center">
+    <div id="successBox" class="bg-white/95 text-center rounded-lg shadow-2xl p-8 w-[360px] opacity-0 transform scale-95 transition-all duration-300" role="status">
+      <div class="text-green-600 text-4xl mb-3">✓</div>
+      <h3 class="text-xl font-semibold text-gray-900">Reporte Generado</h3>
+      <p class="text-sm text-gray-700 mt-2">Gracias por su colaboración.</p>
+    </div>
+  </div>
 </SectionLayout>
+
+<style>
+  /* pequeño ajuste: los triggers deben parecer interactivos */
+  .section-trigger { cursor: pointer; outline: none; }
+  .section-trigger:focus { box-shadow: 0 0 0 4px rgba(59,130,246,0.25); border-radius: .75rem; }
+  /* modal */
+  #reportModal { display: none; }
+  #reportModal[data-open="true"] { display: flex; }
+  /* success notice visible state */
+  #successNotice[data-open="true"] { pointer-events: auto; }
+  #successNotice[data-open="true"] #successBox { opacity: 1; transform: scale(1); }
+</style>
+
+<script type="module">
+  const triggers = document.querySelectorAll('.section-trigger');
+  const modal = document.getElementById('reportModal');
+  const closeBtn = document.getElementById('closeModal');
+  const selectedLabel = document.getElementById('selectedSection');
+  const categoryInput = document.getElementById('categoryInput');
+  const description = document.getElementById('description');
+  const photoInput = document.getElementById('photoInput');
+  const previewWrap = document.getElementById('previewWrap');
+  const previewImg = document.getElementById('previewImg');
+  const geoBtn = document.getElementById('geoBtn');
+  const coords = document.getElementById('coords');
+  const sendBtn = document.getElementById('sendBtn');
+  const clearBtn = document.getElementById('clearBtn');
+  const status = document.getElementById('status');
+  const successNotice = document.getElementById('successNotice');
+  let lastFocused = null;
+  let prefilledSection = null;
+
+  // abrir modal
+  const openModal = (sectionName) => {
+    prefilledSection = sectionName;
+    selectedLabel.textContent = sectionName;
+    categoryInput.value = sectionName;
+    modal.setAttribute('data-open','true');
+    modal.removeAttribute('aria-hidden');
+    lastFocused = document.activeElement;
+    setTimeout(() => description.focus(), 150);
+    // reset fields
+    description.value = '';
+    photoInput.value = '';
+    previewWrap.classList.add('hidden');
+    previewImg.src = '';
+    coords.textContent = '—';
+    status.textContent = '';
+  };
+
+  const closeModal = () => {
+    modal.removeAttribute('data-open');
+    modal.setAttribute('aria-hidden','true');
+    if (lastFocused) lastFocused.focus();
+  };
+
+  // mostrar notificación de éxito (después de enviar)
+  const showSuccess = (timeout = 2000) => {
+    successNotice.setAttribute('data-open','true');
+    successNotice.removeAttribute('aria-hidden');
+    setTimeout(() => {
+      successNotice.removeAttribute('data-open');
+      successNotice.setAttribute('aria-hidden','true');
+    }, timeout);
+  };
+
+  // attach triggers
+  triggers.forEach(t => {
+    t.addEventListener('click', () => openModal(t.dataset.section));
+    t.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(t.dataset.section); }
+    });
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.getAttribute('data-open') === 'true') closeModal(); });
+
+  // preview imagen
+  photoInput?.addEventListener('change', (e) => {
+    const f = e.target.files?.[0];
+    if (!f) { previewWrap.classList.add('hidden'); previewImg.src = ''; return; }
+    const url = URL.createObjectURL(f);
+    previewImg.src = url;
+    previewWrap.classList.remove('hidden');
+  });
+
+  // geolocalización
+  geoBtn?.addEventListener('click', () => {
+    if (!navigator.geolocation) { coords.textContent = 'No soportado'; return; }
+    coords.textContent = 'Obteniendo...';
+    navigator.geolocation.getCurrentPosition(pos => {
+      coords.textContent = `${pos.coords.latitude.toFixed(6)}, ${pos.coords.longitude.toFixed(6)}`;
+      // set hidden inputs if needed (will append on send)
+      let latI = document.getElementById('lat');
+      let lngI = document.getElementById('lng');
+      if (!latI) { latI = document.createElement('input'); latI.type = 'hidden'; latI.id='lat'; latI.name='lat'; modal.querySelector('form').appendChild(latI); }
+      if (!lngI) { lngI = document.createElement('input'); lngI.type = 'hidden'; lngI.id='lng'; lngI.name='lng'; modal.querySelector('form').appendChild(lngI); }
+      latI.value = pos.coords.latitude;
+      lngI.value = pos.coords.longitude;
+    }, () => { coords.textContent = 'Permiso denegado / error'; }, { enableHighAccuracy: true, timeout: 10000 });
+  });
+
+  clearBtn.addEventListener('click', () => {
+    description.value = '';
+    photoInput.value = '';
+    previewImg.src = '';
+    previewWrap.classList.add('hidden');
+    coords.textContent = '—';
+    status.textContent = '';
+    document.getElementById('lat')?.remove();
+    document.getElementById('lng')?.remove();
+  });
+
+  // enviar formulario: muestra notificación SOLO después de respuesta exitosa
+  sendBtn.addEventListener('click', async () => {
+    status.textContent = '';
+    sendBtn.disabled = true;
+    sendBtn.textContent = 'Enviando...';
+
+    const form = document.getElementById('modalForm');
+    const fd = new FormData(form);
+    // asegurar categoría
+    if (prefilledSection) fd.set('category', prefilledSection);
+
+    try {
+      const res = await fetch('/api/reports', { method: 'POST', body: fd });
+      if (res.ok) {
+        status.textContent = 'Reporte enviado correctamente.';
+        // cerrar modal primero y luego mostrar notificación clara al centro
+        closeModal();
+        // mostrar notificación de éxito después de cerrar modal
+        showSuccess(2200);
+      } else {
+        const txt = await res.text();
+        status.textContent = 'Error al enviar: ' + (txt || res.status);
+      }
+    } catch (err) {
+      status.textContent = 'Error de red al enviar.';
+    } finally {
+      sendBtn.disabled = false;
+      sendBtn.textContent = 'Enviar';
+    }
+  });
+</script>

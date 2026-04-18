@@ -1,71 +1,73 @@
-import React, { useState } from "react";
+import React from "react";
 
 function GuiaMaleconCard() {
-  const [modal, setModal] = useState(false);
   return (
-    <div className="bento-glow col-span-1 row-span-1 flex flex-col justify-center items-center shadow-2xl rounded-3xl overflow-hidden bg-gradient-to-br from-[#10312B] to-gray-900 min-h-[20rem] relative">
-      <div className="w-full flex flex-col items-center justify-center p-8 select-none">
-        {/* Icono de mapa grande y claro */}
-        <button
-          className="mb-1 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg p-4 transition-transform duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-400 flex flex-col items-center"
-          style={{ position: 'absolute', top: '1.5rem', left: '50%', transform: 'translateX(-50%)', zIndex: 10 }}
-          onClick={() => setModal(true)}
-          aria-label="Abrir mapa del malecón"
+    <div 
+      className="bento-glow col-span-1 row-span-1 flex flex-col justify-between items-center shadow-2xl rounded-[2.5rem] overflow-hidden relative h-full min-h-[22rem] group"
+      style={{
+        background: 'linear-gradient(165deg, #020617 0%, #0c4a6e 100%)',
+      }}
+    >
+      {/* Decorative blurred backgrounds - Dynamic Depth */}
+      <div className="absolute top-[-10%] right-[-10%] w-72 h-72 bg-sky-400/20 rounded-full mix-blend-screen filter blur-[90px] pointer-events-none transition-transform duration-1000 group-hover:scale-110"></div>
+      <div className="absolute bottom-[-10%] left-[-10%] w-80 h-80 bg-cyan-500/10 rounded-full mix-blend-screen filter blur-[80px] pointer-events-none"></div>
+
+      <div className="z-10 w-full flex-grow flex flex-col items-center justify-center p-6 relative">
+        <a
+          href="/mapa-malecon"
+          className="group/btn relative flex flex-col items-center focus:outline-none active:scale-90 transition-all duration-300 ease-out mt-4 no-underline"
+          aria-label="Abrir mapa interactivo del malecón"
+          draggable={false}
         >
-          <img src="/map.png" alt="Icono mapa" className="w-16 h-16 object-contain" draggable={false} />
-          <span className="mt-2 text-white text-base font-semibold drop-shadow animate-pulse-glow" style={{letterSpacing:'0.04em',textShadow:'0 2px 8px #2563eb88'}}>Touch me!</span>
-        </button>
-        <style>{`
-          @keyframes pulse-glow {
-            0% { opacity: 0.7; text-shadow: 0 2px 8px #2563eb88, 0 0 0 #fff0; }
-            50% { opacity: 1; text-shadow: 0 2px 16px #38bdf8cc, 0 0 8px #fff4; }
-            100% { opacity: 0.7; text-shadow: 0 2px 8px #2563eb88, 0 0 0 #fff0; }
-          }
-          .animate-pulse-glow {
-            animation: pulse-glow 1.8s infinite;
-          }
-        `}</style>
-  <h2 className="text-2xl md:text-3xl font-extrabold text-white text-center mb-2 mt-32 tracking-wide drop-shadow-lg">Guía del Malecón</h2>
-        <span
-          className="block text-white text-center text-base md:text-lg font-medium mb-4 px-4 py-2 rounded-xl shadow-lg"
-          style={{
-            background: 'rgba(30,41,59,0.85)',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
-            boxShadow: '0 2px 16px 0 rgba(0,0,0,0.18)'
-          }}
-        >
-          Descubre el malecón y sus puntos clave.
-        </span>
-      </div>
-      {modal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 animate-fade-in" style={{width:'100vw',height:'100vh',overflow:'hidden'}}>
-          <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-gray-900" style={{padding:0,margin:0}}>
-            <button
-              className="absolute top-4 right-8 text-gray-400 hover:text-blue-400 text-4xl font-bold z-10"
-              onClick={() => setModal(false)}
-              aria-label="Cerrar"
-              style={{background:'rgba(0,0,0,0.2)',borderRadius:'50%',width:'3rem',height:'3rem',display:'flex',alignItems:'center',justifyContent:'center'}}
-            >
-              ×
-            </button>
-            <h2 className="text-3xl font-bold text-white text-center mb-4 mt-8 drop-shadow-lg">Mapa del Malecón</h2>
-            <div className="w-full h-full flex justify-center items-center">
-              <iframe
-                title="Mapa interactivo del Malecón de La Paz"
-                src="https://www.google.com/maps?q=Malec%C3%B3n%20de%20La%20Paz%2C%20B.C.S.&z=16&output=embed"
-                width="100%"
-                height="500"
-                style={{border:0, borderRadius:'1rem', width:'100%', height:'70vh', minHeight:'350px', boxShadow:'0 0 32px #0008'}}
-                allowFullScreen=""
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              ></iframe>
-            </div>
-            <span className="text-white text-center mt-6 text-lg drop-shadow-lg">Haz zoom para ver detalles de los puntos de interés, baños, estacionamientos y rutas recomendadas.</span>
+          {/* Glowing pulse effect behind button - More subtle and professional */}
+          <div className="absolute inset-0 rounded-full bg-sky-400/30 blur-2xl animate-pulse scale-75"></div>
+          
+          <div className="relative w-32 h-32 flex items-center justify-center bg-slate-900/60 backdrop-blur-2xl rounded-full shadow-[0_0_50px_rgba(14,165,233,0.25)] border border-white/20 overflow-hidden z-10 transition-all duration-500 group-hover/btn:border-sky-400/50 group-hover/btn:shadow-[0_0_60px_rgba(14,165,233,0.4)]">
+            {/* Shimmer effect inside button */}
+            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-25deg] shimmer-animation"></div>
+            
+            <img 
+              src="/map.png" 
+              alt="" 
+              className="w-16 h-16 object-contain z-10 drop-shadow-[0_5px_15px_rgba(0,0,0,0.5)] transition-transform duration-500 group-hover/btn:scale-110" 
+              draggable={false} 
+            />
+          </div>
+
+          <div className="mt-8 flex items-center justify-center px-6 py-3 bg-sky-500/20 rounded-full border border-sky-400/40 backdrop-blur-xl shadow-2xl transition-all duration-300 group-hover/btn:bg-sky-500/30 group-hover/btn:scale-105 active:scale-95">
+             <span className="text-sky-300 text-[14px] font-black tracking-[0.2em] uppercase antialiased mr-3 drop-shadow-md whitespace-nowrap">
+                Guía Interactiva
+             </span>
+             <span className="animate-bounce inline-block text-xl filter drop-shadow-md">👇</span>
+          </div>
+        </a>
+
+        <div className="mt-auto w-full flex flex-col items-center text-center pb-2 pt-10 pointer-events-none">
+          <h2 className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-sky-100 to-sky-400 tracking-tight mb-3 drop-shadow-2xl">
+            EL MALECÓN
+          </h2>
+          <div className="px-5 py-3 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 shadow-xl overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_3s_infinite]"></div>
+            <span className="text-slate-200 text-[15px] font-semibold leading-relaxed relative z-10 block">
+              Explora monumentos, gastronomía y cultura frente al mar de Cortés.
+            </span>
           </div>
         </div>
-      )}
+      </div>
+      
+      <style>{`
+        @keyframes custom-shimmer {
+          0% { transform: translateX(-150%); }
+          50% { transform: translateX(150%); }
+          100% { transform: translateX(150%); }
+        }
+        .shimmer-animation {
+          animation: custom-shimmer 4s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+          100% { transform: translateX(100%); }
+        }
+      `}</style>
     </div>
   );
 }
