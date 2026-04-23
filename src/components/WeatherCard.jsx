@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 
-const API_KEY = "33ae159cdf4300bbd252e18b6cda5aca";
+const CACHE_KEY = "weather_cache";
+const CACHE_TTL = 10 * 60 * 1000; // 10 minutos
 
 function formatTime(unix) {
   return new Date(unix * 1000).toLocaleTimeString("es-MX", {
@@ -139,20 +140,53 @@ function WeatherCard() {
   const [forecast, setForecast] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [todayMin, setTodayMin] = useState(null);
+  const [todayMax, setTodayMax] = useState(null);
 
   useEffect(() => {
-    Promise.all([
-      fetch(`https://api.openweathermap.org/data/2.5/weather?q=La%20Paz,mx&appid=${API_KEY}&units=metric&lang=es`).then(r => r.json()),
-      fetch(`https://api.openweathermap.org/data/2.5/forecast?q=La%20Paz,mx&appid=${API_KEY}&units=metric&lang=es&cnt=40`).then(r => r.json()),
-    ])
-      .then(([cur, fore]) => {
-        if (cur.cod !== 200) throw new Error("bad response");
-        setWeather(cur);
-        if (fore.list) setForecast(processForecast(fore.list));
-        setLoading(false);
+    // Intentar servir desde caché del cliente
+    try {
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached) {
+        const { data, ts } = JSON.parse(cached);
+        if (Date.now() - ts < CACHE_TTL) {
+          applyData(data.current, data.forecast);
+          return;
+        }
+      }
+    } catch (_) {}
+
+    fetch("/api/weather")
+      .then(r => r.json())
+      .then(data => {
+        if (data.error) throw new Error(data.error);
+        try {
+          localStorage.setItem(CACHE_KEY, JSON.stringify({ data, ts: Date.now() }));
+        } catch (_) {}
+        applyData(data.current, data.forecast);
       })
       .catch(() => { setError(true); setLoading(false); });
   }, []);
+
+  function applyData(cur, fore) {
+    if (!cur || cur.cod !== 200) { setError(true); setLoading(false); return; }
+    setWeather(cur);
+    if (fore?.list) {
+      setForecast(processForecast(fore.list));
+      // Min/max reales del día de hoy desde el forecast
+      const todayKey = (() => { const d = new Date(); return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`; })();
+      const todayItems = fore.list.filter(item => {
+        const d = new Date(item.dt * 1000);
+        return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}` === todayKey;
+      });
+      if (todayItems.length) {
+        const temps = todayItems.map(i => i.main.temp);
+        setTodayMin(Math.round(Math.min(...temps)));
+        setTodayMax(Math.round(Math.max(...temps)));
+      }
+    }
+    setLoading(false);
+  }
 
   if (loading) return (
     <div className="flex flex-col items-center justify-center h-full w-full gap-3">
@@ -179,8 +213,8 @@ function WeatherCard() {
   const feels = Math.round(weather.main.feels_like);
   const humidity = weather.main.humidity;
   const wind = Math.round(weather.wind.speed * 3.6);
-  const min = Math.round(weather.main.temp_min);
-  const max = Math.round(weather.main.temp_max);
+  const min = todayMin ?? Math.round(weather.main.temp_min);
+  const max = todayMax ?? Math.round(weather.main.temp_max);
   const pressure = weather.main.pressure;
   const sunrise = formatTime(weather.sys.sunrise);
   const sunset = formatTime(weather.sys.sunset);
