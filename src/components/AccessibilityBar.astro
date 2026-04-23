@@ -1,0 +1,278 @@
+---
+// Barra de accesibilidad flotante
+// Posición: esquina inferior derecha (simétrica al BackButton)
+---
+
+<!-- Botón activador -->
+<button
+  id="a11y-toggle"
+  aria-label="Abrir opciones de accesibilidad"
+  aria-expanded="false"
+  aria-controls="a11y-panel"
+  class="fixed bottom-8 right-8 z-[9990] w-16 h-16 rounded-2xl
+         flex items-center justify-center
+         border border-cyan-500/40 backdrop-blur-md
+         shadow-[0_4px_24px_rgba(0,0,0,0.5)]
+         active:scale-95 transition-transform duration-150 touch-manipulation"
+  style="background: linear-gradient(135deg, rgba(8,47,73,0.92), rgba(12,74,110,0.88));
+         animation: a11y-breathe 3s ease-in-out infinite;"
+>
+  <!-- Ícono accesibilidad (persona con círculo) -->
+  <svg viewBox="0 0 24 24" fill="none" stroke="#67e8f9" stroke-width="2"
+       stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8" aria-hidden="true">
+    <circle cx="12" cy="5" r="2"/>
+    <path d="M12 7v6l-3 5M12 13l3 5M8 10h8"/>
+  </svg>
+</button>
+
+<!-- Panel de controles -->
+<div
+  id="a11y-panel"
+  role="dialog"
+  aria-label="Opciones de accesibilidad"
+  aria-hidden="true"
+  class="fixed bottom-28 right-8 z-[9990] flex flex-col gap-3 p-4 rounded-2xl
+         border border-cyan-500/30 backdrop-blur-md
+         shadow-[0_8px_32px_rgba(0,0,0,0.6)]
+         pointer-events-none opacity-0
+         transition-all duration-300 origin-bottom-right scale-90"
+  style="background: linear-gradient(145deg, rgba(8,47,73,0.97), rgba(12,74,110,0.95)); min-width: 220px;"
+>
+  <!-- Título panel -->
+  <p class="text-xs font-bold uppercase tracking-[0.2em] text-cyan-400/70 px-1">
+    Accesibilidad
+  </p>
+
+  <!-- ── Tamaño de texto ── -->
+  <div class="flex flex-col gap-2">
+    <span class="text-xs text-cyan-200/60 font-semibold px-1 uppercase tracking-wider">
+      Tamaño de texto
+    </span>
+    <div class="flex gap-2" role="group" aria-label="Tamaño de texto">
+      <button data-font="-1"
+        class="a11y-font-btn flex-1 py-3 rounded-xl border border-cyan-500/30
+               text-cyan-100 font-black active:scale-95 transition-transform
+               hover:bg-cyan-500/20 touch-manipulation"
+        aria-label="Reducir tamaño de texto"
+        style="font-size: 14px;">
+        A−
+      </button>
+      <button data-font="0"
+        class="a11y-font-btn flex-1 py-3 rounded-xl border border-cyan-500/30
+               text-cyan-100 font-black active:scale-95 transition-transform
+               hover:bg-cyan-500/20 touch-manipulation"
+        aria-label="Tamaño de texto normal"
+        style="font-size: 18px;">
+        A
+      </button>
+      <button data-font="1"
+        class="a11y-font-btn flex-1 py-3 rounded-xl border border-cyan-500/30
+               text-cyan-100 font-black active:scale-95 transition-transform
+               hover:bg-cyan-500/20 touch-manipulation"
+        aria-label="Aumentar tamaño de texto"
+        style="font-size: 22px;">
+        A+
+      </button>
+      <button data-font="2"
+        class="a11y-font-btn flex-1 py-3 rounded-xl border border-cyan-500/30
+               text-cyan-100 font-black active:scale-95 transition-transform
+               hover:bg-cyan-500/20 touch-manipulation"
+        aria-label="Tamaño de texto extra grande"
+        style="font-size: 26px;">
+        A++
+      </button>
+    </div>
+  </div>
+
+  <!-- Divisor -->
+  <div class="border-t border-cyan-500/20"></div>
+
+  <!-- ── Alto contraste ── -->
+  <div class="flex flex-col gap-2">
+    <span class="text-xs text-cyan-200/60 font-semibold px-1 uppercase tracking-wider">
+      Contraste
+    </span>
+    <button
+      id="a11y-contrast"
+      role="switch"
+      aria-checked="false"
+      aria-label="Activar modo de alto contraste"
+      class="flex items-center gap-3 px-4 py-3 rounded-xl border border-cyan-500/30
+             text-cyan-100 font-bold text-sm
+             active:scale-95 transition-all touch-manipulation
+             hover:bg-cyan-500/20"
+    >
+      <!-- Ícono -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" class="w-5 h-5 shrink-0" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M12 3v18M12 3a9 9 0 0 1 0 18"/>
+        <path d="M12 3a9 9 0 0 0 0 18" fill="currentColor" opacity="0.3"/>
+      </svg>
+      <!-- Label dinámico -->
+      <span id="a11y-contrast-label">Alto contraste: OFF</span>
+      <!-- Toggle pill -->
+      <span id="a11y-contrast-pill"
+            class="ml-auto w-10 h-6 rounded-full border-2 border-cyan-500/50 relative transition-colors duration-200"
+            style="background: rgba(34,211,238,0.1);" aria-hidden="true">
+        <span id="a11y-contrast-dot"
+              class="absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-cyan-400/50 transition-all duration-200">
+        </span>
+      </span>
+    </button>
+  </div>
+
+  <!-- Divisor -->
+  <div class="border-t border-cyan-500/20"></div>
+
+  <!-- ── Restablecer ── -->
+  <button
+    id="a11y-reset"
+    class="w-full py-3 rounded-xl border border-red-500/30 text-red-300 font-bold text-sm
+           active:scale-95 transition-transform hover:bg-red-500/10 touch-manipulation"
+    aria-label="Restablecer configuración de accesibilidad"
+  >
+    ↺ Restablecer
+  </button>
+</div>
+
+<!-- ── ESTILOS ── -->
+<style>
+  @keyframes a11y-breathe {
+    0%, 100% { box-shadow: 0 4px 24px rgba(0,0,0,0.5), 0 0 0 0 rgba(34,211,238,0); }
+    50%       { box-shadow: 0 4px 32px rgba(0,0,0,0.6), 0 0 0 6px rgba(34,211,238,0.12); }
+  }
+  #a11y-toggle:active { animation: none; }
+
+  /* Panel visible */
+  #a11y-panel.a11y-open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+  }
+
+  /* Botón de fuente activo */
+  .a11y-font-btn.a11y-active {
+    background: rgba(34,211,238,0.25);
+    border-color: rgba(34,211,238,0.7);
+    color: #fff;
+  }
+
+  /* ══ ALTO CONTRASTE ══
+     Invierte fondo a negro puro y texto a blanco brillante.
+     Se aplica a todo el documento. */
+  :root.high-contrast body {
+    background: #000 !important;
+    color: #fff !important;
+  }
+  :root.high-contrast * {
+    border-color: #fff !important;
+  }
+  :root.high-contrast a,
+  :root.high-contrast button,
+  :root.high-contrast h1,
+  :root.high-contrast h2,
+  :root.high-contrast h3,
+  :root.high-contrast p,
+  :root.high-contrast span {
+    color: #fff !important;
+    text-shadow: none !important;
+  }
+  :root.high-contrast img {
+    filter: contrast(1.2) brightness(0.9);
+  }
+  :root.high-contrast [class*="bg-"] {
+    background: #000 !important;
+  }
+  :root.high-contrast [class*="backdrop"] {
+    backdrop-filter: none !important;
+    background: #111 !important;
+  }
+</style>
+
+<!-- ── SCRIPT ── -->
+<script is:inline>
+  (() => {
+    const toggleBtn     = document.getElementById('a11y-toggle');
+    const panel         = document.getElementById('a11y-panel');
+    const contrastBtn   = document.getElementById('a11y-contrast');
+    const contrastLabel = document.getElementById('a11y-contrast-label');
+    const contrastPill  = document.getElementById('a11y-contrast-pill');
+    const contrastDot   = document.getElementById('a11y-contrast-dot');
+    const resetBtn      = document.getElementById('a11y-reset');
+    const fontBtns      = document.querySelectorAll('.a11y-font-btn');
+    const root          = document.documentElement;
+
+    // Escalas de fuente: [-1, 0, 1, 2] → [90%, 100%, 115%, 130%]
+    const fontScales = { '-1': '90%', '0': '100%', '1': '115%', '2': '130%' };
+    let fontLevel    = 0;
+    let isContrast   = false;
+    let panelOpen    = false;
+
+    // ── Abrir / cerrar panel ──
+    function togglePanel() {
+      panelOpen = !panelOpen;
+      panel.classList.toggle('a11y-open', panelOpen);
+      toggleBtn.setAttribute('aria-expanded', String(panelOpen));
+      panel.setAttribute('aria-hidden', String(!panelOpen));
+    }
+
+    toggleBtn?.addEventListener('click', togglePanel);
+
+    // Cerrar al tocar fuera
+    document.addEventListener('touchstart', (e) => {
+      if (panelOpen && !panel.contains(e.target) && e.target !== toggleBtn) {
+        togglePanel();
+      }
+    }, { passive: true });
+
+    // ── Tamaño de fuente ──
+    function applyFont(level) {
+      fontLevel = level;
+      const scale = fontScales[String(level)] || '100%';
+      root.style.fontSize = scale;
+
+      fontBtns.forEach(btn => {
+        const lvl = parseInt(btn.getAttribute('data-font') || '0');
+        btn.classList.toggle('a11y-active', lvl === level);
+      });
+    }
+
+    fontBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lvl = parseInt(btn.getAttribute('data-font') || '0');
+        applyFont(lvl);
+      });
+    });
+
+    // ── Alto contraste ──
+    function applyContrast(on) {
+      isContrast = on;
+      root.classList.toggle('high-contrast', on);
+      contrastBtn?.setAttribute('aria-checked', String(on));
+      if (contrastLabel) contrastLabel.textContent = `Alto contraste: ${on ? 'ON' : 'OFF'}`;
+
+      if (contrastPill) {
+        contrastPill.style.background = on ? 'rgba(34,211,238,0.4)' : 'rgba(34,211,238,0.1)';
+        contrastPill.style.borderColor = on ? '#22d3ee' : 'rgba(34,211,238,0.5)';
+      }
+      if (contrastDot) {
+        contrastDot.style.transform = on ? 'translateX(16px)' : 'translateX(0)';
+        contrastDot.style.background = on ? '#22d3ee' : 'rgba(34,211,238,0.5)';
+      }
+    }
+
+    contrastBtn?.addEventListener('click', () => applyContrast(!isContrast));
+
+    // ── Restablecer ──
+    function reset() {
+      applyFont(0);
+      applyContrast(false);
+    }
+
+    resetBtn?.addEventListener('click', reset);
+
+    // Estado inicial: A (nivel 0) activo
+    applyFont(0);
+  })();
+</script>

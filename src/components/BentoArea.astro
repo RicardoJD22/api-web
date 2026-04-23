@@ -5,6 +5,7 @@ import WeatherCard from "./WeatherCard.jsx";
 import EventosCard from "./EventosCard.jsx";
 import GuiaMaleconCard from "./GuiaMaleconCard.jsx";
 import CoverflowGallery from "./CoverflowGallery.jsx";
+import SocialCard from "./SocialCard.jsx";
 ---
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -93,43 +94,110 @@ import CoverflowGallery from "./CoverflowGallery.jsx";
     </div>
   </BentoCard>
 
-  <BentoCard
+  <!-- ECOS DEL MAR — tarjeta premium con oleaje animado y mosaico de esculturas -->
+  <a
     href="historical"
-    class="col-span-1 flex flex-col justify-end relative h-full group"
-    title=""
-    description=""
-    gradient="to-tr from-teal-950/95 via-teal-900/80 to-transparent"
+    class="bento-glow col-span-1 flex flex-col justify-end relative h-full group rounded-[2rem] overflow-hidden active:scale-[0.98] transition-transform duration-200 cursor-pointer touch-manipulation"
+    style="background: linear-gradient(170deg, #042f2e 0%, #0f172a 55%, #020617 100%);"
+    aria-label="Ecos del Mar — Historia del Malecón de La Paz"
   >
-    <figure slot="image" aria-label="Historia del Malecón" class="absolute inset-0 bento-card-image -z-10 overflow-hidden">
-      <!-- Usando la foto de la galería como fondo para evitar un espacio vacío o color muerto -->
-      <img src="/Galeria/whale.jpg" alt="Whale" class="group-active:scale-105 transition-transform duration-700 ease-out object-cover w-full h-full" />
-      <div class="absolute inset-0 bg-slate-950/50 mix-blend-multiply"></div>
-    </figure>
-    
-    <div slot="content" class="relative z-10 flex flex-col h-full w-full p-6">
-      
-      <div class="flex justify-between items-start w-full">
-        <div class="bg-teal-500/20 border border-teal-400/30 backdrop-blur-md rounded-2xl p-3 flex shadow-lg items-center justify-center">
-          <svg class="w-8 h-8 md:w-10 md:h-10 text-teal-300 opacity-90 drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+    <!-- Fondo: foto del mar con parallax sutil -->
+    <div class="absolute inset-0 overflow-hidden -z-10">
+      <img
+        src="/Galeria/whale.jpg"
+        alt="Ballena"
+        class="w-full h-full object-cover object-center scale-110 group-active:scale-125 transition-transform duration-700 ease-out opacity-30"
+      />
+      <!-- Gradiente multicapa: profundidad marina -->
+      <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(2,6,23,0.3) 0%, rgba(4,47,46,0.5) 40%, rgba(2,6,23,0.97) 100%);"></div>
+    </div>
+
+    <!-- Partículas decorativas (burbujas) -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden -z-10">
+      <div class="bubble bubble-1"></div>
+      <div class="bubble bubble-2"></div>
+      <div class="bubble bubble-3"></div>
+    </div>
+
+    <!-- ── CONTENIDO ── -->
+    <div class="relative z-10 flex flex-col h-full w-full p-5 gap-3">
+
+      <!-- Header: badge + toca -->
+      <div class="flex items-start justify-between w-full">
+        <div class="flex flex-col gap-2">
+          <!-- Badge categoría -->
+          <div class="inline-flex items-center gap-2 bg-teal-500/15 border border-teal-400/30 backdrop-blur-md rounded-xl px-3 py-1.5">
+            <svg class="w-4 h-4 text-teal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064" />
+            </svg>
+            <span class="text-teal-300 text-xs font-bold tracking-widest uppercase">Historia & Cultura</span>
+          </div>
+        </div>
+        <span class="bg-teal-500 text-slate-950 font-extrabold px-4 py-1.5 rounded-full text-sm shadow-[0_0_20px_rgba(20,184,166,0.5)] uppercase tracking-widest border border-teal-300 whitespace-nowrap">
+          Toca 👆
+        </span>
+      </div>
+
+      <!-- Strip de esculturas (preview) -->
+      <div class="flex gap-2 mt-auto">
+        {[
+          { src: "/statues/ballena-jorobada.webp",  alt: "Ballena Jorobada",  fallback: "🐋" },
+          { src: "/statues/la-perla.webp",           alt: "La Perla",          fallback: "🦪" },
+          { src: "/statues/el-ancla.webp",           alt: "El Ancla",          fallback: "⚓" },
+        ].map(s => (
+          <div class="flex-1 aspect-square rounded-2xl overflow-hidden border border-teal-400/20 shadow-lg relative">
+            <img
+              src={s.src}
+              alt={s.alt}
+              class="w-full h-full object-cover opacity-80 group-active:opacity-100 transition-opacity"
+              onerror={`this.onerror=null;this.parentElement.innerHTML='<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:rgba(20,184,166,0.12);font-size:1.8rem;">${s.fallback}</div>'`}
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-teal-950/80 to-transparent"></div>
+          </div>
+        ))}
+        <!-- +3 más badge -->
+        <div class="flex-1 aspect-square rounded-2xl border border-teal-400/20 flex items-center justify-center"
+             style="background: rgba(20,184,166,0.08);">
+          <div class="text-center">
+            <span class="text-teal-300 font-black text-lg leading-none block">+3</span>
+            <span class="text-teal-400/70 text-[10px] font-bold leading-none">más</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Título principal -->
+      <div class="flex flex-col gap-1">
+        <h2 class="text-4xl md:text-5xl font-black leading-none tracking-tighter"
+            style="color: white; text-shadow: 0 0 40px rgba(20,184,166,0.6), 0 4px 12px rgba(0,0,0,0.8);">
+          Ecos del Mar
+        </h2>
+        <p class="text-teal-200/80 text-sm font-semibold leading-snug border-l-2 border-teal-500 pl-2.5">
+          Esculturas e historia viva en el Malecón de La Paz
+        </p>
+      </div>
+
+      <!-- Wave + CTA -->
+      <div class="relative">
+        <!-- Ola SVG decorativa -->
+        <svg viewBox="0 0 300 28" class="w-full mb-2 opacity-30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 14 C50 0, 100 28, 150 14 S250 0, 300 14" stroke="#2dd4bf" stroke-width="2" fill="none" class="wave-path"/>
+          <path d="M0 20 C50 6, 100 34, 150 20 S250 6, 300 20" stroke="#0d9488" stroke-width="1.5" fill="none" class="wave-path-2"/>
+        </svg>
+
+        <!-- CTA Pill animado -->
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl border border-teal-400/40 w-full justify-center"
+             style="background: linear-gradient(135deg, rgba(20,184,166,0.2), rgba(13,148,136,0.1)); backdrop-filter: blur(8px);">
+          <span class="text-teal-300 font-black text-sm tracking-widest uppercase">Descubre las Esculturas</span>
+          <svg class="w-4 h-4 text-teal-400 group-active:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
           </svg>
         </div>
-         <span class="bg-teal-500 text-slate-950 font-extrabold px-5 py-2 rounded-full text-lg shadow-[0_0_20px_rgba(20,184,166,0.5)] uppercase tracking-widest border border-teal-300">Toca 👆</span>
       </div>
-
-      <div class="mt-auto flex flex-col items-start text-left">
-        <h1 class="text-4xl md:text-[3.5rem] font-black text-teal-50 drop-shadow-2xl mb-2 uppercase tracking-tighter leading-none">
-          Ecos del Mar
-        </h1>
-        <h3 class="text-lg md:text-xl font-bold text-teal-200/90 tracking-wide text-balance border-l-4 border-teal-500 pl-3">
-          La Historia Cobra Vida en el Malecón de La Paz.
-        </h3>
-      </div>
-
     </div>
-  </BentoCard>
+  </a>
 
-  <GuiaMaleconCard client:load class="col-span-1 h-full" />
+  <GuiaMaleconCard client:only="react" class="col-span-1 h-full" />
 
   <BentoCard
     href="galery"
@@ -140,7 +208,7 @@ import CoverflowGallery from "./CoverflowGallery.jsx";
   >
     <figure slot="image" aria-label="Galería de imágenes" class="absolute inset-0 bento-card-image -z-10 overflow-hidden">
       <ImageCarousel
-        client:load
+        client:only="react"
         images={[
           '/Galeria/AA.jpg',
           '/Galeria/sea2.jpg',
@@ -180,7 +248,7 @@ import CoverflowGallery from "./CoverflowGallery.jsx";
   <div class="bento-glow col-span-1 flex flex-col justify-end items-center shadow-2xl rounded-3xl overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 relative h-full">
     <div class="w-full h-full flex flex-col items-center justify-end relative">
       <ImageCarousel
-        client:load
+        client:only="react"
         images={["/bcs_logo.png", "/api_logo.png", "/m-lapaz.png"]}
         interval={2500}
         alt="Logo institucional"
@@ -190,42 +258,14 @@ import CoverflowGallery from "./CoverflowGallery.jsx";
   </div>
 
   <div class="bento-glow col-span-1 flex flex-col justify-center items-center shadow-2xl rounded-3xl overflow-hidden bg-gradient-to-br from-gray-800/60 to-blue-400/60 relative h-full">
-    <WeatherCard client:load />
+    <WeatherCard client:only="react" />
   </div>
 
-  <div class="bento-glow col-span-1 flex flex-col justify-center items-center shadow-8xl rounded-5xl overflow-hidden bg-gray-600 relative h-full">
-    <EventosCard client:load />
+  <div class="bento-glow col-span-1 flex flex-col justify-center items-center shadow-2xl rounded-3xl overflow-hidden relative h-full" style="background: linear-gradient(160deg, #020617 0%, #0a1628 100%);">
+    <EventosCard client:only="react" />
   </div>
 
-  <div class="bento-glow col-span-1 flex flex-col justify-center items-center shadow-2xl rounded-3xl overflow-hidden bg-gradient-to-br from-gray-700 to-gray-900 relative h-full z-0">
-    <div class="flex flex-col items-center justify-center h-full w-full p-6">
-      <h2 class="text-xl sm:text-2xl font-bold text-white text-center mb-2">Redes Sociales</h2>
-      <div class="flex flex-row gap-6 mb-2">
-        <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook">
-          <svg class="w-8 h-8 sm:w-10 sm:h-10 transition" fill="currentColor" viewBox="0 0 24 24">
-            <path fill="#1877F3" d="M12 2.04c-5.5 0-9.96 4.46-9.96 9.96 0 4.41 3.6 8.07 8.24 8.93v-6.32h-2.48v-2.61h2.48V9.41c0-2.45 1.49-3.8 3.77-3.8 1.09 0 2.23.2 2.23.2v2.45h-1.26c-1.24 0-1.63.77-1.63 1.56v1.87h2.78l-.44 2.61h-2.34v6.32c4.64-.86 8.24-4.52 8.24-8.93 0-5.5-4.46-9.96-9.96-9.96z"/>
-          </svg>
-        </a>
-        <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
-          <svg class="w-8 h-8 sm:w-10 sm:h-10 transition" fill="currentColor" viewBox="0 0 24 24">
-            <defs>
-              <radialGradient id="ig-gradient" cx="50%" cy="50%" r="80%" fx="50%" fy="50%">
-                <stop offset="0%" stop-color="#fdf497"/>
-                <stop offset="45%" stop-color="#fdf497"/>
-                <stop offset="60%" stop-color="#fd5949"/>
-                <stop offset="90%" stop-color="#d6249f"/>
-                <stop offset="100%" stop-color="#285AEB"/>
-              </radialGradient>
-            </defs>
-            <path fill="url(#ig-gradient)" d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5zm4.25 2.25a5.25 5.25 0 1 1-5.25 5.25a5.25 5.25 0 0 1 5.25-5.25zm0 1.5a3.75 3.75 0 1 0 3.75 3.75a3.75 3.75 0 0 0-3.75-3.75zm5.25 1.25a1 1 0 1 1-2 0a1 1 0 0 1 2 0z"/>
-          </svg>
-        </a>
-      </div>
-      <span class="text-white text-center">Síguenos en nuestras redes sociales.</span>
-      <div class="flex flex-col items-center mt-2">
-        <img src={`https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${encodeURIComponent(Astro.url.origin + '/sube-tu-foto')}`} alt="QR para subir foto" class="rounded-xl border-2 border-blue-400 shadow bg-white" width="80" height="80" loading="lazy" />
-        <span class="text-xs text-center text-white bg-blue-700 px-2 py-1 rounded-lg shadow mt-1">Escanea para subir tu foto</span>
-      </div>
-    </div>
+  <div class="bento-glow col-span-1 flex flex-col justify-center items-center shadow-2xl rounded-3xl overflow-hidden relative h-full z-0" style="background: linear-gradient(145deg, #020617 0%, #0c1a2e 60%, #0a0f1e 100%)">
+    <SocialCard client:only="react" siteOrigin={Astro.url.origin} />
   </div>
 </section>

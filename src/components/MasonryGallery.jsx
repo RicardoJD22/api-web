@@ -1,213 +1,412 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 
+// ── Imágenes con categoría ────────────────────────────────────────────────────
 const images = [
-  "/Galeria/AA.jpg",
-  "/Galeria/sea2.jpg",
-  "/Galeria/malecon2.jpg",
-  "/Galeria/whale.jpg",
-  "/Galeria/sun.jpg",
-  "/Galeria/night.jpg",
-  "/Galeria/kios.jpg",
-  "/Galeria/perla.jpg",
-  "/Galeria/piedra.jpg",
-  "/Galeria/tiburon.jpg",
-  "/Galeria/BB.jpg",
-  "/Galeria/EE.jpg",
-  "/Galeria/hotel.jpg",
-  "/Galeria/sea.jpg",
-  "/Galeria/CC.jpg",
-  "/Galeria/blog.jpg",
-  "/Galeria/lp.jpg",
-  "/Galeria/food.jpg",
-  "/Galeria/catedral.jpg",
-  "/Galeria/tardecer.jpg",
-  "/Galeria/night.jpg",
-  "/Galeria/mirador.jpg",
-  "/Galeria/fishers.jpg",
-  "/Galeria/farol.jpg"
+  { src: "/Galeria/AA.jpg",       category: "malecon",     alt: "Malecón" },
+  { src: "/Galeria/sea2.jpg",     category: "naturaleza",  alt: "Mar" },
+  { src: "/Galeria/malecon2.jpg", category: "malecon",     alt: "Malecón" },
+  { src: "/Galeria/whale.jpg",    category: "fauna",       alt: "Ballena jorobada" },
+  { src: "/Galeria/sun.jpg",      category: "atardecer",   alt: "Atardecer" },
+  { src: "/Galeria/night.jpg",    category: "noche",       alt: "Malecón de noche" },
+  { src: "/Galeria/kios.jpg",     category: "malecon",     alt: "Kiosco del Malecón" },
+  { src: "/Galeria/perla.jpg",    category: "naturaleza",  alt: "Isla Espíritu Santo" },
+  { src: "/Galeria/piedra.jpg",   category: "naturaleza",  alt: "Formaciones rocosas" },
+  { src: "/Galeria/tiburon.jpg",  category: "fauna",       alt: "Tiburón ballena" },
+  { src: "/Galeria/BB.jpg",       category: "malecon",     alt: "Malecón" },
+  { src: "/Galeria/EE.jpg",       category: "malecon",     alt: "Malecón" },
+  { src: "/Galeria/hotel.jpg",    category: "ciudad",      alt: "Hotel frente al mar" },
+  { src: "/Galeria/sea.jpg",      category: "naturaleza",  alt: "Bahía de La Paz" },
+  { src: "/Galeria/CC.jpg",       category: "malecon",     alt: "Malecón" },
+  { src: "/Galeria/blog.jpg",     category: "ciudad",      alt: "Centro histórico" },
+  { src: "/Galeria/lp.jpg",       category: "ciudad",      alt: "La Paz BCS" },
+  { src: "/Galeria/food.jpg",     category: "gastronomia", alt: "Gastronomía local" },
+  { src: "/Galeria/catedral.jpg", category: "ciudad",      alt: "Catedral de La Paz" },
+  { src: "/Galeria/tardecer.jpg", category: "atardecer",   alt: "Atardecer en la bahía" },
+  { src: "/Galeria/mirador.jpg",  category: "malecon",     alt: "Mirador El Molinito" },
+  { src: "/Galeria/fishers.jpg",  category: "naturaleza",  alt: "Pescadores" },
+  { src: "/Galeria/farol.jpg",    category: "malecon",     alt: "Farol del Malecón" },
+];
+
+// ── Categorías ────────────────────────────────────────────────────────────────
+const categories = [
+  { id: "all",         name: "Todas",         icon: "📷" },
+  { id: "ciudadano",   name: "Comunidad",     icon: "🙌" },
+  { id: "malecon",     name: "Malecón",       icon: "🌊" },
+  { id: "fauna",       name: "Fauna Marina",  icon: "🐋" },
+  { id: "atardecer",   name: "Atardecer",     icon: "🌅" },
+  { id: "ciudad",      name: "Ciudad",        icon: "🏙️" },
+  { id: "naturaleza",  name: "Naturaleza",    icon: "🌿" },
+  { id: "gastronomia", name: "Gastronomía",   icon: "🍽️" },
+  { id: "noche",       name: "Noche",         icon: "🌙" },
 ];
 
 function MasonryGallery() {
-  const [lightbox, setLightbox] = useState({ open: false, idx: 0 });
-  const [showForm, setShowForm] = useState(false);
-  const [preview, setPreview] = useState(null);
-  const fileInput = useRef();
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [lightbox, setLightbox]             = useState({ open: false, idx: 0 });
+  const [showForm, setShowForm]             = useState(false);
+  const [preview, setPreview]               = useState(null);
+  const [animKey, setAnimKey]               = useState(0);
+  const [allImages, setAllImages]           = useState(images);
+  const fileInput                           = useRef();
+  const carouselRef                         = useRef();
+  const btnRefs                             = useRef({});
 
-  const [qrOrigin, setQrOrigin] = useState("");
+  // Cargar fotos subidas por usuarios
   useEffect(() => {
-    setQrOrigin(window.location.origin);
+    fetch('/api/photos')
+      .then(r => r.ok ? r.json() : [])
+      .then(userPhotos => {
+        if (userPhotos.length > 0) {
+          setAllImages([...userPhotos, ...images]);
+        }
+      })
+      .catch(() => {});
   }, []);
 
+  // URL base para el QR: usa la variable de entorno si está configurada,
+  // si no, detecta la origin real en tiempo de ejecución
+  const envUrl = import.meta.env.PUBLIC_SITE_URL || "";
+  const [qrOrigin, setQrOrigin] = useState(envUrl);
+  useEffect(() => {
+    if (!envUrl) setQrOrigin(window.location.origin);
+  }, []);
+
+  // Auto-avance del carrusel cada 3.5 s (pausa si el lightbox está abierto)
+  const pauseAuto   = useRef(false);
+  const autoTimerRef = useRef(null);
+
+  const scheduleNext = () => {
+    clearTimeout(autoTimerRef.current);
+    autoTimerRef.current = setTimeout(() => {
+      if (pauseAuto.current) { scheduleNext(); return; }
+      setActiveCategory(prev => {
+        const ids  = categories.map(c => c.id);
+        const next = ids[(ids.indexOf(prev) + 1) % ids.length];
+        setAnimKey(k => k + 1);
+        setTimeout(() => {
+          const btn  = btnRefs.current[next];
+          const rail = carouselRef.current;
+          if (btn && rail) {
+            rail.scrollTo({ left: btn.offsetLeft + btn.offsetWidth / 2 - rail.clientWidth / 2, behavior: "smooth" });
+          }
+        }, 10);
+        return next;
+      });
+      scheduleNext();
+    }, 3500);
+  };
+
+  useEffect(() => {
+    scheduleNext();
+    return () => clearTimeout(autoTimerRef.current);
+  }, []); // eslint-disable-line
+
+  // Pausar auto-avance cuando el lightbox está visible
+  useEffect(() => { pauseAuto.current = lightbox.open; }, [lightbox.open]);
+
+  // Imágenes filtradas
+  const filtered = useMemo(() =>
+    activeCategory === "all" ? allImages : allImages.filter(img => img.category === activeCategory),
+    [activeCategory, allImages]
+  );
+
+  // Cambiar categoría con animación + auto-centrado en el carrusel
+  const handleCategory = (id) => {
+    if (id === activeCategory) return;
+    setActiveCategory(id);
+    setAnimKey(k => k + 1);
+    if (lightbox.open) setLightbox({ open: false, idx: 0 });
+    // Reiniciar temporizador automático al interactuar manualmente
+    scheduleNext();
+    // Centrar el botón seleccionado en el carrusel
+    setTimeout(() => {
+      const btn = btnRefs.current[id];
+      const rail = carouselRef.current;
+      if (btn && rail) {
+        const btnCenter = btn.offsetLeft + btn.offsetWidth / 2;
+        const railCenter = rail.clientWidth / 2;
+        rail.scrollTo({ left: btnCenter - railCenter, behavior: "smooth" });
+      }
+    }, 10);
+  };
+
+  // Scroll del carrusel con flechas (reinicia temporizador)
+  const scrollCarousel = (dir) => {
+    const rail = carouselRef.current;
+    if (rail) rail.scrollBy({ left: dir * 200, behavior: "smooth" });
+    scheduleNext();
+  };
+
+  // Navegar dentro del filtro activo
+  const prevPhoto = (e) => {
+    e.stopPropagation();
+    setLightbox(l => ({ open: true, idx: (l.idx - 1 + filtered.length) % filtered.length }));
+  };
+  const nextPhoto = (e) => {
+    e.stopPropagation();
+    setLightbox(l => ({ open: true, idx: (l.idx + 1) % filtered.length }));
+  };
+
+  // Conteo por categoría
+  const countFor = (id) => id === "all" ? allImages.length : allImages.filter(i => i.category === id).length;
+
   return (
-    <div className="w-full min-h-screen bg-slate-950 p-4">
-      
-      {/* Botón debajo del logo/header */}
-      <div className="flex items-center justify-between mb-8" style={{ minHeight: '4.5rem' }}>
-        <button
-          className="bg-slate-800 border border-slate-700 active:scale-[0.98] text-white font-semibold py-3 px-5 rounded-full shadow-lg text-lg flex items-center gap-2 transition touch-manipulation"
-          onClick={() => window.location.href = '/'}
-          aria-label="Volver Atrás"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-          Volver
-        </button>
-        
-        <div className="flex flex-col items-center">
-          <button
-            className="bg-indigo-600 hover:bg-indigo-500 active:scale-[0.98] text-white font-bold py-4 px-8 rounded-full shadow-2xl text-xl flex items-center gap-3 transition touch-manipulation"
-            onClick={() => window.location.href = '/sube-tu-foto'}
-            aria-label="Enviar foto"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
-            ¡Envía tu foto!
-          </button>
-          
-          {/* QR Integrado con Origin Dinámico */}
-          {qrOrigin && (
-            <div className="flex flex-col items-center mt-3">
-              <img src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(qrOrigin + '/sube-tu-foto')}`} alt="QR" className="rounded-xl border border-indigo-400 p-1 shadow bg-white" width="100" height="100" loading="lazy" />
-              <span className="text-xs text-center text-white bg-indigo-700/80 px-3 py-1 rounded-full backdrop-blur shadow mt-2 tracking-wide">Escanear</span>
-            </div>
-          )}
-        </div>
-      </div>
-      
-      <div className="max-w-6xl mx-auto mt-0 md:mt-2">
-        <h1 className="text-5xl md:text-[5rem] font-black text-center text-indigo-400 mb-1 md:mb-2 tracking-tighter uppercase drop-shadow-lg">Galería</h1>
-        <p className="text-xl md:text-2xl text-center text-slate-300 font-semibold mb-8 md:mb-10 tracking-widest uppercase">Postales de nuestros visitantes</p>
-        
-        <div className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
-          {images.map((src, idx) => (
-            <div
-              key={src}
-              className="w-full mb-4 break-inside-avoid cursor-pointer rounded-2xl overflow-hidden shadow-lg shadow-black/40 border border-slate-700/60 relative active:scale-[0.97] transition-transform duration-200 touch-manipulation group"
-              onClick={() => setLightbox({ open: true, idx })}
-            >
-              <img
-                src={src}
-                alt={`Foto ${idx + 1}`}
-                className="w-full object-cover aspect-[4/3] touch-pan-y"
-                loading="lazy"
-                draggable={false}
-              />
-              <div className="absolute inset-0 bg-black/10 opacity-0 group-active:opacity-100 transition duration-150" />
-            </div>
-          ))}
-        </div>
+    <div className="w-full min-h-screen bg-slate-950 pb-16">
+
+      {/* ── ENCABEZADO ──────────────────────────────────────────────────── */}
+      <div className="max-w-6xl mx-auto px-4 pt-6 pb-4">
+        <h1 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400 tracking-tighter uppercase leading-none">
+          Galería
+        </h1>
+        <p className="text-slate-400 text-base font-semibold mt-1 tracking-widest uppercase">
+          Postales del Malecón de La Paz
+        </p>
       </div>
 
-      {/* Botón flotante Inferior */}
-      <div className="max-w-6xl mx-auto flex justify-center mt-12 mb-12">
-        <button
-          className="bg-indigo-600 hover:bg-indigo-500 text-white active:scale-95 font-bold py-5 px-10 rounded-full shadow-[0_10px_30px_rgba(79,70,229,0.5)] text-2xl flex items-center gap-3 transition touch-manipulation"
-          onClick={() => setShowForm(true)}
-          aria-label="Enviar foto"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-8 h-8">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-          </svg>
-          ¡Sube tu foto!
-        </button>
-      </div>
-
-      {/* Modal formulario touch-friendly */}
-      {showForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md animate-fadein px-4" onClick={() => setShowForm(false)}>
-          <form
-            className="bg-slate-900 border border-slate-700 rounded-3xl shadow-2xl p-8 w-full max-w-lg flex flex-col gap-6 relative touch-manipulation"
-            onClick={e => e.stopPropagation()}
-            onSubmit={e => { e.preventDefault(); alert('¡Gracias!'); setShowForm(false); setPreview(null); }}
-          >
-            <button type="button" className="absolute -top-4 -right-4 bg-slate-800 border-2 border-slate-600 rounded-full w-14 h-14 flex justify-center items-center text-white active:scale-90 shadow-xl" onClick={() => { setShowForm(false); setPreview(null); }} aria-label="Cerrar">
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
-            
-            <h2 className="text-3xl font-black text-center text-indigo-400 mb-2 uppercase tracking-tight">Carga tu memoria</h2>
-            
-            <div className="flex flex-col gap-4">
-              <input
-                type="file"
-                accept="image/*"
-                className="file:bg-indigo-600 file:border-none file:text-white file:px-6 file:py-3 file:rounded-full file:font-bold file:mr-4 file:active:scale-95 text-slate-300 font-medium"
-                required
-                ref={fileInput}
-                onChange={e => {
-                  const file = e.target.files[0];
-                  if (file) {
-                    const reader = new FileReader();
-                    reader.onload = ev => setPreview(ev.target.result);
-                    reader.readAsDataURL(file);
-                  } else {
-                    setPreview(null);
-                  }
-                }}
-              />
-              {preview && (
-                <img src={preview} alt="Preview" className="w-full object-cover rounded-2xl border border-indigo-500 shadow-xl aspect-video" />
-              )}
-            </div>
-            
-            <input type="text" className="bg-slate-800 border-slate-700 text-white rounded-xl px-4 py-4 text-lg outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition" placeholder="Tu nombre (opcional)" />
-            <textarea className="bg-slate-800 border-slate-700 text-white rounded-xl px-4 py-4 text-lg outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition" placeholder="Un lindo comentario (opcional)" rows={2} />
-            
-            <label className="flex items-center gap-4 text-slate-300 text-lg cursor-pointer p-2 active:bg-slate-800 rounded-lg">
-              <input type="checkbox" className="w-6 h-6 accent-indigo-500 rounded" required />
-              Acepto que mi foto sea compartida.
-            </label>
-            
-            <button type="submit" className="w-full bg-indigo-600 active:scale-[0.98] text-white font-bold py-5 rounded-full shadow-[0_5px_20px_rgba(79,70,229,0.5)] text-xl transition mt-2">Publicar Foto</button>
-          </form>
-        </div>
+      {/* ── QR FLOTANTE ─────────────────────────────────────────────────── */}
+      {qrOrigin && (
+        <a href="/sube-tu-foto"
+           className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4
+                      bg-slate-900/85 backdrop-blur-md border border-indigo-400/30
+                      rounded-3xl px-5 py-4 shadow-[0_0_40px_rgba(99,102,241,0.25)]
+                      no-underline active:scale-[0.97] transition-transform touch-manipulation"
+           style={{ animation: "qrFloat 3s ease-in-out infinite" }}>
+          {/* QR */}
+          <div className="shrink-0 rounded-2xl overflow-hidden border-2 border-indigo-400/60
+                          shadow-[0_0_14px_rgba(99,102,241,0.5)] bg-white p-1.5">
+            <img
+              src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&color=312e81&bgcolor=ffffff&data=${encodeURIComponent(qrOrigin + '/sube-tu-foto')}`}
+              alt="QR sube tu foto"
+              width="100" height="100" loading="lazy"
+              className="block rounded-lg"
+            />
+          </div>
+          {/* Texto */}
+          <div className="flex flex-col gap-1 max-w-[170px]">
+            <span className="text-indigo-300 font-black text-sm leading-tight tracking-wide uppercase">
+              ¡Comparte tu foto!
+            </span>
+            <span className="text-slate-400 text-xs leading-snug">
+              Escanea con tu celular o toca aquí para subir tu postal
+            </span>
+            <span className="text-indigo-500/80 text-[10px] font-mono mt-1 truncate"
+                  title={qrOrigin + '/sube-tu-foto'}>
+              {qrOrigin.replace(/^https?:\/\//, '')}/sube-tu-foto
+            </span>
+          </div>
+          {/* Flecha animada */}
+          <div className="absolute -left-3 top-1/2 -translate-y-1/2 text-indigo-400 text-lg"
+               style={{ animation: "qrArrow 1.2s ease-in-out infinite" }}>◀</div>
+        </a>
       )}
 
-      {/* Lightbox Gigante para Kioskos */}
+      {/* ── CARRUSEL DE FILTROS ─────────────────────────────────────────── */}
+      <div className="max-w-6xl mx-auto px-4 mb-6">
+        <div className="relative flex items-center gap-2">
+
+          {/* Flecha izquierda */}
+          <button
+            onClick={() => scrollCarousel(-1)}
+            className="shrink-0 w-11 h-11 flex items-center justify-center rounded-xl bg-slate-800/80 border border-white/10 text-slate-300 active:scale-90 active:bg-indigo-500/30 transition touch-manipulation z-10"
+            aria-label="Categorías anteriores"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7"/>
+            </svg>
+          </button>
+
+          {/* Rail con gradiente de fade en bordes */}
+          <div className="relative flex-1 overflow-hidden">
+            {/* Fade izquierda */}
+            <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 z-10"
+                 style={{ background: "linear-gradient(to right, rgb(2 6 23), transparent)" }} />
+            {/* Fade derecha */}
+            <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 z-10"
+                 style={{ background: "linear-gradient(to left, rgb(2 6 23), transparent)" }} />
+
+            {/* Scroll container con snap */}
+            <div
+              ref={carouselRef}
+              className="flex gap-3 overflow-x-auto pb-2 no-scrollbar"
+              style={{ scrollSnapType: "x mandatory", scrollBehavior: "smooth" }}
+            >
+              {categories.map(cat => {
+                const count = countFor(cat.id);
+                const isActive = activeCategory === cat.id;
+                return (
+                  <button
+                    key={cat.id}
+                    ref={el => (btnRefs.current[cat.id] = el)}
+                    onClick={() => handleCategory(cat.id)}
+                    style={{ scrollSnapAlign: "center" }}
+                    className={`shrink-0 flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-sm transition-all duration-250 focus:outline-none active:scale-95 border touch-manipulation ${
+                      isActive
+                        ? "bg-indigo-500/25 border-indigo-400/70 text-indigo-200 shadow-[0_0_20px_rgba(99,102,241,0.35)] scale-105"
+                        : "bg-slate-800/60 border-white/8 text-slate-400"
+                    }`}
+                  >
+                    <span className={`text-xl leading-none transition-transform duration-300 ${isActive ? "scale-125" : "scale-100"}`}>
+                      {cat.icon}
+                    </span>
+                    <span>{cat.name}</span>
+                    <span className={`text-xs font-black px-2 py-0.5 rounded-full transition-colors ${
+                      isActive ? "bg-indigo-500/40 text-indigo-200" : "bg-slate-700 text-slate-400"
+                    }`}>
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Flecha derecha */}
+          <button
+            onClick={() => scrollCarousel(1)}
+            className="shrink-0 w-11 h-11 flex items-center justify-center rounded-xl bg-slate-800/80 border border-white/10 text-slate-300 active:scale-90 active:bg-indigo-500/30 transition touch-manipulation z-10"
+            aria-label="Más categorías"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+
+        {/* Indicadores de posición (dots) */}
+        <div className="flex justify-center gap-1.5 mt-3">
+          {categories.map(cat => (
+            <button
+              key={cat.id}
+              onClick={() => handleCategory(cat.id)}
+              className={`rounded-full transition-all duration-300 touch-manipulation ${
+                activeCategory === cat.id
+                  ? "w-6 h-2 bg-indigo-400"
+                  : "w-2 h-2 bg-slate-600 hover:bg-slate-500"
+              }`}
+              aria-label={cat.name}
+            />
+          ))}
+        </div>
+
+        {/* Contador de resultados */}
+        <p className="text-slate-500 text-xs font-semibold mt-2 tracking-wide text-center">
+          {filtered.length} {filtered.length === 1 ? "fotografía" : "fotografías"} · {categories.find(c => c.id === activeCategory)?.name}
+        </p>
+      </div>
+
+      {/* ── GRID MASONRY ────────────────────────────────────────────────── */}
+      <div key={animKey} className="max-w-6xl mx-auto px-4 columns-2 md:columns-3 lg:columns-4 gap-3 gallery-grid">
+        {filtered.map((img, idx) => (
+          <div
+            key={img.src + idx}
+            className="w-full mb-3 break-inside-avoid cursor-pointer rounded-2xl overflow-hidden shadow-lg shadow-black/40 border border-slate-700/50 relative active:scale-[0.97] transition-transform duration-200 touch-manipulation group gallery-item"
+            onClick={() => setLightbox({ open: true, idx })}
+            style={{ animationDelay: `${Math.min(idx * 30, 300)}ms` }}
+          >
+            <img
+              src={img.src}
+              alt={img.alt}
+              className="w-full object-cover aspect-[4/3] touch-pan-y"
+              loading="lazy"
+              draggable={false}
+            />
+            {/* Badge comunidad */}
+            {img.category === "ciudadano" && (
+              <div className="absolute top-2 left-2 bg-indigo-600/90 backdrop-blur text-white text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1">
+                🙌 Comunidad
+              </div>
+            )}
+            {/* Overlay con nombre al hover/active */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-active:opacity-100 transition-opacity duration-150 flex items-end p-3">
+              <span className="text-white text-xs font-bold leading-tight">{img.alt}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* ── LIGHTBOX ────────────────────────────────────────────────────── */}
       {lightbox.open && (
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/95 backdrop-blur-xl animate-fadein"
           onClick={() => setLightbox({ open: false, idx: 0 })}
         >
-          {/* Close - Tap Area Gigante */}
+          {/* Contador */}
+          <div className="absolute top-6 left-1/2 -translate-x-1/2 bg-slate-800/80 backdrop-blur px-4 py-1.5 rounded-full text-white text-sm font-bold border border-white/10 pointer-events-none z-50">
+            {lightbox.idx + 1} / {filtered.length} · {filtered[lightbox.idx]?.alt}
+          </div>
+
+          {/* Cerrar */}
           <button
-            className="absolute top-6 right-6 w-16 h-16 md:w-20 md:h-20 flex items-center justify-center bg-slate-800/80 backdrop-blur-xl rounded-full text-white z-50 active:scale-90 transition border border-slate-600/50 shadow-[0_0_30px_rgba(0,0,0,0.8)]"
+            className="absolute top-6 right-6 w-16 h-16 flex items-center justify-center bg-slate-800/80 backdrop-blur-xl rounded-full text-white z-50 active:scale-90 transition border border-slate-600/50 shadow-2xl"
             onClick={e => { e.stopPropagation(); setLightbox({ open: false, idx: 0 }); }}
             aria-label="Cerrar"
           >
-            <svg className="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" /></svg>
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
-          
-          {/* Prev - Hit Area gigante vertical */}
+
+          {/* Anterior */}
           <button
-            className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 w-16 md:w-24 h-40 md:h-56 flex items-center justify-center bg-slate-800/60 backdrop-blur-xl rounded-3xl text-white z-50 active:scale-[0.98] active:bg-indigo-600 transition border border-slate-600/50 shadow-2xl touch-manipulation"
-            onClick={e => { e.stopPropagation(); setLightbox(l => ({ open: true, idx: (l.idx - 1 + images.length) % images.length })); }}
-            aria-label="Anterior"
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-16 h-44 flex items-center justify-center bg-slate-800/60 backdrop-blur-xl rounded-3xl text-white z-50 active:scale-[0.98] active:bg-indigo-600 transition border border-slate-600/50 shadow-2xl touch-manipulation"
+            onClick={prevPhoto} aria-label="Anterior"
           >
-            <svg className="w-12 h-12 md:w-16 md:h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" /></svg>
+            <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" /></svg>
           </button>
-          
-          {/* Foto Principal */}
+
+          {/* Foto principal */}
           <img
-            src={images[lightbox.idx]}
-            alt="Foto ampliada"
-            className="max-h-[90vh] max-w-[85vw] rounded-3xl shadow-[0_15px_60px_rgba(0,0,0,0.8)] object-contain pointer-events-none"
-            onClick={e => e.stopPropagation()}
+            src={filtered[lightbox.idx]?.src}
+            alt={filtered[lightbox.idx]?.alt}
+            className="max-h-[88vh] max-w-[82vw] rounded-3xl shadow-[0_15px_60px_rgba(0,0,0,0.9)] object-contain pointer-events-none"
             draggable={false}
+            onClick={e => e.stopPropagation()}
           />
-          
-          {/* Next - Hit Area gigante vertical */}
+
+          {/* Siguiente */}
           <button
-            className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 w-16 md:w-24 h-40 md:h-56 flex items-center justify-center bg-slate-800/60 backdrop-blur-xl rounded-3xl text-white z-50 active:scale-[0.98] active:bg-indigo-600 transition border border-slate-600/50 shadow-2xl touch-manipulation"
-            onClick={e => { e.stopPropagation(); setLightbox(l => ({ open: true, idx: (l.idx + 1) % images.length })); }}
-            aria-label="Siguiente"
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-16 h-44 flex items-center justify-center bg-slate-800/60 backdrop-blur-xl rounded-3xl text-white z-50 active:scale-[0.98] active:bg-indigo-600 transition border border-slate-600/50 shadow-2xl touch-manipulation"
+            onClick={nextPhoto} aria-label="Siguiente"
           >
-            <svg className="w-12 h-12 md:w-16 md:h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" /></svg>
+            <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" /></svg>
           </button>
+
+          {/* Miniaturas strip */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 overflow-x-auto no-scrollbar max-w-[80vw] px-2 pb-1">
+            {filtered.map((img, i) => (
+              <button
+                key={i}
+                onClick={e => { e.stopPropagation(); setLightbox({ open: true, idx: i }); }}
+                className={`shrink-0 w-14 h-10 rounded-lg overflow-hidden border-2 transition-all touch-manipulation ${
+                  i === lightbox.idx ? "border-indigo-400 scale-110 shadow-lg" : "border-transparent opacity-60"
+                }`}
+              >
+                <img src={img.src} alt={img.alt} className="w-full h-full object-cover" draggable={false} />
+              </button>
+            ))}
+          </div>
         </div>
       )}
+
       <style>{`
-        .animate-fadein { animation: fadein 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
-        @keyframes fadein { from { opacity: 0; backdrop-filter: blur(0px); } to { opacity: 1; backdrop-filter: blur(16px); } }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .gallery-grid { }
+        .gallery-item {
+          animation: galleryFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        @keyframes galleryFadeIn {
+          from { opacity: 0; transform: scale(0.94) translateY(8px); }
+          to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .animate-fadein { animation: fadein 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes qrFloat {
+          0%, 100% { transform: translateX(-50%) translateY(0px);   }
+          50%       { transform: translateX(-50%) translateY(-6px);  }
+        }
+        @keyframes qrArrow {
+          0%, 100% { transform: translateY(-50%) translateX(0px);  opacity: 1;   }
+          50%       { transform: translateY(-50%) translateX(-5px); opacity: 0.5; }
+        }
+        button, a { touch-action: manipulation; }
       `}</style>
     </div>
   );

@@ -55,7 +55,7 @@ import SectionCard from "../components/SectionCard.astro";
 
   <!-- Modal formulario -->
   <div id="reportModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50" aria-hidden="true" role="dialog" aria-modal="true">
-    <div class="bg-gray-900 rounded-xl shadow-xl w-[95%] md:w-3/4 lg:w-1/2 p-6 mx-auto" role="document">
+    <div class="bg-slate-900 rounded-xl shadow-xl w-[95%] md:w-3/4 lg:w-1/2 p-6 mx-auto border border-slate-700/50" role="document">
       <header class="flex items-start justify-between">
         <div>
           <h2 id="modalTitle" class="text-2xl font-black text-white">Nuevo reporte</h2>
@@ -68,18 +68,18 @@ import SectionCard from "../components/SectionCard.astro";
         <input type="hidden" name="category" id="categoryInput" value="" />
 
         <label class="block">
-          <span class="text-sm text-gray-200">Descripción</span>
-          <textarea name="description" id="description" rows="4" class="mt-1 block w-full rounded-md bg-gray-800 text-white p-3" placeholder="Describe brevemente el desperfecto..."></textarea>
+          <span class="text-sm text-slate-200">Descripción</span>
+          <textarea name="description" id="description" rows="4" class="mt-1 block w-full rounded-md bg-slate-800 border border-slate-600 text-white p-3 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" placeholder="Describe brevemente el desperfecto..."></textarea>
         </label>
 
         <label class="block">
-          <span class="text-sm text-gray-200">Foto (opcional)</span>
-          <input id="photoInput" name="photo" type="file" accept="image/*" class="mt-1 block w-full text-sm text-gray-200" />
+          <span class="text-sm text-slate-200">Foto (opcional)</span>
+          <input id="photoInput" name="photo" type="file" accept="image/*" class="mt-1 block w-full text-sm text-slate-200 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-cyan-500/20 file:text-cyan-300 file:font-semibold" />
         </label>
 
         <div class="flex gap-3 items-center">
-          <button id="geoBtn" type="button" class="px-3 py-2 bg-blue-600 text-white rounded">Usar mi ubicación</button>
-          <div id="coords" class="text-sm text-gray-300">—</div>
+          <button id="geoBtn" type="button" class="px-3 py-2 bg-cyan-600/80 hover:bg-cyan-600 text-white rounded-lg border border-cyan-500/40 font-semibold transition-colors">Usar mi ubicación</button>
+          <div id="coords" class="text-sm text-slate-300">—</div>
         </div>
 
         <div id="previewWrap" class="hidden">

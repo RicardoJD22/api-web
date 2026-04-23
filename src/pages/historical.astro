@@ -4,32 +4,44 @@ import SectionLayout from "../layouts/SectionLayout.astro";
 const statues = [
   {
     title: "Ballena Jorobada",
-    description: "Escultura icónica que celebra la riqueza marina de La Paz y la migración de ballenas en la región.",
+    author: "Octavio González",
+    year: "2007",
+    description: "Escultura de bronce que muestra a una ballena jorobada emergiendo del mar, obra del escultor Octavio González e inaugurada en 2007. Rinde homenaje a las migraciones de ballenas jorobadas que visitan el Mar de Cortés cada temporada invernal, destacando la importancia ecológica y turística de estos cetáceos para La Paz y toda la región sudcaliforniana.",
     image: "ballena-jorobada.webp",
   },
   {
     title: "La Perla",
-    description: "Representa la belleza y el aprecio por las perlas en la historia local.",
+    author: "Octavio González",
+    year: "2007",
+    description: "Obra de bronce de Octavio González que representa a una mujer saliendo de una enorme concha perlera, alusión directa al apodo de La Paz: \"La Perla del Mar de Cortés\". Celebra la época dorada en que la extracción de perlas fue la principal actividad económica y cultural de la ciudad, desde la época colonial hasta mediados del siglo XX, cuando La Paz era famosa a nivel mundial por la calidad de sus perlas.",
     image: "la-perla.webp",
   },
   {
     title: "El Ancla",
-    description: "Símbolo de la tradición marítima y la historia portuaria de La Paz.",
+    author: "Marina Mexicana (donación)",
+    year: "s/f",
+    description: "Un ancla original de grandes dimensiones donada por la Armada de México y colocada como escultura urbana en el malecón. Es un homenaje permanente a los navegantes, pescadores y marineros que han dado vida al puerto de La Paz desde su fundación, recordando el carácter portuario e histórico que define a la ciudad hasta nuestros días.",
     image: "el-ancla.webp",
   },
   {
     title: "Paraiso del Mar",
-    description: "Escultura que evoca la conexión entre la ciudad y el mar.",
+    author: "Octavio González",
+    year: "2000s",
+    description: "Escultura de bronce de Octavio González que despliega una escena submarina con peces, caracoles, caballitos de mar y figuras onduladas que evocan el movimiento de las olas del Mar de Cortés. Donada por el desarrollo inmobiliario homónimo, fue instalada cerca del cruce con la calle 5 de Mayo como símbolo de bienvenida y como celebración de la biodiversidad marina que rodea la península de Baja California.",
     image: "paraiso-del-mar.webp",
   },
   {
     title: "El Viejo y el Mar",
-    description: "Inspirada en la obra de Hemingway, homenajea la relación del hombre con el mar.",
+    author: "Octavio González",
+    year: "2006",
+    description: "Inaugurada en marzo de 2006 por el escultor Octavio González, esta monumental pieza de bronce recrea el pasaje más icónico de la novela homónima de Ernest Hemingway: un pescador mayor, de cuerpo delgado y musculoso, sentado en una pequeña embarcación mientras enfrenta a un enorme pez marlín que surge del agua. Simboliza la perseverancia humana ante la naturaleza y la íntima relación de los paceños con el mar y la pesca.",
     image: "el-viejo-y-el-mar.webp",
   },
   {
     title: "La Paloma",
-    description: "Escultura que simboliza la paz y la libertad en el malecón.",
+    author: "Carlos Espino",
+    year: "2004",
+    description: "Creada por el artista Carlos Espino e inaugurada en 2004 dentro del Proyecto de Remodelación del Malecón, esta escultura de bronce de gran formato representa a una paloma con líneas modernas y estilizadas elevada sobre una base para hacerla visible desde distintos puntos del paseo. Símbolo de paz, esperanza y libertad, su mensaje resuena con el propio nombre de la ciudad y la hospitalidad que caracteriza a sus habitantes.",
     image: "la-paloma.webp",
   }
 ];
@@ -67,12 +79,12 @@ const statues = [
     {/* Modal grande para mostrar información de la estatua seleccionada */}
     <script type="text/javascript">
       const statues = [
-        { title: "Ballena Jorobada", description: "Escultura icónica que celebra la riqueza marina de La Paz y la migración de ballenas en la región.", image: "ballena-jorobada.webp" },
-        { title: "La Perla", description: "Representa la belleza y el aprecio por las perlas en la historia local.", image: "la-perla.webp" },
-        { title: "El Ancla", description: "Símbolo de la tradición marítima y la historia portuaria de La Paz.", image: "el-ancla.webp" },
-        { title: "Paraiso del Mar", description: "Escultura que evoca la conexión entre la ciudad y el mar.", image: "paraiso-del-mar.webp" },
-        { title: "El Viejo y el Mar", description: "Inspirada en la obra de Hemingway, homenajea la relación del hombre con el mar.", image: "el-viejo-y-el-mar.webp" },
-        { title: "La Paloma", description: "Escultura que simboliza la paz y la libertad en el malecón.", image: "la-paloma.webp" }
+        { title: "Ballena Jorobada", author: "Octavio González", year: "2007", description: "Escultura de bronce que muestra a una ballena jorobada emergiendo del mar, obra del escultor Octavio González e inaugurada en 2007. Rinde homenaje a las migraciones de ballenas jorobadas que visitan el Mar de Cortés cada temporada invernal, destacando la importancia ecológica y turística de estos cetáceos para La Paz y toda la región sudcaliforniana.", image: "ballena-jorobada.webp" },
+        { title: "La Perla", author: "Octavio González", year: "2007", description: "Obra de bronce de Octavio González que representa a una mujer saliendo de una enorme concha perlera, alusión directa al apodo de La Paz: \"La Perla del Mar de Cortés\". Celebra la época dorada en que la extracción de perlas fue la principal actividad económica y cultural de la ciudad, desde la época colonial hasta mediados del siglo XX, cuando La Paz era famosa a nivel mundial por la calidad de sus perlas.", image: "la-perla.webp" },
+        { title: "El Ancla", author: "Marina Mexicana (donación)", year: "s/f", description: "Un ancla original de grandes dimensiones donada por la Armada de México y colocada como escultura urbana en el malecón. Es un homenaje permanente a los navegantes, pescadores y marineros que han dado vida al puerto de La Paz desde su fundación, recordando el carácter portuario e histórico que define a la ciudad hasta nuestros días.", image: "el-ancla.webp" },
+        { title: "Paraiso del Mar", author: "Octavio González", year: "2000s", description: "Escultura de bronce de Octavio González que despliega una escena submarina con peces, caracoles, caballitos de mar y figuras onduladas que evocan el movimiento de las olas del Mar de Cortés. Donada por el desarrollo inmobiliario homónimo, fue instalada cerca del cruce con la calle 5 de Mayo como símbolo de bienvenida y como celebración de la biodiversidad marina.", image: "paraiso-del-mar.webp" },
+        { title: "El Viejo y el Mar", author: "Octavio González", year: "2006", description: "Inaugurada en marzo de 2006 por el escultor Octavio González, esta monumental pieza de bronce recrea el pasaje más icónico de la novela homónima de Ernest Hemingway: un pescador mayor en una pequeña embarcación enfrentando a un enorme pez marlín. Simboliza la perseverancia humana ante la naturaleza y la íntima relación de los paceños con el mar y la pesca.", image: "el-viejo-y-el-mar.webp" },
+        { title: "La Paloma", author: "Carlos Espino", year: "2004", description: "Creada por Carlos Espino e inaugurada en 2004, esta escultura de bronce representa a una paloma con líneas modernas y estilizadas elevada sobre una base. Símbolo de paz, esperanza y libertad, su mensaje resuena con el propio nombre de la ciudad y la hospitalidad que caracteriza a sus habitantes.", image: "la-paloma.webp" }
       ];
       let modalOpen = false;
       let selectedIdx = null;
@@ -96,6 +108,7 @@ const statues = [
           modal.querySelector('.modal-title').textContent = statues[selectedIdx].title;
           modal.querySelector('.modal-img').src = `/statues/${statues[selectedIdx].image}`;
           modal.querySelector('.modal-img').alt = statues[selectedIdx].title;
+          modal.querySelector('.modal-author').textContent = `${statues[selectedIdx].author} · ${statues[selectedIdx].year}`;
           modal.querySelector('.modal-desc').textContent = statues[selectedIdx].description;
         } else {
           modal.style.display = 'none';
@@ -112,11 +125,12 @@ const statues = [
       });
     </script>
     <div id="statue-modal" style="display:none;" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-lg">
-      <div class="relative w-full max-w-2xl mx-auto flex flex-col items-center justify-center bg-gray-900 rounded-2xl shadow-2xl p-0 md:p-8 animate-fade-in" style="min-height:60vh;max-height:90vh;">
+      <div class="relative w-full max-w-4xl mx-4 flex flex-col items-center justify-start bg-gray-900 rounded-2xl shadow-2xl p-6 md:p-10 overflow-y-auto animate-fade-in" style="max-height:92vh;">
         <button class="absolute top-4 right-4 text-gray-400 hover:text-blue-400 text-3xl font-bold z-10" onclick="closeModal()" aria-label="Cerrar">×</button>
-        <img class="modal-img w-40 h-40 object-cover rounded-xl mb-4 shadow-lg" src="" alt="" />
-        <h2 class="modal-title text-3xl md:text-4xl font-extrabold text-white text-center mb-2 drop-shadow-lg"></h2>
-        <p class="modal-desc text-white text-base text-center mb-6"></p>
+        <img class="modal-img w-full h-72 md:h-96 object-cover rounded-xl mb-6 shadow-lg" src="" alt="" />
+        <h2 class="modal-title text-3xl md:text-4xl font-extrabold text-white text-center mb-1 drop-shadow-lg"></h2>
+        <p class="modal-author text-teal-400 text-sm font-semibold text-center mb-3 tracking-wide uppercase"></p>
+        <p class="modal-desc text-slate-300 text-base text-center leading-relaxed mb-6 px-2"></p>
       </div>
     </div>
   </section>

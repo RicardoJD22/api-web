@@ -5,7 +5,7 @@ import MaleconApp from '../components/MaleconApp.jsx';
 
 <Layout title="Guía Interactiva del Malecón - La Paz BCS">
   <main class="w-full h-screen overflow-hidden m-0 p-0 fixed inset-0">
-    {/* Montamos la aplicación React asegurándonos que se ejecute del lado del cliente por la dependencia de Leaflet con Window */}
+    {/* client:only — MapLibre GL requiere acceso a Window/WebGL, se monta solo en el cliente */}
     <MaleconApp client:only="react" />
   </main>
 </Layout>
@@ -21,5 +21,26 @@ import MaleconApp from '../components/MaleconApp.jsx';
     overscroll-behavior: none;
     user-select: none;
     -webkit-user-select: none;
+  }
+
+  /* ── Reposicionar botones flotantes en la página del mapa ─────────────────
+     En otras páginas van en bottom-8; aquí los subimos al área del mapa
+     para que no tapen el directorio inferior.
+  ───────────────────────────────────────────────────────────────────────── */
+  .back-btn {
+    bottom: auto !important;
+    top: 1.5rem !important;
+  }
+
+  #a11y-toggle {
+    bottom: auto !important;
+    top: 1.5rem !important;
+  }
+
+  /* El panel de accesibilidad se abre hacia abajo cuando el botón está arriba */
+  #a11y-panel {
+    bottom: auto !important;
+    top: 5.5rem !important;
+    transform-origin: top right !important;
   }
 </style>

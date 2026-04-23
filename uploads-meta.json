@@ -1,0 +1,20 @@
+[
+  {
+    "filename": "foto_1776579148506.png",
+    "src": "/Galeria/uploads/foto_1776579148506.png",
+    "nombre": "ing. jorge Garcia",
+    "comentario": "UABCS",
+    "date": "2026-04-19T06:12:28.515Z",
+    "category": "ciudadano",
+    "alt": "Foto de ing. jorge Garcia"
+  },
+  {
+    "filename": "foto_1776579011408.jpg",
+    "src": "/Galeria/uploads/foto_1776579011408.jpg",
+    "nombre": "jorge",
+    "comentario": "mia",
+    "date": "2026-04-19T06:10:11.411Z",
+    "category": "ciudadano",
+    "alt": "Foto de jorge"
+  }
+]

@@ -1,0 +1,284 @@
+---
+interface Props {
+  autoSeconds?: number; // segundos antes de auto-dismiss (0 = desactivado)
+}
+const { autoSeconds = 6 } = Astro.props;
+---
+
+<!-- ════════════════════════════════════════════
+     SPLASH SCREEN — Malecón de La Paz BCS
+     ════════════════════════════════════════════ -->
+<div
+  id="splash"
+  role="region"
+  aria-label="Pantalla de bienvenida al Malecón de La Paz"
+  class="fixed inset-0 z-[9998] flex flex-col items-center justify-between overflow-hidden"
+  style="background: linear-gradient(175deg, #020617 0%, #0a1628 35%, #0c2a40 65%, #0f3f5c 100%);"
+>
+
+  <!-- ── Estrellas / partículas ── -->
+  <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true" id="splash-stars"></div>
+
+  <!-- ── Sol poniente ── -->
+  <div class="absolute pointer-events-none" aria-hidden="true"
+    style="bottom: 28%; left: 50%; transform: translateX(-50%); width: 340px; height: 340px; border-radius: 50%;
+           background: radial-gradient(circle, rgba(251,146,60,0.18) 0%, rgba(234,88,12,0.08) 50%, transparent 75%);
+           animation: sun-pulse 4s ease-in-out infinite;">
+  </div>
+
+  <!-- ── Olas animadas (fondo) ── -->
+  <div class="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden" aria-hidden="true" style="height:260px;">
+    <!-- Ola trasera -->
+    <svg class="splash-wave-back absolute bottom-0" viewBox="0 0 1440 180" preserveAspectRatio="none"
+         style="width:200%;height:180px;" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 90 C240 20, 480 160, 720 90 S1200 20, 1440 90 S1680 160, 2160 90 L2160 180 L0 180 Z"
+            fill="rgba(6,182,212,0.09)"/>
+    </svg>
+    <!-- Ola media -->
+    <svg class="splash-wave-mid absolute bottom-0" viewBox="0 0 1440 150" preserveAspectRatio="none"
+         style="width:200%;height:150px;" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 75 C360 15, 720 135, 1080 75 S1440 15, 1800 75 L1800 150 L0 150 Z"
+            fill="rgba(14,165,233,0.12)"/>
+    </svg>
+    <!-- Ola delantera -->
+    <svg class="splash-wave-front absolute bottom-0" viewBox="0 0 1440 120" preserveAspectRatio="none"
+         style="width:200%;height:120px;" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 60 C180 10, 360 110, 540 60 S900 10, 1080 60 S1260 110, 1440 60 S1620 10, 1800 60 L1800 120 L0 120 Z"
+            fill="rgba(34,211,238,0.15)"/>
+    </svg>
+    <!-- Brillo de espuma -->
+    <svg class="splash-wave-foam absolute bottom-0" viewBox="0 0 1440 40" preserveAspectRatio="none"
+         style="width:200%;height:40px;" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 20 C120 5, 240 35, 360 20 S600 5, 720 20 S960 35, 1080 20 S1320 5, 1440 20 S1680 35, 1800 20 L1800 40 L0 40 Z"
+            fill="rgba(186,230,253,0.10)"/>
+    </svg>
+  </div>
+
+  <!-- ── Logos ── -->
+  <header class="relative z-10 flex items-center justify-between w-full px-8 pt-10 md:pt-14"
+          style="animation: splash-fade-down 0.8s ease-out both;">
+    <img src="/bcs_logo.png" alt="Logo BCS" class="h-14 md:h-20 object-contain drop-shadow-lg opacity-90" />
+    <img src="/api_logo.png" alt="Logo API" class="h-12 md:h-16 object-contain drop-shadow-lg opacity-90" />
+  </header>
+
+  <!-- ── Contenido central ── -->
+  <main class="relative z-10 flex flex-col items-center text-center px-6 gap-6 mt-auto mb-auto"
+        style="animation: splash-fade-up 0.9s 0.15s ease-out both;">
+
+    <!-- Emoji decorativo -->
+    <div class="text-6xl md:text-8xl select-none splash-float" aria-hidden="true">🌊</div>
+
+    <!-- Título principal -->
+    <div class="flex flex-col items-center gap-2">
+      <h1 class="splash-title text-5xl sm:text-7xl md:text-8xl font-black uppercase leading-none tracking-tight"
+          style="color: #fff; text-shadow: 0 0 60px rgba(34,211,238,0.5), 0 4px 20px rgba(0,0,0,0.7);">
+        Malecón
+      </h1>
+      <h2 class="text-3xl sm:text-5xl md:text-6xl font-black uppercase leading-none tracking-wide"
+          style="color: #67e8f9; text-shadow: 0 0 30px rgba(34,211,238,0.6);">
+        de La Paz
+      </h2>
+      <p class="text-sm sm:text-base md:text-lg font-semibold tracking-[0.25em] uppercase text-cyan-200/60 mt-1">
+        Baja California Sur
+      </p>
+    </div>
+
+    <!-- Separador ola pequeña -->
+    <svg viewBox="0 0 200 12" class="w-40 md:w-56 opacity-40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M0 6 C33 0, 66 12, 100 6 S167 0, 200 6" stroke="#22d3ee" stroke-width="2" fill="none"/>
+    </svg>
+
+    <!-- Subtítulo -->
+    <p class="text-lg sm:text-xl md:text-2xl text-slate-300/80 font-medium max-w-sm md:max-w-lg leading-relaxed">
+      Descubre todo lo que el malecón tiene para ti
+    </p>
+
+    <!-- Botón CTA con ripple -->
+    <button
+      id="splash-cta"
+      aria-label="Toca para comenzar a explorar el Malecón"
+      class="splash-cta relative mt-4 px-10 py-5 rounded-2xl font-black text-xl md:text-2xl uppercase tracking-widest text-slate-900 overflow-hidden focus:outline-none focus:ring-4 focus:ring-cyan-400/50"
+      style="background: linear-gradient(135deg, #22d3ee, #0891b2); box-shadow: 0 0 40px rgba(34,211,238,0.4), 0 8px 24px rgba(0,0,0,0.4); animation: splash-cta-pulse 2s ease-in-out infinite;"
+    >
+      <!-- Ripple animado -->
+      <span class="absolute inset-0 rounded-2xl pointer-events-none" id="splash-ripple-wrap" aria-hidden="true"></span>
+      <!-- Texto -->
+      <span class="relative z-10 flex items-center gap-3">
+        <span>👆</span>
+        <span>Toca para comenzar</span>
+      </span>
+    </button>
+
+  </main>
+
+  <!-- ── Barra de progreso ── -->
+  <footer class="relative z-10 w-full flex flex-col items-center gap-2 pb-8 px-8"
+          style="animation: splash-fade-up 1s 0.3s ease-out both;">
+    {autoSeconds > 0 && (
+      <p class="text-xs text-cyan-300/50 font-medium tracking-widest uppercase" aria-live="polite">
+        Continúa automáticamente en <span id="splash-count">{autoSeconds}</span>s
+      </p>
+    )}
+    <div class="w-full max-w-xs h-1 rounded-full bg-white/10 overflow-hidden">
+      <div
+        id="splash-bar"
+        class="h-full rounded-full"
+        style={`background: linear-gradient(90deg, #22d3ee, #0891b2); width: 0%; transition: width ${autoSeconds}s linear;`}
+      ></div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ════ ESTILOS ════ -->
+<style>
+  /* Animaciones de entrada */
+  @keyframes splash-fade-down {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes splash-fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  /* Flotación suave del emoji */
+  @keyframes splash-float {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50%       { transform: translateY(-14px) rotate(3deg); }
+  }
+  .splash-float { animation: splash-float 4s ease-in-out infinite; }
+
+  /* Pulso del CTA */
+  @keyframes splash-cta-pulse {
+    0%, 100% { box-shadow: 0 0 40px rgba(34,211,238,0.4), 0 8px 24px rgba(0,0,0,0.4); }
+    50%       { box-shadow: 0 0 70px rgba(34,211,238,0.7), 0 8px 32px rgba(0,0,0,0.5); }
+  }
+
+  /* Olas */
+  @keyframes wave-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .splash-wave-back  { animation: wave-scroll 14s linear infinite; }
+  .splash-wave-mid   { animation: wave-scroll 9s  linear infinite reverse; }
+  .splash-wave-front { animation: wave-scroll 6s  linear infinite; }
+  .splash-wave-foam  { animation: wave-scroll 4s  linear infinite reverse; }
+
+  /* Sol */
+  @keyframes sun-pulse {
+    0%, 100% { transform: translateX(-50%) scale(1);   opacity: 0.7; }
+    50%       { transform: translateX(-50%) scale(1.15); opacity: 1;   }
+  }
+
+  /* Título */
+  .splash-title { font-family: 'Komtits', 'Outfit', sans-serif; }
+
+  /* Salida del splash */
+  #splash.splash-exit {
+    opacity: 0;
+    transform: scale(1.04);
+    pointer-events: none;
+    transition: opacity 0.6s ease-in, transform 0.6s ease-in;
+  }
+</style>
+
+<style is:global>
+  @font-face {
+    font-family: "Komtits";
+    src: url("/fonts/KOMTITBR.ttf") format("truetype");
+    font-style: normal;
+    font-display: swap;
+  }
+</style>
+
+<!-- ════ SCRIPT ════ -->
+<script is:inline define:vars={{ autoSeconds }}>
+  (() => {
+    const splash = document.getElementById('splash');
+    const bar    = document.getElementById('splash-bar');
+    const countEl = document.getElementById('splash-count');
+    const cta    = document.getElementById('splash-cta');
+    if (!splash) return;
+
+    // Si viene del botón "Regresar", saltar la splash directamente
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('skip')) {
+      splash.style.display = 'none';
+      document.body.style.overflow = '';
+      // Limpiar el param de la URL sin recargar
+      const cleanUrl = window.location.pathname;
+      history.replaceState(null, '', cleanUrl);
+      return;
+    }
+
+    let dismissed = false;
+
+    function dismiss() {
+      if (dismissed) return;
+      dismissed = true;
+      splash.classList.add('splash-exit');
+      setTimeout(() => {
+        splash.style.display = 'none';
+        document.body.style.overflow = '';
+      }, 650);
+    }
+
+    // Bloquear scroll mientras splash está visible
+    document.body.style.overflow = 'hidden';
+
+    // CTA toca para comenzar
+    cta?.addEventListener('click', dismiss);
+    cta?.addEventListener('touchstart', dismiss, { passive: true });
+
+    // Toque en cualquier parte del overlay también descarta
+    splash.addEventListener('touchstart', dismiss, { passive: true });
+
+    if (autoSeconds > 0) {
+      // Arrancar barra de progreso en el siguiente frame
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (bar) bar.style.width = '100%';
+        });
+      });
+
+      // Countdown de segundos en el texto
+      let remaining = autoSeconds;
+      const cdInterval = setInterval(() => {
+        remaining -= 1;
+        if (countEl) countEl.textContent = String(remaining);
+        if (remaining <= 0) clearInterval(cdInterval);
+      }, 1000);
+
+      // Auto-dismiss
+      setTimeout(dismiss, autoSeconds * 1000);
+    }
+
+    // Generar estrellas dinámicamente
+    const starsContainer = document.getElementById('splash-stars');
+    if (starsContainer) {
+      const fragment = document.createDocumentFragment();
+      for (let i = 0; i < 60; i++) {
+        const star = document.createElement('div');
+        const size = 1 + Math.random() * 2.5;
+        const x    = Math.random() * 100;
+        const y    = Math.random() * 70;
+        const dur  = 2 + Math.random() * 4;
+        const del  = Math.random() * 4;
+        star.style.cssText = `
+          position:absolute;
+          width:${size}px; height:${size}px;
+          left:${x}%; top:${y}%;
+          border-radius:50%;
+          background:rgba(255,255,255,${0.3 + Math.random() * 0.7});
+          animation: star-twinkle ${dur}s ${del}s ease-in-out infinite;
+        `;
+        fragment.appendChild(star);
+      }
+      starsContainer.appendChild(fragment);
+    }
+  })();
+</script>
+
+<style>
+  @keyframes star-twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(1);    }
+    50%       { opacity: 1;   transform: scale(1.4);  }
+  }
+</style>

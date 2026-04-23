@@ -9,7 +9,7 @@ import ImageCarousel from "../components/ImageCarousel.jsx";
       <div class="w-full h-full flex items-center justify-center">
         <div class="w-[90%] h-[90%] flex items-center justify-center">
           <ImageCarousel
-            client:load
+            client:only="react"
             images={["/bcs_logo.png", "/logo-lapaz.png", "/api_logo.png"]}
             interval={3000}
             alt="Logos institucionales"
