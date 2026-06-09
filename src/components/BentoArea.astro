@@ -52,12 +52,15 @@ import SocialCard from "./SocialCard.jsx";
       <div class="absolute inset-0 bg-slate-900/40"></div>
     </figure>
     <div slot="content" class="relative z-10 flex flex-col items-center justify-between h-full w-full">
-      <div class="w-full flex flex-row-reverse mb-auto px-4 pt-4">
-         <span class="bg-cyan-500/90 backdrop-blur text-slate-950 font-bold px-5 py-2 rounded-full text-lg shadow-xl animate-pulse uppercase tracking-widest border border-cyan-300">Toca 👆</span>
+      <div class="flex flex-col items-center text-center w-full px-4 mb-4 gap-1 mt-auto">
+        <p class="text-sm font-semibold text-cyan-300/80 uppercase tracking-[0.3em]">Tu opinión cuenta</p>
+        <h2 class="text-4xl font-black text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] leading-none tracking-tighter uppercase">
+          AYÚDANOS A
+        </h2>
+        <h2 class="text-4xl font-black leading-none tracking-tighter uppercase drop-shadow-[0_0_20px_rgba(34,211,238,0.7)]" style="background: linear-gradient(90deg, #ddecee, #d7d9ea); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+          MEJORAR
+        </h2>
       </div>
-      <h2 class="text-4xl lg:text-5xl font-black text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] text-center w-full px-4 mb-4 leading-tight tracking-wide">
-        AYÚDANOS A <br/><span class="text-cyan-400">MEJORAR</span>
-      </h2>
     </div>
   </BentoCard>
 
@@ -74,19 +77,12 @@ import SocialCard from "./SocialCard.jsx";
     </figure>
     
     <div slot="content" class="relative z-10 flex flex-col h-full w-full p-6">
-      
-      <div class="flex justify-between items-start w-full">
-        <div class="bg-amber-500/20 border border-amber-400/30 backdrop-blur-md rounded-2xl p-3 flex shadow-lg items-center justify-center">
-          <svg class="w-8 h-8 md:w-10 md:h-10 text-amber-300 opacity-90 drop-shadow-md" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
-        </div>
-         <span class="bg-amber-500 text-slate-900 font-extrabold px-5 py-2 rounded-full text-lg shadow-[0_0_20px_rgba(245,158,11,0.5)] uppercase tracking-widest border border-amber-300">Toca 👆</span>
-      </div>
 
       <div class="mt-auto flex flex-col items-start text-left">
-        <h1 class="text-5xl md:text-[4rem] font-black text-amber-50 drop-shadow-2xl mb-2 uppercase tracking-tighter leading-none">
+        <h1 class="text-4xl font-black text-amber-50 drop-shadow-2xl mb-2 uppercase tracking-tighter leading-none">
           AVÍSANOS
         </h1>
-        <h3 class="text-lg md:text-xl md:text-2xl font-bold text-amber-200/90 tracking-wide text-balance border-l-4 border-amber-500 pl-3">
+        <h3 class="text-sm font-semibold leading-snug text-white">
           ¡Realiza un Reporte!
         </h3>
       </div>
@@ -122,78 +118,17 @@ import SocialCard from "./SocialCard.jsx";
     <!-- ── CONTENIDO ── -->
     <div class="relative z-10 flex flex-col h-full w-full p-5 gap-3">
 
-      <!-- Header: badge + toca -->
-      <div class="flex items-start justify-between w-full">
-        <div class="flex flex-col gap-2">
-          <!-- Badge categoría -->
-          <div class="inline-flex items-center gap-2 bg-teal-500/15 border border-teal-400/30 backdrop-blur-md rounded-xl px-3 py-1.5">
-            <svg class="w-4 h-4 text-teal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064" />
-            </svg>
-            <span class="text-teal-300 text-xs font-bold tracking-widest uppercase">Historia & Cultura</span>
-          </div>
-        </div>
-        <span class="bg-teal-500 text-slate-950 font-extrabold px-4 py-1.5 rounded-full text-sm shadow-[0_0_20px_rgba(20,184,166,0.5)] uppercase tracking-widest border border-teal-300 whitespace-nowrap">
-          Toca 👆
-        </span>
-      </div>
-
-      <!-- Strip de esculturas (preview) -->
-      <div class="flex gap-2 mt-auto">
-        {[
-          { src: "/statues/ballena-jorobada.webp",  alt: "Ballena Jorobada",  fallback: "🐋" },
-          { src: "/statues/la-perla.webp",           alt: "La Perla",          fallback: "🦪" },
-          { src: "/statues/el-ancla.webp",           alt: "El Ancla",          fallback: "⚓" },
-        ].map(s => (
-          <div class="flex-1 aspect-square rounded-2xl overflow-hidden border border-teal-400/20 shadow-lg relative">
-            <img
-              src={s.src}
-              alt={s.alt}
-              class="w-full h-full object-cover opacity-80 group-active:opacity-100 transition-opacity"
-              onerror={`this.onerror=null;this.parentElement.innerHTML='<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:rgba(20,184,166,0.12);font-size:1.8rem;">${s.fallback}</div>'`}
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-teal-950/80 to-transparent"></div>
-          </div>
-        ))}
-        <!-- +3 más badge -->
-        <div class="flex-1 aspect-square rounded-2xl border border-teal-400/20 flex items-center justify-center"
-             style="background: rgba(20,184,166,0.08);">
-          <div class="text-center">
-            <span class="text-teal-300 font-black text-lg leading-none block">+3</span>
-            <span class="text-teal-400/70 text-[10px] font-bold leading-none">más</span>
-          </div>
-        </div>
-      </div>
-
       <!-- Título principal -->
-      <div class="flex flex-col gap-1">
-        <h2 class="text-4xl md:text-5xl font-black leading-none tracking-tighter"
+      <div class="flex flex-col gap-1 mt-auto">
+        <h2 class="text-4xl font-black leading-none tracking-tighter uppercase"
             style="color: white; text-shadow: 0 0 40px rgba(20,184,166,0.6), 0 4px 12px rgba(0,0,0,0.8);">
           Ecos del Mar
         </h2>
-        <p class="text-teal-200/80 text-sm font-semibold leading-snug border-l-2 border-teal-500 pl-2.5">
+        <p class="text-teal-200/80 text-sm font-semibold leading-snug">
           Esculturas e historia viva en el Malecón de La Paz
         </p>
       </div>
 
-      <!-- Wave + CTA -->
-      <div class="relative">
-        <!-- Ola SVG decorativa -->
-        <svg viewBox="0 0 300 28" class="w-full mb-2 opacity-30" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 14 C50 0, 100 28, 150 14 S250 0, 300 14" stroke="#2dd4bf" stroke-width="2" fill="none" class="wave-path"/>
-          <path d="M0 20 C50 6, 100 34, 150 20 S250 6, 300 20" stroke="#0d9488" stroke-width="1.5" fill="none" class="wave-path-2"/>
-        </svg>
-
-        <!-- CTA Pill animado -->
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl border border-teal-400/40 w-full justify-center"
-             style="background: linear-gradient(135deg, rgba(20,184,166,0.2), rgba(13,148,136,0.1)); backdrop-filter: blur(8px);">
-          <span class="text-teal-300 font-black text-sm tracking-widest uppercase">Descubre las Esculturas</span>
-          <svg class="w-4 h-4 text-teal-400 group-active:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-          </svg>
-        </div>
-      </div>
     </div>
   </a>
 
@@ -226,15 +161,14 @@ import SocialCard from "./SocialCard.jsx";
     <div slot="content" class="relative z-10 flex flex-col h-full w-full p-6 justify-between">
       
       <div class="w-full flex justify-end">
-         <span class="bg-indigo-500/90 text-indigo-50 font-extrabold px-5 py-2 rounded-full text-lg shadow-[0_0_20px_rgba(99,102,241,0.5)] uppercase tracking-widest border border-indigo-300 animate-pulse">Toca 👆</span>
       </div>
 
       <div class="mt-auto flex flex-col items-start w-full">
-        <h1 class="text-4xl md:text-[3.5rem] font-black text-indigo-100 drop-shadow-2xl mb-3 uppercase tracking-tighter leading-none">
+        <h1 class="text-4xl font-black text-indigo-100 drop-shadow-2xl mb-3 uppercase tracking-tighter leading-none">
           GALERÍA
         </h1>
         <div class="w-full bg-indigo-950/40 border border-indigo-500/30 backdrop-blur-md rounded-xl p-3 border-l-4 overflow-hidden">
-         <div class="marquee whitespace-nowrap text-indigo-100 text-sm sm:text-base font-bold drop-shadow tracking-widest uppercase text-center">
+         <div class="marquee whitespace-nowrap text-indigo-100 text-sm font-semibold leading-snug drop-shadow uppercase text-center">
             <span>
                EXPLORA EL MALECÓN &nbsp;•&nbsp; CADA FOTO UNA EMOCIÓN &nbsp;•&nbsp; EXPLORA EL MALECÓN
             </span>

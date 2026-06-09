@@ -229,12 +229,12 @@ function WeatherCard() {
       {/* Header row */}
       <div className="relative z-10 flex items-start justify-between px-5 pt-5">
         <div>
-          <p className="text-white/40 text-[10px] uppercase tracking-[.2em]">La Paz, BCS</p>
+          <p className="text-white/40 text-xs uppercase tracking-[.2em]">La Paz, BCS</p>
           <p className="text-white/60 text-xs font-medium">{isDay ? "☀️ Día" : "🌙 Noche"}</p>
         </div>
         <div className="flex flex-col items-end gap-0.5">
-          <span className="text-white/50 text-[11px]">💧 {humidity}%</span>
-          <span className="text-white/50 text-[11px]">🌬️ {wind} km/h</span>
+          <span className="text-white/50 text-xs">💧 {humidity}%</span>
+          <span className="text-white/50 text-xs">🌬️ {wind} km/h</span>
         </div>
       </div>
 
@@ -251,7 +251,7 @@ function WeatherCard() {
           </span>
           <span className="text-2xl font-bold text-white/60 mt-5">°C</span>
         </div>
-        <p className="text-white/75 text-sm capitalize font-semibold -mt-1">{desc}</p>
+        <p className="text-white/75 text-sm font-semibold leading-snug -mt-1 capitalize">{desc}</p>
         <p className="text-white/40 text-xs mt-0.5">Sensación {feels}° · {min}° / {max}°</p>
       </div>
 
@@ -264,8 +264,8 @@ function WeatherCard() {
         ].map(s => (
           <div key={s.label} className="flex flex-col items-center bg-white/10 backdrop-blur-sm rounded-2xl py-2.5 px-1">
             <span className="text-xl leading-none mb-1">{s.icon}</span>
-            <span className="text-white/40 text-[9px] uppercase tracking-wider">{s.label}</span>
-            <span className="text-white text-[11px] font-semibold text-center leading-tight mt-0.5">{s.val}</span>
+            <span className="text-white/40 text-xs uppercase tracking-wider">{s.label}</span>
+            <span className="text-white text-xs font-semibold text-center leading-tight mt-0.5">{s.val}</span>
           </div>
         ))}
       </div>
@@ -273,14 +273,14 @@ function WeatherCard() {
       {/* 5-day forecast */}
       {forecast.length > 0 && (
         <div className="relative z-10 mx-4 mt-3 mb-4">
-          <p className="text-white/30 text-[9px] uppercase tracking-[.2em] mb-2 text-center">Próximos días</p>
+          <p className="text-white/30 text-xs uppercase tracking-[.2em] mb-2 text-center">Próximos días</p>
           <div className="flex gap-1.5">
             {forecast.map(day => (
               <div key={day.dt} className="flex-1 flex flex-col items-center bg-white/10 backdrop-blur-sm rounded-2xl py-2 px-0.5">
-                <span className="text-white/55 text-[10px] font-bold uppercase">{day.day}</span>
+                <span className="text-white/55 text-xs font-bold uppercase">{day.day}</span>
                 <img src={`https://openweathermap.org/img/wn/${day.icon}.png`} alt="" className="w-8 h-8 -my-0.5"/>
-                <span className="text-white text-[11px] font-bold">{day.max}°</span>
-                <span className="text-white/35 text-[10px]">{day.min}°</span>
+                <span className="text-white text-xs font-bold">{day.max}°</span>
+                <span className="text-white/35 text-xs">{day.min}°</span>
               </div>
             ))}
           </div>

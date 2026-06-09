@@ -1,5 +1,8 @@
 {
     "cSpell.words": [
         "líneas"
-    ]
+    ],
+    "workbench.localHistory.enabled": true,
+    "livePreview.autoPreviewOnFileChange": false,
+    "remote.autoForwardPortsSource": "output"
 }

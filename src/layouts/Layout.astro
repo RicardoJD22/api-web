@@ -25,19 +25,19 @@ const { title, showBack = true } = Astro.props;
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;700;800&display=swap" rel="stylesheet">
 		<style is:global>
 			h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', sans-serif; }
-			body { font-family: 'Inter', sans-serif; }
+			body { font-family: 'Outfit', sans-serif; }
 		</style>
 	</head>
 	<body class="bg-slate-950 text-slate-100 antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
 
-		<header class="relative flex items-center mb-4 pt-14 w-full">
+		<header class="relative flex items-center mb-0 pt-14 w-full">
 			<img class="absolute left-4 md:left-8 w-[140px] md:w-[180px] lg:w-[220px]" src="/bcs_logo.png" alt="" />
 			<div class="flex-1 flex justify-center">
 				<div class="scale-110 md:scale-125">
 					<FechaHora />
 				</div>
 			</div>
-			<img class="w-[120px] md:w-[160px] lg:w-[200px] mr-4 md:mr-8" src="/api_logo.png" alt="" />
+			<img class="absolute right-4 md:right-8 w-[120px] md:w-[160px] lg:w-[200px]" src="/api_logo.png" alt="" />
 		</header>
 		
 <main>

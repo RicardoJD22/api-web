@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 
 // ─── DATOS DE EVENTOS ────────────────────────────────────────────────────────
 const eventos = [
@@ -114,22 +115,25 @@ function EventoMiniCard({ evento, isActive, onClick }) {
       {/* Texto */}
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{
-          color: "white", fontWeight: 800, fontSize: "0.95rem",
-          lineHeight: 1.2, marginBottom: 3,
+          color: "white", fontWeight: 900, fontSize: "1rem",
+          lineHeight: 1, letterSpacing: "-0.05em",
+          textTransform: "uppercase",
+          marginBottom: 3,
           overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+          fontFamily: "'Outfit', sans-serif",
         }}>
           {evento.title}
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
           <span style={{
-            color: evento.accent, fontSize: "0.7rem", fontWeight: 700,
+            color: evento.accent, fontSize: "0.75rem", fontWeight: 700,
             background: `${evento.accent}20`, padding: "2px 8px",
             borderRadius: 999, border: `1px solid ${evento.accent}30`,
             whiteSpace: "nowrap",
           }}>
             {evento.tag}
           </span>
-          <span style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.7rem", fontWeight: 600, whiteSpace: "nowrap" }}>
+          <span style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.75rem", fontWeight: 600, whiteSpace: "nowrap" }}>
             {evento.fecha}
           </span>
         </div>
@@ -145,6 +149,13 @@ function EventoMiniCard({ evento, isActive, onClick }) {
 
 // ─── MODAL DE DETALLE ─────────────────────────────────────────────────────────
 function EventoModal({ evento, onClose }) {
+  // Bloquear scroll del body mientras el modal esté abierto
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, []);
+
   // Cerrar con Escape
   useEffect(() => {
     const handler = (e) => { if (e.key === "Escape") onClose(); };
@@ -152,139 +163,168 @@ function EventoModal({ evento, onClose }) {
     return () => window.removeEventListener("keydown", handler);
   }, [onClose]);
 
-  return (
+  const overlay = (
     <div
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
       style={{
-        position: "fixed", inset: 0, zIndex: 9999,
-        background: "rgba(2,6,23,0.85)",
-        backdropFilter: "blur(12px)",
-        display: "flex", alignItems: "flex-end", justifyContent: "center",
-        padding: "0 16px 24px",
-        animation: "overlayIn 0.3s ease forwards",
+        position: "fixed", inset: 0,
+        zIndex: 99999,
+        background: "rgba(2,6,23,0.95)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        padding: "16px",
+        animation: "overlayIn 0.25s ease forwards",
       }}
     >
-      <div style={{
-        width: "100%", maxWidth: 640,
-        background: "linear-gradient(160deg, #0f172a 0%, #0c1a2e 100%)",
-        border: `1px solid ${evento.accent}35`,
-        borderRadius: "2.5rem",
-        overflow: "hidden",
-        boxShadow: `0 40px 80px rgba(0,0,0,0.9), 0 0 60px ${evento.accent}20`,
-        animation: "modalUp 0.45s cubic-bezier(0.16,1,0.3,1) forwards",
-      }}>
-
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: "100%",
+          height: "100%",
+          maxWidth: "100%",
+          maxHeight: "100%",
+          overflowY: "auto",
+          background: "linear-gradient(170deg, #0f172a 0%, #0c1a2e 60%, #020617 100%)",
+          border: `2px solid ${evento.accent}50`,
+          borderRadius: "2.5rem",
+          boxShadow: `0 0 120px ${evento.accent}30`,
+          animation: "modalUp 0.4s cubic-bezier(0.16,1,0.3,1) forwards",
+          scrollbarWidth: "none",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         {/* ── IMAGEN DE CABECERA ── */}
-        <div style={{ position: "relative", height: 220, overflow: "hidden" }}>
+        <div style={{ position: "relative", height: "42%", minHeight: 280, flexShrink: 0, overflow: "hidden", borderRadius: "2.5rem 2.5rem 0 0" }}>
           <img
             src={evento.image}
             alt={evento.title}
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
             onError={(e) => { e.target.style.display = "none"; }}
           />
-          {/* Gradiente */}
           <div style={{
             position: "absolute", inset: 0,
-            background: `linear-gradient(to top, #0f172a 0%, ${evento.accent}10 60%, transparent 100%)`,
+            background: `linear-gradient(to top, #0f172a 0%, ${evento.accent}15 55%, transparent 100%)`,
           }} />
           {/* Tag flotante */}
           <div style={{
-            position: "absolute", top: 16, left: 16,
+            position: "absolute", top: 24, left: 24,
             background: evento.accent,
             color: "#fff", fontWeight: 800,
-            fontSize: "0.7rem", letterSpacing: "0.12em",
+            fontSize: "1rem", letterSpacing: "0.15em",
             textTransform: "uppercase",
-            padding: "5px 14px", borderRadius: 999,
-            boxShadow: `0 4px 20px ${evento.accent}60`,
+            padding: "10px 24px", borderRadius: 999,
+            boxShadow: `0 4px 24px ${evento.accent}70`,
+            fontFamily: "'Outfit', sans-serif",
           }}>
-            {evento.tag}
+            {evento.icon} {evento.tag}
           </div>
           {/* Botón cerrar */}
           <button
             onClick={onClose}
             aria-label="Cerrar"
             style={{
-              position: "absolute", top: 14, right: 14,
-              width: 44, height: 44,
-              background: "rgba(0,0,0,0.55)",
-              backdropFilter: "blur(8px)",
-              border: "1px solid rgba(255,255,255,0.15)",
+              position: "absolute", top: 20, right: 20,
+              width: 64, height: 64,
+              background: "rgba(0,0,0,0.7)",
+              backdropFilter: "blur(10px)",
+              border: "2px solid rgba(255,255,255,0.25)",
               borderRadius: "50%",
               color: "white", cursor: "pointer",
               display: "flex", alignItems: "center", justifyContent: "center",
               outline: "none",
             }}
           >
-            <svg width="20" height="20" fill="none" stroke="white" viewBox="0 0 24 24">
+            <svg width="28" height="28" fill="none" stroke="white" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"/>
             </svg>
           </button>
         </div>
 
         {/* ── CONTENIDO ── */}
-        <div style={{ padding: "20px 28px 28px", marginTop: -16, position: "relative", zIndex: 1 }}>
-          {/* Ícono + Título */}
-          <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 12 }}>
-            <span style={{ fontSize: "2.5rem" }}>{evento.icon}</span>
-            <h2 style={{
-              color: "white", fontWeight: 900, fontSize: "1.6rem",
-              lineHeight: 1.15, margin: 0,
-            }}>
-              {evento.title}
-            </h2>
-          </div>
+        <div style={{ flex: 1, padding: "36px 40px 44px", display: "flex", flexDirection: "column", gap: 24 }}>
+          {/* Título */}
+          <h2 style={{
+            color: "white", fontWeight: 900, fontSize: "2.8rem",
+            lineHeight: 1, letterSpacing: "-0.04em",
+            textTransform: "uppercase",
+            margin: 0,
+            fontFamily: "'Outfit', sans-serif",
+            textShadow: `0 0 40px ${evento.accent}50`,
+          }}>
+            {evento.title}
+          </h2>
 
           {/* Descripción */}
           <p style={{
-            color: "rgba(255,255,255,0.7)", fontSize: "1rem",
-            lineHeight: 1.6, marginBottom: 20,
+            color: "rgba(255,255,255,0.8)", fontSize: "1.25rem",
+            lineHeight: 1.65, margin: 0,
+            fontFamily: "'Outfit', sans-serif",
+            flex: 1,
           }}>
             {evento.descripcion}
           </p>
 
           {/* Info chips */}
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 28 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             {[
               { emoji: "📅", label: `${evento.fecha} · ${evento.hora}` },
               { emoji: "📍", label: evento.lugar },
             ].map(({ emoji, label }) => (
               <div key={label} style={{
-                display: "flex", alignItems: "center", gap: 8,
-                background: `${evento.accent}12`,
-                border: `1px solid ${evento.accent}30`,
-                borderRadius: "0.75rem",
-                padding: "8px 14px",
+                display: "flex", alignItems: "center", gap: 14,
+                background: `${evento.accent}15`,
+                border: `1.5px solid ${evento.accent}40`,
+                borderRadius: "1.25rem",
+                padding: "16px 22px",
               }}>
-                <span style={{ fontSize: "1rem" }}>{emoji}</span>
-                <span style={{ color: "rgba(255,255,255,0.85)", fontSize: "0.85rem", fontWeight: 600 }}>
+                <span style={{ fontSize: "1.6rem" }}>{emoji}</span>
+                <span style={{ color: "rgba(255,255,255,0.95)", fontSize: "1.1rem", fontWeight: 600, fontFamily: "'Outfit', sans-serif" }}>
                   {label}
                 </span>
               </div>
             ))}
           </div>
 
-          {/* Botón de cierre principal */}
+          {/* Botón principal */}
           <button
             onClick={onClose}
             style={{
               width: "100%",
-              background: `linear-gradient(135deg, ${evento.accent}, ${evento.accent}aa)`,
-              color: "white", fontWeight: 800,
-              fontSize: "1rem", letterSpacing: "0.08em",
+              background: `linear-gradient(135deg, ${evento.accent}, ${evento.accent}cc)`,
+              color: "white", fontWeight: 900,
+              fontSize: "1.3rem", letterSpacing: "0.1em",
               textTransform: "uppercase",
-              border: "none", borderRadius: "1.25rem",
-              padding: "16px",
+              border: "none", borderRadius: "1.75rem",
+              padding: "26px",
               cursor: "pointer",
-              boxShadow: `0 12px 32px ${evento.accent}40`,
-              transition: "transform 0.15s",
+              boxShadow: `0 16px 48px ${evento.accent}55`,
+              fontFamily: "'Outfit', sans-serif",
+              marginTop: "auto",
             }}
           >
             ¡Nos Vemos en el Evento!
           </button>
         </div>
       </div>
+
+      <style>{`
+        @keyframes overlayIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+        @keyframes modalUp {
+          from { opacity: 0; transform: translateY(40px) scale(0.97); }
+          to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+      `}</style>
     </div>
   );
+
+  return typeof document !== "undefined"
+    ? createPortal(overlay, document.body)
+    : null;
 }
 
 // ─── COMPONENTE PRINCIPAL ─────────────────────────────────────────────────────
@@ -358,7 +398,7 @@ function EventosCard() {
           backdropFilter: "blur(10px)",
           border: "1px solid rgba(255,255,255,0.15)",
           color: "rgba(255,255,255,0.7)",
-          fontSize: "0.65rem", fontWeight: 800,
+          fontSize: "0.75rem", fontWeight: 800,
           letterSpacing: "0.18em", textTransform: "uppercase",
           padding: "5px 12px", borderRadius: 999,
         }}>
@@ -387,7 +427,7 @@ function EventosCard() {
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 6,
             background: hero.accent,
-            color: "white", fontSize: "0.65rem", fontWeight: 800,
+            color: "white", fontSize: "0.75rem", fontWeight: 800,
             letterSpacing: "0.12em", textTransform: "uppercase",
             padding: "3px 10px", borderRadius: 999, marginBottom: 5,
           }}>
@@ -395,8 +435,11 @@ function EventosCard() {
           </div>
           <div style={{
             color: "white", fontWeight: 900,
-            fontSize: "1.15rem", lineHeight: 1.2,
+            fontSize: "1.25rem", lineHeight: 1,
+            letterSpacing: "-0.05em",
+            textTransform: "uppercase",
             textShadow: "0 2px 8px rgba(0,0,0,0.8)",
+            fontFamily: "'Outfit', sans-serif",
           }}>
             {hero.title}
           </div>
@@ -431,8 +474,8 @@ function EventosCard() {
                 animation: "expandIn 0.3s ease",
               }}>
                 <p style={{
-                  color: "rgba(255,255,255,0.7)", fontSize: "0.82rem",
-                  lineHeight: 1.55, marginBottom: 10,
+                  color: "rgba(255,255,255,0.7)", fontSize: "0.875rem",
+                  lineHeight: 1.375, fontWeight: 600, marginBottom: 10,
                 }}>
                   {ev.descripcion}
                 </p>
@@ -448,6 +491,7 @@ function EventosCard() {
                     cursor: "pointer",
                     boxShadow: `0 8px 20px ${ev.accent}40`,
                     width: "100%",
+                    fontFamily: "'Outfit', sans-serif",
                   }}
                 >
                   Ver Todos los Detalles →
@@ -463,14 +507,6 @@ function EventosCard() {
 
       {/* ── KEYFRAMES ─────────────────────────────────────────────────────── */}
       <style>{`
-        @keyframes overlayIn {
-          from { opacity: 0; }
-          to   { opacity: 1; }
-        }
-        @keyframes modalUp {
-          from { opacity: 0; transform: translateY(60px) scale(0.96); }
-          to   { opacity: 1; transform: translateY(0)    scale(1); }
-        }
         @keyframes expandIn {
           from { opacity: 0; transform: translateY(-6px); }
           to   { opacity: 1; transform: translateY(0); }

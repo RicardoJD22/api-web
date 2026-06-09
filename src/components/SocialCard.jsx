@@ -88,13 +88,13 @@ function SocialButton({ red }) {
       <div style={{ flex: 1 }}>
         <div style={{
           color: "white", fontWeight: 800,
-          fontSize: "1rem", lineHeight: 1.2,
+          fontSize: "1.125rem", lineHeight: 1.2,
         }}>
           {red.label}
         </div>
         <div style={{
           color: red.color,
-          fontSize: "0.78rem", fontWeight: 600,
+          fontSize: "0.875rem", fontWeight: 600,
           opacity: 0.85,
         }}>
           {red.handle}
@@ -157,8 +157,8 @@ export default function SocialCard({ siteOrigin = "" }) {
           }}>
             <span style={{ fontSize: "0.85rem" }}>📡</span>
             <span style={{
-              color: "rgba(255,255,255,0.55)", fontSize: "0.65rem",
-              fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase",
+              color: "rgba(255,255,255,0.55)", fontSize: "0.75rem",
+              fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase",
             }}>
               Síguenos
             </span>
@@ -166,14 +166,17 @@ export default function SocialCard({ siteOrigin = "" }) {
 
           <h2 style={{
             color: "white", fontWeight: 900,
-            fontSize: "1.5rem", lineHeight: 1.15,
+            fontSize: "2.25rem", lineHeight: 1,
+            letterSpacing: "-0.05em",
+            textTransform: "uppercase",
             margin: "0 0 4px",
+            fontFamily: "'Outfit', sans-serif",
           }}>
             Redes Sociales
           </h2>
           <p style={{
-            color: "rgba(255,255,255,0.45)", fontSize: "0.78rem",
-            fontWeight: 500, margin: 0,
+            color: "rgba(255,255,255,0.45)", fontSize: "0.875rem",
+            fontWeight: 600, margin: 0, lineHeight: 1.375,
           }}>
             Comparte tu visita al Malecón de La Paz
           </p>
@@ -192,7 +195,7 @@ export default function SocialCard({ siteOrigin = "" }) {
         }}>
           <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.08)" }} />
           <span style={{
-            color: "rgba(255,255,255,0.3)", fontSize: "0.65rem",
+            color: "rgba(255,255,255,0.3)", fontSize: "0.75rem",
             fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase",
             whiteSpace: "nowrap",
           }}>
@@ -231,13 +234,13 @@ export default function SocialCard({ siteOrigin = "" }) {
           <div>
             <p style={{
               color: "white", fontWeight: 800,
-              fontSize: "0.9rem", margin: "0 0 3px",
+              fontSize: "0.875rem", margin: "0 0 3px",
               lineHeight: 1.2,
             }}>
               ¿Tomaste una foto?
             </p>
             <p style={{
-              color: "rgba(255,255,255,0.5)", fontSize: "0.72rem",
+              color: "rgba(255,255,255,0.5)", fontSize: "0.75rem",
               fontWeight: 500, margin: "0 0 8px",
               lineHeight: 1.4,
             }}>
@@ -255,7 +258,7 @@ export default function SocialCard({ siteOrigin = "" }) {
                 animation: "socialPulse 1.5s ease-in-out infinite",
               }} />
               <span style={{
-                color: "#38bdf8", fontSize: "0.68rem",
+                color: "#38bdf8", fontSize: "0.75rem",
                 fontWeight: 800, letterSpacing: "0.1em",
                 textTransform: "uppercase",
               }}>

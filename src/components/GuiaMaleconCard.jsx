@@ -33,22 +33,15 @@ function GuiaMaleconCard() {
               draggable={false} 
             />
           </div>
-
-          <div className="mt-8 flex items-center justify-center px-6 py-3 bg-sky-500/20 rounded-full border border-sky-400/40 backdrop-blur-xl shadow-2xl transition-all duration-300 group-hover/btn:bg-sky-500/30 group-hover/btn:scale-105 active:scale-95">
-             <span className="text-sky-300 text-[14px] font-black tracking-[0.2em] uppercase antialiased mr-3 drop-shadow-md whitespace-nowrap">
-                Guía Interactiva
-             </span>
-             <span className="animate-bounce inline-block text-xl filter drop-shadow-md">👇</span>
-          </div>
         </a>
 
         <div className="mt-auto w-full flex flex-col items-center text-center pb-2 pt-10 pointer-events-none">
-          <h2 className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-sky-100 to-sky-400 tracking-tight mb-3 drop-shadow-2xl">
+          <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-sky-100 to-sky-400 leading-none tracking-tighter uppercase mb-3 drop-shadow-2xl whitespace-nowrap">
             EL MALECÓN
           </h2>
           <div className="px-5 py-3 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 shadow-xl overflow-hidden relative">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_3s_infinite]"></div>
-            <span className="text-slate-200 text-[15px] font-semibold leading-relaxed relative z-10 block">
+            <span className="text-slate-200 text-sm font-semibold leading-snug relative z-10 block">
               Explora monumentos, gastronomía y cultura frente al mar de Cortés.
             </span>
           </div>

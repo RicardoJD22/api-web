@@ -43,11 +43,8 @@ const categories = [
 function MasonryGallery() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [lightbox, setLightbox]             = useState({ open: false, idx: 0 });
-  const [showForm, setShowForm]             = useState(false);
-  const [preview, setPreview]               = useState(null);
   const [animKey, setAnimKey]               = useState(0);
   const [allImages, setAllImages]           = useState(images);
-  const fileInput                           = useRef();
   const carouselRef                         = useRef();
   const btnRefs                             = useRef({});
 

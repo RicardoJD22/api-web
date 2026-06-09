@@ -124,13 +124,29 @@ const statues = [
         updateModal();
       });
     </script>
-    <div id="statue-modal" style="display:none;" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-lg">
-      <div class="relative w-full max-w-4xl mx-4 flex flex-col items-center justify-start bg-gray-900 rounded-2xl shadow-2xl p-6 md:p-10 overflow-y-auto animate-fade-in" style="max-height:92vh;">
-        <button class="absolute top-4 right-4 text-gray-400 hover:text-blue-400 text-3xl font-bold z-10" onclick="closeModal()" aria-label="Cerrar">×</button>
-        <img class="modal-img w-full h-72 md:h-96 object-cover rounded-xl mb-6 shadow-lg" src="" alt="" />
-        <h2 class="modal-title text-3xl md:text-4xl font-extrabold text-white text-center mb-1 drop-shadow-lg"></h2>
-        <p class="modal-author text-teal-400 text-sm font-semibold text-center mb-3 tracking-wide uppercase"></p>
-        <p class="modal-desc text-slate-300 text-base text-center leading-relaxed mb-6 px-2"></p>
+    <div id="statue-modal" style="display:none;" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-xl">
+      <div class="relative w-[92vw] max-w-2xl flex flex-col bg-slate-900 rounded-3xl shadow-[0_0_80px_rgba(20,184,166,0.25)] overflow-hidden animate-fade-in" style="max-height:90vh;">
+        
+        <!-- Imagen hero -->
+        <div class="relative w-full overflow-hidden" style="height:52vh;">
+          <img class="modal-img w-full h-full object-contain" src="" alt="" />
+          <!-- Gradiente inferior sobre imagen -->
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent"></div>
+          <!-- Botón cerrar -->
+          <button class="absolute top-4 right-4 bg-black/50 hover:bg-teal-500/80 text-white text-2xl font-bold w-11 h-11 rounded-full flex items-center justify-center z-10 transition-colors" onclick="closeModal()" aria-label="Cerrar">×</button>
+          <!-- Badge flotante -->
+          <div class="absolute bottom-4 left-5 inline-flex items-center gap-2 bg-teal-500/20 border border-teal-400/40 backdrop-blur-md rounded-xl px-3 py-1.5">
+            <span class="text-teal-300 text-xs font-bold tracking-widest uppercase">Malecón La Paz</span>
+          </div>
+        </div>
+
+        <!-- Contenido texto -->
+        <div class="flex flex-col px-7 pt-5 pb-8 overflow-y-auto">
+          <h2 class="modal-title text-5xl font-black text-white leading-tight mb-2 drop-shadow-lg"></h2>
+          <p class="modal-author text-teal-400 text-base font-bold mb-5 tracking-widest uppercase border-l-4 border-teal-500 pl-3"></p>
+          <p class="modal-desc text-slate-200 text-xl leading-relaxed"></p>
+        </div>
+
       </div>
     </div>
   </section>
@@ -138,7 +154,7 @@ const statues = [
 
 <style>
   h2 {
-    font-family: "Komtits";
+    font-family: 'Outfit', sans-serif;
   }
   .statue-card:focus {
     outline: 3px solid #1fa39b;
@@ -157,10 +173,4 @@ const statues = [
 </style>
 
 <style is:global>
-  @font-face {
-    font-family: "Komtits";
-    src: url("/fonts/KOMTITBR.ttf") format("truetype");
-    font-style: normal;
-    font-display: swap;
-  }
 </style>

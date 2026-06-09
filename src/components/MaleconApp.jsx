@@ -23,27 +23,69 @@ function walkTime(meters) {
 const categories = [
   { id: 'all',             name: 'Todos',          icon: '📍' },
   { id: 'monumentos',      name: 'Monumentos',     icon: '📸' },
-  { id: 'comida',          name: 'Comida',         icon: '🌮' },
+  { id: 'comida',          name: 'Restaurantes',   icon: '🌮' },
+  { id: 'hoteles',         name: 'Hoteles',        icon: '🏨' },
+  { id: 'antros',          name: 'Bares / Antros', icon: '🎵' },
+  { id: 'transporte',      name: 'Transporte',     icon: '🚌' },
+  { id: 'comercios',       name: 'Comercios',      icon: '🛍️' },
   { id: 'entretenimiento', name: 'Entretenimiento',icon: '🛹' },
   { id: 'servicios',       name: 'Servicios',      icon: '🛎️' },
 ];
 
 const pois = [
-  { id: 1,  category: 'monumentos',      name: "El Molinito",              coords: [24.1728, -110.3138], desc: "Mirador espectacular famoso por sus esculturas y brisa constante. Ideal para el atardecer.",   image: "https://images.unsplash.com/photo-1566375005881-2292025cc02f?q=80&w=600&auto=format&fit=crop" },
-  { id: 2,  category: 'monumentos',      name: "Letras de La Paz",          coords: [24.1614, -110.3183], desc: "El parador fotográfico oficial por excelencia. ¡Tómate la foto del recuerdo frente a la bahía!", image: "https://images.unsplash.com/photo-1596395819057-cb37dd3254b6?q=80&w=600&auto=format&fit=crop" },
-  { id: 3,  category: 'monumentos',      name: "Kiosco del Malecón",        coords: [24.1618, -110.3180], desc: "El corazón del malecón. Punto de encuentro principal que alberga eventos culturales.",           image: "https://images.unsplash.com/photo-1574958269340-fa927503f3da?q=80&w=600&auto=format&fit=crop" },
-  { id: 4,  category: 'comida',          name: "Heladería La Fuente",       coords: [24.1622, -110.3177], desc: "La nevería más tradicional del malecón. Prueba las paletas de frutas tropicales mexicanas.",    image: "https://images.unsplash.com/photo-1563805042-7684c8e9e9cb?q=80&w=600&auto=format&fit=crop" },
-  { id: 5,  category: 'comida',          name: "Restaurante Bismarkcito",   coords: [24.1638, -110.3168], desc: "Tradición sudcaliforniana. Famoso por sus tacos de pescado, mariscos y clamatos frente al mar.", image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=600&auto=format&fit=crop" },
-  { id: 6,  category: 'comida',          name: "Harker Board Co.",          coords: [24.1633, -110.3172], desc: "Terraza con la mejor vista. Disfruta de pizza a la leña, cerveza artesanal y vibra surfera.",   image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=600&auto=format&fit=crop" },
-  { id: 7,  category: 'entretenimiento', name: "Rentas de Bicicletas",      coords: [24.1657, -110.3158], desc: "Explora la ciclovía costera rentando ecobicis, carritos de pedales familiares o patinetas.",    image: "https://images.unsplash.com/photo-1528629297340-d1d466945cb5?q=80&w=600&auto=format&fit=crop" },
-  { id: 8,  category: 'entretenimiento', name: "Museo de la Ballena",       coords: [24.1606, -110.3187], desc: "Exposiciones masivas e imponentes sobre mamíferos marinos y la biodiversidad del Golfo.",       image: "https://images.unsplash.com/photo-1469502932371-d8ec78913b82?q=80&w=600&auto=format&fit=crop" },
-  { id: 9,  category: 'monumentos',      name: "Muelle Fiscal",             coords: [24.1595, -110.3192], desc: "Muelle histórico de la ciudad. Perfecto para adentrarse sobre el mar y observar tortugas y yates.", image: "https://images.unsplash.com/photo-1534008897995-27a23e859048?q=80&w=600&auto=format&fit=crop" },
-  { id: 10, category: 'entretenimiento', name: "Parque Cuauhtémoc",         coords: [24.1551, -110.3210], desc: "Sombra bajo altos árboles. Ideal para familias, juegos infantiles y skate park.",               image: "https://images.unsplash.com/photo-1620355462534-722a490bd2c7?q=80&w=600&auto=format&fit=crop" },
-  { id: 11, category: 'comida',          name: "Puestos de Hot Dogs",       coords: [24.1648, -110.3163], desc: "Imperdibles 'Hates' con tocino, crema y pan calentito. Clásicos nocturnos del malecón.",        image: "https://images.unsplash.com/photo-1605904323214-72cc85b88137?q=80&w=600&auto=format&fit=crop" },
-  { id: 12, category: 'servicios',       name: "Baños Públicos",            coords: [24.1621, -110.3179], desc: "Sanitarios públicos con acceso para personas con discapacidad. Mantenimiento constante.",        image: "https://images.unsplash.com/photo-1584622781867-1a4a2b9d3f78?q=80&w=600&auto=format&fit=crop" },
-  { id: 13, category: 'servicios',       name: "Cajero Automático (BBVA)",  coords: [24.1631, -110.3173], desc: "Cajero BBVA disponible 24/7. Acepta tarjetas nacionales e internacionales.",                    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=600&auto=format&fit=crop" },
-  { id: 14, category: 'servicios',       name: "Estacionamiento Público",   coords: [24.1610, -110.3196], desc: "Estacionamiento tarifado con vigilancia. Acceso desde Calle 5 de Mayo.",                        image: "https://images.unsplash.com/photo-1573348722427-f1d6819fdf98?q=80&w=600&auto=format&fit=crop" },
-  { id: 15, category: 'servicios',       name: "Módulo de Turismo",         coords: [24.1616, -110.3182], desc: "Información oficial de COTUCO. Mapas, folletos y recomendaciones de tours en BCS.",             image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=600&auto=format&fit=crop" },
+  // ── MONUMENTOS ──────────────────────────────────────────────────────────────
+  { id: 1,  category: 'monumentos',  name: "El Molinito",              coords: [24.1728, -110.3138], desc: "Mirador espectacular famoso por sus esculturas y brisa constante. Ideal para el atardecer.", image: "https://images.unsplash.com/photo-1566375005881-2292025cc02f?q=80&w=600" },
+  { id: 2,  category: 'monumentos',  name: "Letras de La Paz",         coords: [24.1614, -110.3183], desc: "El parador fotográfico más icónico. ¡Tómate la foto del recuerdo frente a la bahía!",      image: "https://images.unsplash.com/photo-1596395819057-cb37dd3254b6?q=80&w=600" },
+  { id: 3,  category: 'monumentos',  name: "Kiosco del Malecón",       coords: [24.1618, -110.3180], desc: "Corazón del malecón. Punto de encuentro para eventos culturales y conciertos al aire libre.", image: "https://images.unsplash.com/photo-1574958269340-fa927503f3da?q=80&w=600" },
+  { id: 4,  category: 'monumentos',  name: "Muelle Fiscal",            coords: [24.1595, -110.3192], desc: "Muelle histórico. Perfecto para adentrarse al mar y observar tortugas y veleros.",           image: "https://images.unsplash.com/photo-1534008897995-27a23e859048?q=80&w=600" },
+  { id: 5,  category: 'monumentos',  name: "Monumento al Pescador",    coords: [24.1645, -110.3165], desc: "Escultura emblemática que rinde homenaje a los pescadores sudcalifornianos.",                image: "https://images.unsplash.com/photo-1620914907441-01de36a10b06?q=80&w=600" },
+  { id: 6,  category: 'monumentos',  name: "Faro del Malecón",         coords: [24.1665, -110.3155], desc: "Faro histórico que ha guiado embarcaciones por décadas. Punto de referencia del malecón.",  image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=600" },
+
+  // ── RESTAURANTES ────────────────────────────────────────────────────────────
+  { id: 7,  category: 'comida',      name: "Restaurante Bismarkcito",  coords: [24.1638, -110.3168], desc: "Tradición sudcaliforniana. Famoso por tacos de pescado, mariscos y clamatos frente al mar.", image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=600" },
+  { id: 8,  category: 'comida',      name: "Harker Board Co.",         coords: [24.1633, -110.3172], desc: "Terraza con la mejor vista. Pizza a la leña, cerveza artesanal y vibra surfera.",           image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=600" },
+  { id: 9,  category: 'comida',      name: "Heladería La Fuente",      coords: [24.1622, -110.3177], desc: "La nevería más tradicional. Prueba las paletas de frutas tropicales mexicanas.",             image: "https://images.unsplash.com/photo-1563805042-7684c8e9e9cb?q=80&w=600" },
+  { id: 10, category: 'comida',      name: "Puestos de Hot Dogs",      coords: [24.1648, -110.3163], desc: "Imperdibles 'Hates' con tocino, crema y pan calentito. Clásicos nocturnos del malecón.",    image: "https://images.unsplash.com/photo-1605904323214-72cc85b88137?q=80&w=600" },
+  { id: 11, category: 'comida',      name: "El Taste",                 coords: [24.1625, -110.3176], desc: "Mariscos frescos y botanas con vista al mar. Ambiente familiar y porciones generosas.",     image: "https://images.unsplash.com/photo-1559847844-5315695dadae?q=80&w=600" },
+  { id: 12, category: 'comida',      name: "La Pazta Nostra",          coords: [24.1631, -110.3173], desc: "Pasta fresca artesanal y cocina italiana con vista a la bahía de La Paz.",                  image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=600" },
+  { id: 13, category: 'comida',      name: "Rancho Viejo",             coords: [24.1641, -110.3166], desc: "Auténtica carne asada y cortes norteños. El sabor de Baja California en el malecón.",      image: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=600" },
+
+  // ── HOTELES ─────────────────────────────────────────────────────────────────
+  { id: 14, category: 'hoteles',     name: "Hotel Perla",              coords: [24.1617, -110.3179], desc: "Ícono histórico del malecón. Vista directa a la bahía, alberca, restaurante y bar.",        image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=600" },
+  { id: 15, category: 'hoteles',     name: "Hotel Los Arcos",          coords: [24.1610, -110.3185], desc: "Ubicado en el corazón del malecón con acceso directo a la playa y zona de restaurantes.",   image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=600" },
+  { id: 16, category: 'hoteles',     name: "Hotel Seven Crown",        coords: [24.1630, -110.3174], desc: "Hotel moderno frente a la bahía. Habitaciones con vista al mar y servicio de primera.",     image: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=600" },
+  { id: 17, category: 'hoteles',     name: "La Concha Beach Resort",   coords: [24.1580, -110.3195], desc: "Resort de playa con marina privada, kayaks y acceso directo a la tranquila bahía.",         image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=600" },
+
+  // ── BARES / ANTROS ──────────────────────────────────────────────────────────
+  { id: 18, category: 'antros',      name: "La Miserable",             coords: [24.1635, -110.3170], desc: "Bar de ambiente bohemio con música en vivo, cócteles artesanales y terraza al malecón.",    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=600" },
+  { id: 19, category: 'antros',      name: "Sancho's Bar & Grill",     coords: [24.1628, -110.3175], desc: "Favorito de locales y turistas. Cervezas frías, cócteles tropicales y música relajada.",    image: "https://images.unsplash.com/photo-1470337458703-46ad1756a187?q=80&w=600" },
+  { id: 20, category: 'antros',      name: "El Zarape Bar",            coords: [24.1642, -110.3165], desc: "Antro con DJ los fines de semana, pista de baile y los mejores tragos del malecón.",        image: "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?q=80&w=600" },
+  { id: 21, category: 'antros',      name: "Roof Bar Malecón",         coords: [24.1620, -110.3178], desc: "Terraza en azotea con vista panorámica a la bahía. Ambiente lounge y sunsets únicos.",      image: "https://images.unsplash.com/photo-1544148103-0773bf10d330?q=80&w=600" },
+
+  // ── TRANSPORTE ──────────────────────────────────────────────────────────────
+  { id: 22, category: 'transporte',  name: "Terminal de Autobuses",    coords: [24.1432, -110.3180], desc: "Terminal principal Autobuses Águila y ABC. Rutas a Los Cabos, Loreto, La Paz-Tijuana.",     image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=600" },
+  { id: 23, category: 'transporte',  name: "Muelle Pichilingue (Ferry)",coords: [24.2050, -110.3120], desc: "Terminal de ferry BAJA FERRIES. Servicio a Mazatlán y Topolobampo. ~6 hrs de travesía.",   image: "https://images.unsplash.com/photo-1623238913972-02bc6dc7bde7?q=80&w=600" },
+  { id: 24, category: 'transporte',  name: "Sitio de Taxis Malecón",   coords: [24.1619, -110.3181], desc: "Taxis autorizados disponibles 24/7. Traslados al aeropuerto, hoteles y puntos turísticos.", image: "https://images.unsplash.com/photo-1559416523-140ddc3d238c?q=80&w=600" },
+  { id: 25, category: 'transporte',  name: "Aeropuerto Gral. Márquez", coords: [24.0722, -110.3621], desc: "Aeropuerto Internacional de La Paz. Vuelos a CDMX, Guadalajara, Los Ángeles y más.",        image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=600" },
+
+  // ── COMERCIOS ───────────────────────────────────────────────────────────────
+  { id: 26, category: 'comercios',   name: "Artesanías del Malecón",   coords: [24.1623, -110.3177], desc: "Tienda de artesanías, recuerdos y productos típicos de Baja California Sur.",               image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=600" },
+  { id: 27, category: 'comercios',   name: "Farmacia Similares",       coords: [24.1626, -110.3176], desc: "Farmacia con medicamentos genéricos de bajo costo. Médico gratis en consulta básica.",       image: "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=600" },
+  { id: 28, category: 'comercios',   name: "OXXO Malecón",             coords: [24.1629, -110.3174], desc: "Tienda de conveniencia abierta 24/7. Bebidas, snacks, recargas y pago de servicios.",       image: "https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?q=80&w=600" },
+  { id: 29, category: 'comercios',   name: "Boutique Mar de Cortés",   coords: [24.1636, -110.3169], desc: "Ropa de playa, trajes de baño y accesorios. Marcas locales e internacionales.",             image: "https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?q=80&w=600" },
+
+  // ── ENTRETENIMIENTO ─────────────────────────────────────────────────────────
+  { id: 30, category: 'entretenimiento', name: "Rentas de Bicicletas", coords: [24.1657, -110.3158], desc: "Explora la ciclovía costera rentando ecobicis, carritos de pedales o patinetas.",          image: "https://images.unsplash.com/photo-1528629297340-d1d466945cb5?q=80&w=600" },
+  { id: 31, category: 'entretenimiento', name: "Museo de la Ballena",  coords: [24.1606, -110.3187], desc: "Exposiciones sobre mamíferos marinos y biodiversidad del Golfo de California.",             image: "https://images.unsplash.com/photo-1469502932371-d8ec78913b82?q=80&w=600" },
+  { id: 32, category: 'entretenimiento', name: "Parque Cuauhtémoc",    coords: [24.1551, -110.3210], desc: "Sombra bajo altos árboles. Juegos infantiles, skate park y zona deportiva.",                image: "https://images.unsplash.com/photo-1620355462534-722a490bd2c7?q=80&w=600" },
+  { id: 33, category: 'entretenimiento', name: "Tour en Kayak",        coords: [24.1600, -110.3190], desc: "Operadoras de tour en kayak y paddleboard. Explora el mar de Cortés desde el malecón.",    image: "https://images.unsplash.com/photo-1530053969600-caed2596d242?q=80&w=600" },
+
+  // ── SERVICIOS ───────────────────────────────────────────────────────────────
+  { id: 34, category: 'servicios',   name: "Baños Públicos",           coords: [24.1621, -110.3179], desc: "Sanitarios públicos con acceso para personas con discapacidad. Mantenimiento constante.",    image: "https://images.unsplash.com/photo-1584622781867-1a4a2b9d3f78?q=80&w=600" },
+  { id: 35, category: 'servicios',   name: "Cajero BBVA",              coords: [24.1631, -110.3173], desc: "Cajero BBVA disponible 24/7. Acepta tarjetas nacionales e internacionales.",                 image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=600" },
+  { id: 36, category: 'servicios',   name: "Módulo de Turismo COTUCO", coords: [24.1616, -110.3182], desc: "Información oficial turística. Mapas, folletos, tours y recomendaciones de BCS.",           image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=600" },
+  { id: 37, category: 'servicios',   name: "Estacionamiento Público",  coords: [24.1610, -110.3196], desc: "Estacionamiento tarifado con vigilancia. Acceso desde Calle 5 de Mayo.",                    image: "https://images.unsplash.com/photo-1573348722427-f1d6819fdf98?q=80&w=600" },
+  { id: 38, category: 'servicios',   name: "Cruz Roja La Paz",         coords: [24.1580, -110.3210], desc: "Delegación Cruz Roja. Atención de emergencias y primeros auxilios.",                        image: "https://images.unsplash.com/photo-1584432810601-6c7f27d2362b?q=80&w=600" },
 ];
 
 // ─── Componente: tarjeta de detalle (se muestra dentro del sidebar) ──────────
@@ -216,7 +258,7 @@ export default function MaleconApp() {
             </div>
 
             {/* Filtros de categoría (grid 2 col) */}
-            <div className="px-5 pb-3 shrink-0 grid grid-cols-2 gap-2">
+            <div className="px-5 pb-3 shrink-0 grid grid-cols-3 gap-2">
               {categories.map(cat => (
                 <button
                   key={cat.id}

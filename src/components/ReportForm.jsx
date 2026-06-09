@@ -132,7 +132,7 @@ function ZoneCard({ zone, selected, onSelect }) {
   return (
     <button
       onClick={() => onSelect(zone)}
-      className={`relative overflow-hidden rounded-2xl flex flex-col items-center justify-end aspect-[4/3] transition-all duration-300 active:scale-95 focus:outline-none ${
+      className={`relative overflow-hidden rounded-3xl flex flex-col items-center justify-end aspect-[3/4] transition-all duration-300 active:scale-95 focus:outline-none ${
         selected ? "ring-4 ring-offset-2 ring-offset-slate-900 scale-[1.03] shadow-2xl" : "ring-0 hover:scale-[1.01]"
       } ${selected ? "ring-white/80" : ""}`}
       aria-label={zone.name}
@@ -149,20 +149,20 @@ function ZoneCard({ zone, selected, onSelect }) {
       )}
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
 
       {/* Selected checkmark */}
       {selected && (
-        <div className="absolute top-2 right-2 w-7 h-7 bg-white rounded-full flex items-center justify-center shadow-lg z-10">
-          <span className="text-slate-900 text-sm font-black">✓</span>
+        <div className="absolute top-3 right-3 w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-lg z-10">
+          <span className="text-slate-900 text-base font-black">✓</span>
         </div>
       )}
 
       {/* Content */}
-      <div className="relative z-10 p-3 w-full text-left">
-        <div className="text-2xl leading-none mb-1">{zone.emoji}</div>
-        <p className="text-white font-bold text-sm leading-tight">{zone.name}</p>
-        <p className="text-white/55 text-[11px] leading-tight mt-0.5">{zone.ref}</p>
+      <div className="relative z-10 p-5 w-full text-left">
+        <div className="text-4xl leading-none mb-2">{zone.emoji}</div>
+        <p className="text-white font-black text-xl leading-tight">{zone.name}</p>
+        <p className="text-white/60 text-sm leading-tight mt-1">{zone.ref}</p>
       </div>
     </button>
   );

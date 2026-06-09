@@ -1,12 +1,30 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Map, { Marker } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
-// ──────────────────────────────────────────────────────────────────────────────
-//  ESTILO DEL MAPA
-//  OpenFreeMap "fiord" (azul marino profundo) — sin API key, vector tiles nítidos
-// ──────────────────────────────────────────────────────────────────────────────
-const MAP_STYLE = 'https://tiles.openfreemap.org/styles/dark';
+const STREET_STYLE = 'https://tiles.openfreemap.org/styles/dark';
+
+const SATELLITE_STYLE = {
+  version: 8,
+  sources: {
+    "esri-sat": {
+      type: "raster",
+      tiles: ["https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"],
+      tileSize: 256,
+      maxzoom: 19,
+    },
+    "esri-labels": {
+      type: "raster",
+      tiles: ["https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"],
+      tileSize: 256,
+      maxzoom: 19,
+    },
+  },
+  layers: [
+    { id: "sat-base",   type: "raster", source: "esri-sat",    minzoom: 0, maxzoom: 22 },
+    { id: "sat-labels", type: "raster", source: "esri-labels", minzoom: 0, maxzoom: 22, paint: { "raster-opacity": 0.85 } },
+  ],
+};
 
 // Centro del Malecón — Paseo Álvaro Obregón, La Paz BCS
 const DEFAULT_LNG  = -110.3178;
@@ -22,41 +40,63 @@ const KIOSK_LNG = -110.3180;
 // ──────────────────────────────────────────────────────────────────────────────
 const CATEGORIES = {
   monumentos: {
-    bg:     '#f59e0b',
-    border: '#78350f',
-    glow:   '245,158,11',
+    bg: '#f59e0b', border: '#78350f', glow: '245,158,11',
     Icon: ({ size }) => (
       <svg viewBox="0 0 24 24" width={size} height={size} fill="white">
-        {/* Cámara fotográfica / monumento */}
         <path d="M12 2C8.13 2 5 5.13 5 9c0 3.28 1.82 6.12 4.5 7.6V21h5v-4.4C17.18 15.12 19 12.28 19 9c0-3.87-3.13-7-7-7zm0 10c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z" />
       </svg>
     ),
   },
   comida: {
-    bg:     '#ef4444',
-    border: '#7f1d1d',
-    glow:   '239,68,68',
+    bg: '#ef4444', border: '#7f1d1d', glow: '239,68,68',
     Icon: ({ size }) => (
       <svg viewBox="0 0 24 24" width={size} height={size} fill="white">
-        {/* Tenedor & cuchillo */}
         <path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z" />
       </svg>
     ),
   },
   entretenimiento: {
-    bg:     '#22c55e',
-    border: '#14532d',
-    glow:   '34,197,94',
+    bg: '#22c55e', border: '#14532d', glow: '34,197,94',
     Icon: ({ size }) => (
       <svg viewBox="0 0 24 24" width={size} height={size} fill="white">
         <path d="M12 3a9 9 0 100 18A9 9 0 0012 3zm-1 13v-4H7l5-9v4h4l-5 9z" />
       </svg>
     ),
   },
+  hoteles: {
+    bg: '#0ea5e9', border: '#0c4a6e', glow: '14,165,233',
+    Icon: ({ size }) => (
+      <svg viewBox="0 0 24 24" width={size} height={size} fill="white">
+        <path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z" />
+      </svg>
+    ),
+  },
+  antros: {
+    bg: '#d946ef', border: '#701a75', glow: '217,70,239',
+    Icon: ({ size }) => (
+      <svg viewBox="0 0 24 24" width={size} height={size} fill="white">
+        <path d="M12 3v10.55A4 4 0 1014 17V7h4V3h-6z" />
+      </svg>
+    ),
+  },
+  transporte: {
+    bg: '#f97316', border: '#7c2d12', glow: '249,115,22',
+    Icon: ({ size }) => (
+      <svg viewBox="0 0 24 24" width={size} height={size} fill="white">
+        <path d="M4 16c0 .88.39 1.67 1 2.22V20c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h8v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1.78c.61-.55 1-1.34 1-2.22V6c0-3.5-3.58-4-8-4s-8 .5-8 4v10zm3.5 1c-.83 0-1.5-.67-1.5-1.5S6.67 14 7.5 14s1.5.67 1.5 1.5S8.33 17 7.5 17zm9 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm1.5-6H6V6h12v5z" />
+      </svg>
+    ),
+  },
+  comercios: {
+    bg: '#84cc16', border: '#365314', glow: '132,204,22',
+    Icon: ({ size }) => (
+      <svg viewBox="0 0 24 24" width={size} height={size} fill="white">
+        <path d="M20 4H4v2l16 .01V4zM4 20h16v-2H4v2zm0-4h16v-2H4v2zm0-4h16V10H4v2z" />
+      </svg>
+    ),
+  },
   servicios: {
-    bg:     '#a855f7',
-    border: '#581c87',
-    glow:   '168,85,247',
+    bg: '#a855f7', border: '#581c87', glow: '168,85,247',
     Icon: ({ size }) => (
       <svg viewBox="0 0 24 24" width={size} height={size} fill="white">
         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
@@ -232,10 +272,14 @@ function ZoomButton({ onClick, ariaLabel, children }) {
 //  LEYENDA CARTOGRÁFICA
 // ──────────────────────────────────────────────────────────────────────────────
 const LEGEND_ITEMS = [
-  { key: 'monumentos',      label: 'Monumentos / Fotos', color: '#f59e0b' },
-  { key: 'comida',          label: 'Comida y Bebida',    color: '#ef4444' },
-  { key: 'entretenimiento', label: 'Entretenimiento',    color: '#22c55e' },
-  { key: 'servicios',       label: 'Servicios',          color: '#a855f7' },
+  { key: 'monumentos',      label: 'Monumentos',    color: '#f59e0b' },
+  { key: 'comida',          label: 'Restaurantes',  color: '#ef4444' },
+  { key: 'hoteles',         label: 'Hoteles',       color: '#0ea5e9' },
+  { key: 'antros',          label: 'Bares / Antros',color: '#d946ef' },
+  { key: 'transporte',      label: 'Transporte',    color: '#f97316' },
+  { key: 'comercios',       label: 'Comercios',     color: '#84cc16' },
+  { key: 'entretenimiento', label: 'Entretenimiento',color:'#22c55e' },
+  { key: 'servicios',       label: 'Servicios',     color: '#a855f7' },
 ];
 
 // ──────────────────────────────────────────────────────────────────────────────
@@ -243,6 +287,7 @@ const LEGEND_ITEMS = [
 // ──────────────────────────────────────────────────────────────────────────────
 export default function MaleconMap({ activePoi, pois, setActivePoi }) {
   const mapRef = useRef(null);
+  const [isSatellite, setIsSatellite] = useState(false);
 
   // Vuelo animado al seleccionar un POI
   useEffect(() => {
@@ -284,7 +329,7 @@ export default function MaleconMap({ activePoi, pois, setActivePoi }) {
           zoom:      DEFAULT_ZOOM,
         }}
         style={{ width: '100%', height: '100%' }}
-        mapStyle={MAP_STYLE}
+        mapStyle={isSatellite ? SATELLITE_STYLE : STREET_STYLE}
         minZoom={13}
         maxZoom={19}
         maxBounds={[[-110.370, 24.125], [-110.265, 24.205]]}
@@ -344,6 +389,31 @@ export default function MaleconMap({ activePoi, pois, setActivePoi }) {
             <path strokeLinecap="round" strokeWidth="2.5" d="M12 2v4m0 12v4M2 12h4m12 0h4"/>
           </svg>
         </ZoomButton>
+        {/* Toggle satélite / mapa */}
+        <button
+          onClick={() => setIsSatellite(s => !s)}
+          aria-label="Cambiar vista"
+          title={isSatellite ? "Vista de mapa" : "Vista satelital"}
+          style={{
+            width: 50, height: 50,
+            background: isSatellite
+              ? 'rgba(14,165,233,0.85)'
+              : 'rgba(2,6,23,0.85)',
+            backdropFilter: 'blur(12px)',
+            border: isSatellite
+              ? '1.5px solid rgba(56,189,248,0.7)'
+              : '1.5px solid rgba(255,255,255,0.15)',
+            borderRadius: 14,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: '#fff', cursor: 'pointer',
+            boxShadow: '0 6px 24px rgba(0,0,0,0.7)',
+            outline: 'none',
+            fontSize: 22,
+            transition: 'all 0.25s ease',
+          }}
+        >
+          {isSatellite ? '🗺️' : '🛰️'}
+        </button>
       </div>
 
       {/* ── LEYENDA ────────────────────────────────────────────────────── */}
