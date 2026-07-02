@@ -177,6 +177,7 @@ export default function SocialCard({ siteOrigin = "" }) {
           <p style={{
             color: "rgba(255,255,255,0.45)", fontSize: "0.875rem",
             fontWeight: 600, margin: 0, lineHeight: 1.375,
+            fontFamily: "'Outfit', sans-serif",
           }}>
             Comparte tu visita al Malecón de La Paz
           </p>

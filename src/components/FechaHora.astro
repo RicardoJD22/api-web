@@ -1,3 +1,9 @@
+---
+interface Props {
+  color?: string;
+}
+const { color = "text-slate-900" } = Astro.props;
+---
 <script>
   function actualizarHora() {
     const ahora = new Date();
@@ -26,6 +32,6 @@
 </script>
 
 <div class="flex flex-col items-center justify-center select-none py-3">
-  <span class="hora-minimal text-3xl md:text-5xl font-semibold text-black tracking-widest mb-1" style="font-family: 'Orbitron', sans-serif;"></span>
-  <span class="fecha-minimal text-sm md:text-base font-semibold text-black tracking-wider uppercase" style="font-family: 'Orbitron', sans-serif;"></span>
+  <span class={`hora-minimal text-3xl md:text-5xl font-semibold ${color} tracking-widest mb-1`} style="font-family: 'Orbitron', sans-serif;"></span>
+  <span class={`fecha-minimal text-sm md:text-base font-semibold ${color} tracking-wider uppercase`} style="font-family: 'Orbitron', sans-serif;"></span>
 </div>

@@ -135,11 +135,11 @@ const Questions = () => {
                 {showCelebration && <CelebrationOverlay />}
             </AnimatePresence>
 
-            <div className="min-h-screen flex flex-col justify-center items-center pt-2 pb-6 px-4 md:px-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900 to-slate-950 select-none overflow-hidden touch-manipulation">
+            <div className="min-h-screen flex flex-col justify-center items-center pt-8 pb-6 px-4 md:px-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900 to-slate-950 select-none overflow-hidden touch-manipulation">
                 
                 <div className="w-full max-w-5xl flex flex-col items-center">
                     
-                    <h1 className="text-5xl md:text-7xl font-black text-cyan-400 uppercase tracking-widest drop-shadow-[0_0_15px_rgba(34,211,238,0.4)] mb-6 text-center">
+                    <h1 className="text-3xl md:text-5xl font-black text-cyan-400 uppercase tracking-widest drop-shadow-[0_0_15px_rgba(34,211,238,0.4)] mb-6 text-center">
                         Tu Opinión Nos Importa
                     </h1>
 

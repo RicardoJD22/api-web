@@ -35,16 +35,13 @@ function GuiaMaleconCard() {
           </div>
         </a>
 
-        <div className="mt-auto w-full flex flex-col items-center text-center pb-2 pt-10 pointer-events-none">
+        <div className="mt-auto w-full flex flex-col items-start text-left pb-2 pt-10 pointer-events-none">
           <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-sky-100 to-sky-400 leading-none tracking-tighter uppercase mb-3 drop-shadow-2xl whitespace-nowrap">
             EL MALECÓN
           </h2>
-          <div className="px-5 py-3 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 shadow-xl overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_3s_infinite]"></div>
-            <span className="text-slate-200 text-sm font-semibold leading-snug relative z-10 block">
-              Explora monumentos, gastronomía y cultura frente al mar de Cortés.
-            </span>
-          </div>
+          <p className="text-slate-200 text-sm font-semibold leading-snug">
+            Explora monumentos, gastronomía y cultura frente al mar de Cortés.
+          </p>
         </div>
       </div>
       

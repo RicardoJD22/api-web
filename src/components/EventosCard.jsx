@@ -368,7 +368,7 @@ function EventosCard() {
       {/* ── HERO BANNER ───────────────────────────────────────────────────── */}
       <div style={{
         position: "relative",
-        height: 170,
+        height: 140,
         flexShrink: 0,
         overflow: "hidden",
         transition: "all 0.4s ease",
@@ -390,20 +390,6 @@ function EventosCard() {
           position: "absolute", inset: 0,
           background: `linear-gradient(to top, #020617 0%, ${hero.accent}20 50%, rgba(0,0,0,0.3) 100%)`,
         }} />
-
-        {/* Badge "PRÓXIMOS EVENTOS" */}
-        <div style={{
-          position: "absolute", top: 14, left: 14,
-          background: "rgba(2,6,23,0.75)",
-          backdropFilter: "blur(10px)",
-          border: "1px solid rgba(255,255,255,0.15)",
-          color: "rgba(255,255,255,0.7)",
-          fontSize: "0.75rem", fontWeight: 800,
-          letterSpacing: "0.18em", textTransform: "uppercase",
-          padding: "5px 12px", borderRadius: 999,
-        }}>
-          🗓️ Próximos Eventos
-        </div>
 
         {/* Indicadores de posición */}
         <div style={{
@@ -430,6 +416,7 @@ function EventosCard() {
             color: "white", fontSize: "0.75rem", fontWeight: 800,
             letterSpacing: "0.12em", textTransform: "uppercase",
             padding: "3px 10px", borderRadius: 999, marginBottom: 5,
+            fontFamily: "'Outfit', sans-serif",
           }}>
             {hero.icon} {hero.tag}
           </div>
@@ -443,7 +430,7 @@ function EventosCard() {
           }}>
             {hero.title}
           </div>
-          <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.75rem", fontWeight: 600, marginTop: 2 }}>
+          <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.75rem", fontWeight: 600, marginTop: 2, fontFamily: "'Outfit', sans-serif" }}>
             {hero.fecha} · {hero.hora} · {hero.lugar}
           </div>
         </div>
@@ -456,6 +443,21 @@ function EventosCard() {
         display: "flex", flexDirection: "column", gap: 7,
         scrollbarWidth: "none",
       }}>
+        {/* Título de la tarjeta */}
+        <div style={{ paddingBottom: 4 }}>
+          <h2 style={{
+            color: "white", fontWeight: 900,
+            fontSize: "2.25rem", lineHeight: 1,
+            letterSpacing: "-0.05em", textTransform: "uppercase",
+            fontFamily: "'Outfit', sans-serif",
+            margin: 0,
+          }}>EVENTOS</h2>
+          <p style={{
+            color: "rgba(255,255,255,0.5)", fontSize: "0.875rem",
+            fontWeight: 600, lineHeight: 1.375, margin: "2px 0 0",
+            fontFamily: "'Outfit', sans-serif",
+          }}>Próximos en el malecón</p>
+        </div>
         {eventos.map((ev, idx) => (
           <div key={ev.id} style={{ display: "flex", flexDirection: "column", gap: 0 }}>
             <EventoMiniCard
