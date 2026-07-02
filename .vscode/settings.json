@@ -4,5 +4,7 @@
     ],
     "workbench.localHistory.enabled": true,
     "livePreview.autoPreviewOnFileChange": false,
-    "remote.autoForwardPortsSource": "output"
+    "remote.autoForwardPortsSource": "output",
+    "liveServer.settings.CustomBrowser": "microsoft-edge",
+    "workbench.externalBrowser": "edge"
 }

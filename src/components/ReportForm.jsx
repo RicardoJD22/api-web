@@ -1,4 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+
+// ── Virtual Keyboard ──────────────────────────────────────────────────────────
+const KB_ROWS = [
+  ["1","2","3","4","5","6","7","8","9","0"],
+  ["q","w","e","r","t","y","u","i","o","p"],
+  ["a","s","d","f","g","h","j","k","l","ñ"],
+  ["⇧","z","x","c","v","b","n","m","⌫"],
+  ["á","é","í","ó","ú","¿","¡",","," ","↵"],
+];
+
+function VirtualKeyboard({ onKey, onClose, accent }) {
+  const [shifted, setShifted] = useState(false);
+  const ac = ACCENT_CLASSES[accent] ?? ACCENT_CLASSES.blue;
+
+  function handleKey(k) {
+    if (k === "⌫") { onKey("BACKSPACE"); return; }
+    if (k === "↵") { onClose(); return; }
+    if (k === "⇧") { setShifted((s) => !s); return; }
+    const char = shifted && k.length === 1 && k.match(/[a-záéíóúñ]/i) ? k.toUpperCase() : k;
+    onKey(char);
+    if (shifted && k !== "⇧") setShifted(false);
+  }
+
+  return (
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-slate-900 border-t border-white/10 p-2 shadow-2xl select-none">
+      <div className="max-w-lg mx-auto space-y-1">
+        {KB_ROWS.map((row, ri) => (
+          <div key={ri} className="flex justify-center gap-1">
+            {row.map((k) => {
+              const isShift = k === "⇧";
+              const isBackspace = k === "⌫";
+              const isDone = k === "↵";
+              const isSpace = k === " ";
+              const label = isSpace ? "espacio" : (shifted && k.length === 1 && k.match(/[a-záéíóúñ]/i) ? k.toUpperCase() : k);
+              return (
+                <button
+                  key={k}
+                  onPointerDown={(e) => { e.preventDefault(); handleKey(k); }}
+                  className={`
+                    flex-shrink-0 rounded-lg font-semibold text-sm transition active:scale-90
+                    ${isSpace ? "flex-1 py-3 bg-white/10 text-white/60" : ""}
+                    ${isDone ? `px-4 py-3 ${ac.bg} text-white` : ""}
+                    ${isBackspace ? "px-3 py-3 bg-red-500/20 text-red-300" : ""}
+                    ${isShift ? `px-3 py-3 ${shifted ? ac.bg + " text-white" : "bg-white/10 text-white/60"}` : ""}
+                    ${!isSpace && !isDone && !isBackspace && !isShift ? "w-8 py-3 bg-white/10 text-white/80 hover:bg-white/20" : ""}
+                  `}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 const ZONES = [
   {
@@ -177,6 +234,33 @@ export default function ReportForm({ category = "infraestructura" }) {
   const [description, setDescription] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [showKeyboard, setShowKeyboard] = useState(false);
+  const textareaRef = useRef(null);
+
+  function handleVirtualKey(k) {
+    const ta = textareaRef.current;
+    if (!ta) return;
+    const start = ta.selectionStart ?? description.length;
+    const end = ta.selectionEnd ?? description.length;
+    let next;
+    if (k === "BACKSPACE") {
+      if (start === end && start > 0) {
+        next = description.slice(0, start - 1) + description.slice(end);
+        setDescription(next);
+        requestAnimationFrame(() => ta.setSelectionRange(start - 1, start - 1));
+      } else if (start !== end) {
+        next = description.slice(0, start) + description.slice(end);
+        setDescription(next);
+        requestAnimationFrame(() => ta.setSelectionRange(start, start));
+      }
+    } else {
+      next = description.slice(0, start) + k + description.slice(end);
+      if (next.length <= 500) {
+        setDescription(next);
+        requestAnimationFrame(() => ta.setSelectionRange(start + k.length, start + k.length));
+      }
+    }
+  }
 
   const canNext = selectedZone !== null;
   const canSubmit = description.trim().length >= 10;
@@ -302,11 +386,14 @@ export default function ReportForm({ category = "infraestructura" }) {
             </div>
 
             <textarea
+              ref={textareaRef}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              onFocus={() => setShowKeyboard(true)}
               placeholder="Ej: La luminaria frente a la fuente lleva 3 días apagada…"
               rows={5}
               maxLength={500}
+              readOnly={showKeyboard}
               className="w-full bg-white/5 border border-white/10 focus:border-white/30 rounded-2xl p-4 text-white placeholder-white/25 text-sm resize-none outline-none transition mb-2"
             />
             <div className="flex justify-between text-xs text-white/25 mb-6">
@@ -314,7 +401,7 @@ export default function ReportForm({ category = "infraestructura" }) {
               <span>{description.length}/500</span>
             </div>
 
-            <div className="flex gap-3">
+            <div className={`flex gap-3 ${showKeyboard ? "mb-72" : ""}`}>
               <button
                 onClick={() => setStep(1)}
                 className="flex-1 py-4 rounded-2xl font-bold text-white/60 bg-white/5 hover:bg-white/10 transition"
@@ -343,6 +430,14 @@ export default function ReportForm({ category = "infraestructura" }) {
           </>
         )}
       </div>
+
+      {showKeyboard && (
+        <VirtualKeyboard
+          onKey={handleVirtualKey}
+          onClose={() => setShowKeyboard(false)}
+          accent={meta.accent}
+        />
+      )}
     </div>
   );
 }
