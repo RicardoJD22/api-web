@@ -17,6 +17,6 @@ const MapComponent = () => {
   }, []);
 
   return <div id="map" style={{ height: '100vh', width: '100%' }} />;
-};ajusta
+}; 
 
 export default MapComponent;

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 // ── Virtual Keyboard ──────────────────────────────────────────────────────────
 const KB_ROWS = [
@@ -23,28 +23,55 @@ function VirtualKeyboard({ onKey, onClose, accent }) {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-slate-900 border-t border-white/10 p-2 shadow-2xl select-none">
-      <div className="max-w-lg mx-auto space-y-1">
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-slate-900/98 backdrop-blur-md border-t border-white/15 shadow-2xl select-none">
+      {/* Toolbar */}
+      <div className="flex items-center justify-between px-4 pt-3 pb-2 border-b border-white/10">
+        <span className="text-white/40 text-xs font-medium uppercase tracking-widest">Teclado</span>
+        <button
+          onPointerDown={(e) => { e.preventDefault(); onClose(); }}
+          className={`flex items-center gap-1.5 px-5 py-2 rounded-full ${ac.bg} text-white text-sm font-bold shadow-lg active:scale-95 transition`}
+        >
+          Listo ✓
+        </button>
+      </div>
+
+      {/* Keys */}
+      <div className="px-2 pb-5 pt-2 space-y-2">
         {KB_ROWS.map((row, ri) => (
-          <div key={ri} className="flex justify-center gap-1">
+          <div key={ri} className="flex w-full gap-1.5">
             {row.map((k) => {
               const isShift = k === "⇧";
               const isBackspace = k === "⌫";
               const isDone = k === "↵";
               const isSpace = k === " ";
-              const label = isSpace ? "espacio" : (shifted && k.length === 1 && k.match(/[a-záéíóúñ]/i) ? k.toUpperCase() : k);
+              const label = isSpace
+                ? "espacio"
+                : shifted && k.length === 1 && k.match(/[a-záéíóúñ]/i)
+                  ? k.toUpperCase()
+                  : k;
+
+              let flexVal = "flex-1";
+              if (isShift || isBackspace) flexVal = "flex-[1.6]";
+              if (isDone) flexVal = "flex-[1.6]";
+              if (isSpace) flexVal = "flex-[4]";
+
               return (
                 <button
                   key={k}
                   onPointerDown={(e) => { e.preventDefault(); handleKey(k); }}
-                  className={`
-                    flex-shrink-0 rounded-lg font-semibold text-sm transition active:scale-90
-                    ${isSpace ? "flex-1 py-3 bg-white/10 text-white/60" : ""}
-                    ${isDone ? `px-4 py-3 ${ac.bg} text-white` : ""}
-                    ${isBackspace ? "px-3 py-3 bg-red-500/20 text-red-300" : ""}
-                    ${isShift ? `px-3 py-3 ${shifted ? ac.bg + " text-white" : "bg-white/10 text-white/60"}` : ""}
-                    ${!isSpace && !isDone && !isBackspace && !isShift ? "w-8 py-3 bg-white/10 text-white/80 hover:bg-white/20" : ""}
-                  `}
+                  className={[
+                    flexVal,
+                    "py-5 rounded-2xl font-bold text-lg transition active:scale-90 active:brightness-125 min-w-0",
+                    isSpace ? "bg-white/10 text-white/50 text-base" : "",
+                    isDone ? `${ac.bg} text-white shadow-md` : "",
+                    isBackspace ? "bg-red-500/25 text-red-300 text-xl" : "",
+                    isShift
+                      ? (shifted ? `${ac.bg} text-white shadow-md` : "bg-white/10 text-white/60") + " text-xl"
+                      : "",
+                    !isSpace && !isDone && !isBackspace && !isShift
+                      ? "bg-white/10 text-white hover:bg-white/20"
+                      : "",
+                  ].join(" ")}
                 >
                   {label}
                 </button>
@@ -217,8 +244,7 @@ function ZoneCard({ zone, selected, onSelect }) {
 
       {/* Content */}
       <div className="relative z-10 p-5 w-full text-left">
-        <div className="text-4xl leading-none mb-2">{zone.emoji}</div>
-        <p className="text-white font-black text-xl leading-tight">{zone.name}</p>
+                <p className="text-white font-black text-xl leading-tight">{zone.name}</p>
         <p className="text-white/60 text-sm leading-tight mt-1">{zone.ref}</p>
       </div>
     </button>
@@ -232,10 +258,18 @@ export default function ReportForm({ category = "infraestructura" }) {
   const [step, setStep] = useState(1);
   const [selectedZone, setSelectedZone] = useState(null);
   const [description, setDescription] = useState("");
+  const [usedHints, setUsedHints] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [countdown, setCountdown] = useState(4);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [showKeyboard, setShowKeyboard] = useState(false);
   const textareaRef = useRef(null);
+
+  // Validación: si llegan al step 2 sin zona, vuelven al 1
+  useEffect(() => {
+    if (step === 2 && !selectedZone) setStep(1);
+  }, [step, selectedZone]);
 
   function handleVirtualKey(k) {
     const ta = textareaRef.current;
@@ -262,6 +296,12 @@ export default function ReportForm({ category = "infraestructura" }) {
     }
   }
 
+  function handleHintClick(hint) {
+    if (usedHints.includes(hint)) return;
+    setUsedHints((u) => [...u, hint]);
+    setDescription((d) => (d ? d + ". " + hint : hint));
+  }
+
   const canNext = selectedZone !== null;
   const canSubmit = description.trim().length >= 10;
 
@@ -271,6 +311,15 @@ export default function ReportForm({ category = "infraestructura" }) {
     await new Promise((r) => setTimeout(r, 1200));
     setSubmitting(false);
     setSubmitted(true);
+    let secs = 4;
+    const timer = setInterval(() => {
+      secs -= 1;
+      setCountdown(secs);
+      if (secs <= 0) {
+        clearInterval(timer);
+        window.location.href = "/";
+      }
+    }, 1000);
   }
 
   // ── Success screen ───────────────────────────────────────────────
@@ -285,12 +334,13 @@ export default function ReportForm({ category = "infraestructura" }) {
           Tu reporte en <span className={`font-semibold ${ac.text}`}>{selectedZone?.name}</span> ha
           sido registrado. El equipo lo atenderá a la brevedad.
         </p>
-        <p className="text-slate-500 text-sm mb-8">Gracias por ayudarnos a mejorar el malecón 🙏</p>
+        <p className="text-slate-500 text-sm mb-8">Gracias por ayudarnos a mejorar el malecón</p>
+        <p className="text-white/30 text-xs mb-6">Redirigiendo en {countdown}…</p>
         <a
-          href="/reports"
+          href="/"
           className="px-8 py-3 bg-white/10 hover:bg-white/15 text-white rounded-xl font-semibold transition"
         >
-          Volver a reportes
+          Ir al inicio ahora
         </a>
       </div>
     );
@@ -301,12 +351,24 @@ export default function ReportForm({ category = "infraestructura" }) {
       {/* Header */}
       <div className="sticky top-0 z-30 bg-slate-950/95 backdrop-blur-md border-b border-white/5 px-5 py-4">
         <div className="max-w-2xl mx-auto flex items-center justify-between gap-4">
-          <a href="/reports" className="text-white/40 hover:text-white/70 transition text-sm flex items-center gap-1.5">
-            ← Regresar
+          <a
+            href="/?skip=1"
+            className="flex items-center gap-2 px-4 py-2 rounded-2xl border border-cyan-500/40 active:scale-95 transition-transform duration-150 touch-manipulation select-none"
+            style={{ background: "linear-gradient(135deg, rgba(8,47,73,0.92) 0%, rgba(12,74,110,0.88) 100%)" }}
+          >
+            <span className="flex items-center justify-center w-8 h-8 rounded-xl bg-cyan-500/20 border border-cyan-400/30">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#67e8f9" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 -translate-x-px">
+                <path d="M19 12H5M5 12l7-7M5 12l7 7"/>
+              </svg>
+            </span>
+            <span className="flex flex-col leading-none">
+              <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-cyan-400/70">Regresar</span>
+              <span className="text-sm font-black uppercase tracking-wide text-cyan-100">Inicio</span>
+            </span>
           </a>
           <StepIndicator current={step} accent={meta.accent} />
-          <div className={`px-3 py-1 rounded-full border text-xs font-semibold ${ac.badge}`}>
-            {meta.icon} {meta.label}
+          <div className={`px-5 py-2 rounded-full border text-sm font-bold ${ac.badge}`}>
+            {selectedZone ? `${selectedZone.name}` : `${meta.icon} ${meta.label}`}
           </div>
         </div>
       </div>
@@ -335,7 +397,6 @@ export default function ReportForm({ category = "infraestructura" }) {
 
             {selectedZone && (
               <div className={`mb-5 p-3 rounded-xl border flex items-center gap-3 ${ac.badge}`}>
-                <span className="text-xl">{selectedZone.emoji}</span>
                 <div>
                   <p className="font-semibold text-sm">{selectedZone.name}</p>
                   <p className="text-xs opacity-70">{selectedZone.ref}</p>
@@ -359,7 +420,7 @@ export default function ReportForm({ category = "infraestructura" }) {
 
         {/* ── STEP 2: Details ───────────────────────────────── */}
         {step === 2 && (
-          <>
+          <div className={showKeyboard ? "pb-[30rem]" : ""}>
             <div className="mb-6">
               <h1 className="text-2xl font-black text-white mb-1">Describe el problema</h1>
               <p className="text-slate-400 text-sm">
@@ -370,48 +431,68 @@ export default function ReportForm({ category = "infraestructura" }) {
 
             {/* Hint chips */}
             <div className="flex flex-wrap gap-2 mb-4">
-              {meta.hint.split(",").map((h) => (
-                <button
-                  key={h}
-                  onClick={() =>
-                    setDescription((d) =>
-                      d ? d + ". " + h.trim() : h.trim()
-                    )
-                  }
-                  className="px-3 py-1.5 bg-white/8 hover:bg-white/15 text-white/60 text-xs rounded-full border border-white/10 transition active:scale-95"
-                >
-                  + {h.trim()}
-                </button>
-              ))}
+              {meta.hint.split(",").map((h) => {
+                const hint = h.trim();
+                const used = usedHints.includes(hint);
+                return (
+                  <button
+                    key={hint}
+                    onClick={() => handleHintClick(hint)}
+                    disabled={used}
+                    className={`px-3 py-1.5 text-xs rounded-full border transition active:scale-95 ${
+                      used
+                        ? "bg-white/5 text-white/20 border-white/5 cursor-not-allowed line-through"
+                        : "bg-white/8 hover:bg-white/15 text-white/60 border-white/10"
+                    }`}
+                  >
+                    {used ? hint : `+ ${hint}`}
+                  </button>
+                );
+              })}
             </div>
 
+            {/* Textarea con feedback de color */}
             <textarea
               ref={textareaRef}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               onFocus={() => setShowKeyboard(true)}
               placeholder="Ej: La luminaria frente a la fuente lleva 3 días apagada…"
-              rows={5}
+              rows={10}
               maxLength={500}
               readOnly={showKeyboard}
-              className="w-full bg-white/5 border border-white/10 focus:border-white/30 rounded-2xl p-4 text-white placeholder-white/25 text-sm resize-none outline-none transition mb-2"
+              className={`w-full bg-white/5 rounded-2xl p-4 text-white placeholder-white/25 text-base resize-none outline-none transition mb-2 border ${
+                description.length === 0
+                  ? "border-white/10"
+                  : description.length < 10
+                  ? "border-red-500/60"
+                  : description.length < 40
+                  ? "border-yellow-400/60"
+                  : "border-emerald-400/60"
+              }`}
             />
-            <div className="flex justify-between text-xs text-white/25 mb-6">
-              <span>{description.length < 10 ? `Mínimo ${10 - description.length} caracteres más` : "✓ Listo"}</span>
-              <span>{description.length}/500</span>
+            <div className="flex justify-between text-xs mb-6">
+              <span className={
+                description.length === 0 ? "text-white/25" :
+                description.length < 10 ? "text-red-400" :
+                description.length < 40 ? "text-yellow-400" : "text-emerald-400"
+              }>
+                {description.length === 0
+                  ? "Escribe al menos 10 caracteres"
+                  : description.length < 10
+                  ? `Faltan ${10 - description.length} caracteres`
+                  : description.length < 40
+                  ? "Puedes agregar más detalle"
+                  : "✓ Descripción completa"}
+              </span>
+              <span className="text-white/25">{description.length}/500</span>
             </div>
 
-            <div className={`flex gap-3 ${showKeyboard ? "mb-72" : ""}`}>
+            <div className="flex gap-3">
               <button
-                onClick={() => setStep(1)}
-                className="flex-1 py-4 rounded-2xl font-bold text-white/60 bg-white/5 hover:bg-white/10 transition"
-              >
-                ← Atrás
-              </button>
-              <button
-                onClick={handleSubmit}
+                onClick={() => setShowConfirm(true)}
                 disabled={!canSubmit || submitting}
-                className={`flex-[2] py-4 rounded-2xl font-bold text-lg transition-all duration-200 ${
+                className={`w-full py-4 rounded-2xl font-bold text-lg transition-all duration-200 ${
                   canSubmit && !submitting
                     ? `${ac.bg} text-white shadow-lg active:scale-95`
                     : "bg-white/10 text-white/30 cursor-not-allowed"
@@ -427,7 +508,7 @@ export default function ReportForm({ category = "infraestructura" }) {
                 )}
               </button>
             </div>
-          </>
+          </div>
         )}
       </div>
 
@@ -437,6 +518,47 @@ export default function ReportForm({ category = "infraestructura" }) {
           onClose={() => setShowKeyboard(false)}
           accent={meta.accent}
         />
+      )}
+
+      {/* ── Modal de confirmación ─────────────────────────── */}
+      {showConfirm && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/70 backdrop-blur-sm">
+          <div className="w-full max-w-sm bg-slate-900 rounded-3xl border border-white/10 shadow-2xl overflow-hidden">
+            {/* Icono */}
+            <div className="flex flex-col items-center pt-8 pb-4 px-6 text-center">
+              <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4">
+                <span className="text-4xl">📋</span>
+              </div>
+              <h3 className="text-xl font-black text-white mb-2">¿Enviar reporte?</h3>
+              <p className="text-slate-400 text-sm leading-relaxed">
+                Estás a punto de enviar un reporte en{" "}
+                <span className={`font-semibold ${ac.text}`}>{selectedZone?.name}</span>.
+                <br />¿Deseas continuar?
+              </p>
+            </div>
+
+            {/* Resumen */}
+            <div className="mx-6 mb-5 p-3 rounded-2xl bg-white/5 border border-white/8 text-xs text-white/50 leading-relaxed line-clamp-3">
+              {description}
+            </div>
+
+            {/* Botones */}
+            <div className="flex border-t border-white/10">
+              <button
+                onClick={() => setShowConfirm(false)}
+                className="flex-1 py-4 text-white/50 font-semibold text-sm hover:bg-white/5 transition border-r border-white/10"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={() => { setShowConfirm(false); handleSubmit(); }}
+                className={`flex-1 py-4 font-bold text-sm ${ac.bg} text-white transition active:brightness-110`}
+              >
+                Sí, enviar ✓
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
